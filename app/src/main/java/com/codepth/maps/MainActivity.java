@@ -47,7 +47,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         LatLng latLng;
-        if(sel ==0)
+        if(sel==0)
             latLng=new LatLng(userLoc.getLatitude(),userLoc.getLongitude());
         else
             latLng=new LatLng(20.2960587,85.8223511);
@@ -111,6 +111,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             });
             builder.setNegativeButton("CANCEL",null);
+            builder.setCancelable(false);
             builder.show();
         }
     }
