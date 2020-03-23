@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:textSize="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="20dp" />
+            <EditText
+                android:id="@+id/etName"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/tvName"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="10dp"
+                />
+
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etName"
+                android:text="Phone No."
+                android:textSize="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+               />
+            <EditText
+                android:id="@+id/etPhone"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/tvPhone"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="10dp"
+                android:inputType="number"
+               />
+
+            <TextView
+                android:id="@+id/tvSteet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etPhone"
+                android:text="Street No."
+                android:textSize="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+               />
+            <EditText
+                android:id="@+id/etStreet"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/tvSteet"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="5dp"
+                android:inputType="number"
+                android:paddingLeft="10dp"
+                />
+
+            <TextView
+                android:id="@+id/tvLocality"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etStreet"
+                android:text="Locality"
+                android:textSize="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+               />
+            <EditText
+                android:id="@+id/etLocality"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/tvLocality"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="10dp"
+               />
+
+            <TextView
+                android:id="@+id/tvHouse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etLocality"
+                android:text="House"
+                android:textSize="25dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="10dp"
+               />
+            <EditText
+                android:id="@+id/etHouse"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/tvHouse"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="10dp"
+                />
+
+            <Button
+                android:id="@+id/btRegister"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/etHouse"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"
+                android:text="CREATE PROFILE"
+                android:textSize="20dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginBottom="20dp"
+                android:textColor="#ffffff"
+
+                />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>

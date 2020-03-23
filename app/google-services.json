@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "505309036747",
+    "firebase_url": "https://maps-9a7e5.firebaseio.com",
+    "project_id": "maps-9a7e5",
+    "storage_bucket": "maps-9a7e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505309036747:android:64a680b5698c4da547db4e",
+        "android_client_info": {
+          "package_name": "com.codepth.maps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505309036747-4oepfec8773nj2p3fjgc6bfg396jan40.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codepth.maps",
+            "certificate_hash": "7e6278d029502fbeabd031fbd0198cec69a865bb"
+          }
+        },
+        {
+          "client_id": "505309036747-u91qoj8mjr7pmc6ilitv690rq72pg3tj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBe1tmgpLujgxK64FfL7n0eNJaWIijdy58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505309036747-u91qoj8mjr7pmc6ilitv690rq72pg3tj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
