@@ -13,7 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Welcomepage"></activity>
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".CreateProfileActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegistrationActivity" />
@@ -22,7 +22,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC4oSY9sO_ta8qGwLO1oVj-0q6D3vZXMhE" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".Welcomepage">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

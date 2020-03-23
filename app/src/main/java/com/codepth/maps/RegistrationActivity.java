@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -23,36 +24,59 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class RegistrationActivity extends AppCompatActivity {
-    SignInButton button;
-    FirebaseAuth mauth;
     private final static int RC_SIGN_IN = 2;
+    FirebaseAuth mauth;
     GoogleSignInClient mGoogleSignInClient;
+    private Button googlereg;
+    private Button Fb;
+    private Button phn;
     private FirebaseAuth.AuthStateListener mauthlistner;
+   /* @Override
+    protected void onStart() {
+        super.onStart();
+        mauth.addAuthStateListener(mauthlistner);
+
+    }*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_registration);
-        button = (SignInButton) findViewById(R.id.sign_in_button);
+        googlereg = (Button) findViewById(R.id.btn_google_signup);
         mauth = FirebaseAuth.getInstance();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken("505309036747-hk529uv4u9so2as9hmb14ok23v8a1h7b.apps.googleusercontent.com")
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        button.setOnClickListener(new View.OnClickListener() {
+
+     /*   mauthlistner=new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                if(firebaseAuth.getCurrentUser()!=null)
+                {
+                    //Toast.makeText(RegistrationChoice.this,"User already exists with this account",Toast.LENGTH_LONG).show();
+                }
+            }
+        };*/
+        googlereg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
             }
         });
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
     }
+
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -64,20 +88,16 @@ public class RegistrationActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                Toast.makeText(RegistrationActivity.this,"Sign up successfully",Toast.LENGTH_LONG).show();
-                Intent intent=new Intent(RegistrationActivity.this,CreateProfileActivity.class);
-                startActivity(intent);
-                finish();
+                Toast.makeText(RegistrationActivity.this, "Signed up successfully", Toast.LENGTH_LONG).show();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(RegistrationActivity.this,"Sign up issues",Toast.LENGTH_LONG).show();
+                Toast.makeText(RegistrationActivity.this, "Sign up issues", Toast.LENGTH_LONG).show();
                 // ...
             }
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account)
-    {
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mauth.signInWithCredential(credential)
@@ -87,11 +107,11 @@ public class RegistrationActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mauth.getCurrentUser();
-                            //updateUI(user);
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
 
-                            Toast.makeText(RegistrationActivity.this,"Authentication Failed",Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegistrationActivity.this, "Authentication Failed", Toast.LENGTH_LONG).show();
                             //updateUI(null);
                         }
 
@@ -100,5 +120,10 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
     }
 
-    }
+    private void updateUI(FirebaseUser user) {
+        startActivity(new Intent(RegistrationActivity.this, CreateProfileActivity.class));
+        Toast.makeText(RegistrationActivity.this, "Welcome", Toast.LENGTH_LONG).show();
+        finish();
 
+    }
+}
