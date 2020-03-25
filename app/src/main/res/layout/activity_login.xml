@@ -25,7 +25,7 @@
         android:layout_centerInParent="true"
         android:background="@color/colorAccent"
         android:drawableLeft="@drawable/ic_google_square_foreground"
-        android:text="Google"
+        android:text="GOOGLE"
         android:textAllCaps="false"
         android:textColor="@android:color/white" />
 
