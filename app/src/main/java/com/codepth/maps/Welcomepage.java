@@ -30,7 +30,7 @@ public class Welcomepage extends AppCompatActivity {
         Signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(Welcomepage.this,RegistrationActivity.class);
+                Intent intent=new Intent(Welcomepage.this,ChoiceofRole.class);
                 startActivity(intent);
             }
         });
