@@ -14,17 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SellerLogin"></activity>
-        <activity
-            android:name=".ui.login.LoginasSeller"
-            android:label="@string/title_activity_loginas_seller" />
         <activity android:name=".ChoiceofLoginRole" />
-        <activity android:name=".CreateProfileasSeller" />
-        <activity android:name=".RegisterasSeller" />
-        <activity android:name=".ChoiceofRole" />
+        <activity android:name=".SellerProfileCreation" />
+        <activity android:name=".SellerRegistration" />
+        <activity android:name=".ChoiceofRegRole" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".CreateProfileActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".BuyeProfileCreation" />
+        <activity android:name=".BuyerLogin" />
+        <activity android:name=".BuyerRegistartion" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
