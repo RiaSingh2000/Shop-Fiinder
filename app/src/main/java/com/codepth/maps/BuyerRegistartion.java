@@ -7,13 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,14 +22,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-public class LoginActivity extends AppCompatActivity {
+public class BuyerRegistartion extends AppCompatActivity {
     private final static int RC_SIGN_IN = 2;
     FirebaseAuth mauth;
     GoogleSignInClient mGoogleSignInClient;
@@ -37,36 +31,31 @@ public class LoginActivity extends AppCompatActivity {
     private Button Fb;
     private Button phn;
     private FirebaseAuth.AuthStateListener mauthlistner;
-    private FirebaseFirestore fstore;
-
-    @Override
+   /* @Override
     protected void onStart() {
         super.onStart();
         mauth.addAuthStateListener(mauthlistner);
 
-    }
+    }*/
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        googlereg = (Button) findViewById(R.id.btn_google_sigin);
+        //FirebaseApp.initializeApp(this);
+        setContentView(R.layout.activity_registration);
+        googlereg = findViewById(R.id.btn_google_signup);
         mauth = FirebaseAuth.getInstance();
-        fstore=FirebaseFirestore.getInstance();
 
-        mauthlistner=new FirebaseAuth.AuthStateListener() {
+     /*   mauthlistner=new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()!=null)
                 {
-
-                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                    Toast.makeText(LoginActivity.this,"Welcome back",Toast.LENGTH_LONG).show();
-                    finish();
+                    //Toast.makeText(RegistrationChoice.this,"User already exists with this account",Toast.LENGTH_LONG).show();
                 }
             }
-        };
+        };*/
         googlereg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,17 +88,16 @@ public class LoginActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                Toast.makeText(LoginActivity.this,"Logged in successfully",Toast.LENGTH_LONG).show();
+                Toast.makeText(BuyerRegistartion.this, "Signed up successfully", Toast.LENGTH_LONG).show();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(LoginActivity.this,"Log in issues",Toast.LENGTH_LONG).show();
+                Toast.makeText(RegistrationActivity.this, "Sign up issues"+e, Toast.LENGTH_LONG).show();
                 // ...
             }
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account)
-    {
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mauth.signInWithCredential(credential)
@@ -119,11 +107,11 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mauth.getCurrentUser();
-                            Checkuser(user);
+                            updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
 
-                            Toast.makeText(LoginActivity.this,"Authentication Failed",Toast.LENGTH_LONG).show();
+                            Toast.makeText(BuyerRegistartion.this, "Authentication Failed", Toast.LENGTH_LONG).show();
                             //updateUI(null);
                         }
 
@@ -131,25 +119,13 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-    private void Checkuser(FirebaseUser user) {
-        String currentuserid = mauth.getCurrentUser().getUid();
-        fstore.collection("Buyer").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.getResult().exists()) {
-                    Toast.makeText(LoginActivity.this,"Welcome Back",Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                    finish();
-                }
-                else {
-                    Toast.makeText(LoginActivity.this,"No such user exists",Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(LoginActivity.this, Welcomepage.class));
-                    finish();
 
-                }
+    private void updateUI(FirebaseUser user) {
+        Intent intent=new Intent(BuyerRegistartion.this, BuyeProfileCreation.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        Toast.makeText(BuyerRegistartion.this, "Welcome", Toast.LENGTH_LONG).show();
+        finish();
 
-
-            }
-        });
-}
+    }
 }

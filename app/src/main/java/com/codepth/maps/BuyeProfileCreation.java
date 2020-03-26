@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,7 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
-public class CreateProfileActivity extends AppCompatActivity {
+public class BuyeProfileCreation extends AppCompatActivity {
     private EditText name,phn,street,locality,house;
     private Button Create_pofile;
     String userid,nm,pn,Street,loc,phone,House;
@@ -84,8 +83,9 @@ public class CreateProfileActivity extends AppCompatActivity {
                 documentReference.set(profilemap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(CreateProfileActivity.this,"Profile set up Successfully",Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(CreateProfileActivity.this, MainActivity.class);
+                        Toast.makeText(BuyeProfileCreation.this,"Profile set up Successfully",Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(BuyeProfileCreation.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
 
