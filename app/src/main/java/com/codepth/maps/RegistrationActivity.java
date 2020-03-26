@@ -44,7 +44,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_registration);
-        googlereg = (Button) findViewById(R.id.btn_google_signup);
+        googlereg = findViewById(R.id.btn_google_signup);
         mauth = FirebaseAuth.getInstance();
 
      /*   mauthlistner=new FirebaseAuth.AuthStateListener() {
@@ -91,7 +91,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 Toast.makeText(RegistrationActivity.this, "Signed up successfully", Toast.LENGTH_LONG).show();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(RegistrationActivity.this, "Sign up issues", Toast.LENGTH_LONG).show();
+                Toast.makeText(RegistrationActivity.this, "Sign up issues"+e, Toast.LENGTH_LONG).show();
                 // ...
             }
         }
