@@ -30,7 +30,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -47,6 +50,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE=101;
     int sel=0,findShop=0; //flag variables
+     FirebaseFirestore fstore;
+     FirebaseAuth fauth;
+     Double regLat,regLng;
 
     private static final String[] options=new String[]{
             "Near Current Location","Near Registered Location"
@@ -57,9 +63,22 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fstore=FirebaseFirestore.getInstance();
+        fauth=FirebaseAuth.getInstance();
 
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(MainActivity.this);
         fetchLastLoc();
+        DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                    regLat=Double.parseDouble(doc.get("lat").toString());
+                    regLng=Double.parseDouble(doc.get("lng").toString());
+                }
+            }
+        });
     }
 
     @Override
@@ -91,7 +110,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
         else {
-            latLng = new LatLng(20.2960587, 85.8223511); //user's registered location
+            latLng = new LatLng(regLat, regLng); //user's registered location
             //shopLatLng = new LatLng(20.353270,85.826740); shop's registered location
             float[] result = new float[3];
             Location.distanceBetween(20.2960587, 85.8223511, 20.353270, 85.826740, result );

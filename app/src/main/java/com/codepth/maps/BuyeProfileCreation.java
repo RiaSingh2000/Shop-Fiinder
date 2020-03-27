@@ -1,15 +1,23 @@
 package com.codepth.maps;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,6 +30,9 @@ public class BuyeProfileCreation extends AppCompatActivity {
     String userid,nm,pn,Street,loc,phone,House;
     private FirebaseFirestore fstore;
     private FirebaseAuth fauth;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    private static final int REQUEST_CODE=101;
+    Location userLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +46,8 @@ public class BuyeProfileCreation extends AppCompatActivity {
         Create_pofile=findViewById(R.id.btRegister);
         fauth=FirebaseAuth.getInstance();
         fstore=FirebaseFirestore.getInstance();
-
+        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(BuyeProfileCreation.this);
+        fetchLastLoc();
 
         Create_pofile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,11 +92,16 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 profilemap.put("Street",Street);
                 profilemap.put("Locality",loc);
                 profilemap.put("House",House);
+                profilemap.put("lat",Double.toString(userLoc.getLatitude()));
+                profilemap.put("lng",Double.toString(userLoc.getLongitude()));
+
                 documentReference.set(profilemap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(BuyeProfileCreation.this,"Profile set up Successfully",Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(BuyeProfileCreation.this, MainActivity.class);
+                        intent.putExtra("lat",userLoc.getLatitude());
+                        intent.putExtra("lng",userLoc.getLongitude());
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
@@ -93,6 +110,24 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 });
 
 
+            }
+        });
+    }
+
+    public void fetchLastLoc(){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(BuyeProfileCreation.this,new String[]
+                    {Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_CODE);
+            return;
+        }
+        Task<Location> task=fusedLocationProviderClient.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if(location!=null){
+                    userLoc=location;
+                    Toast.makeText(getApplicationContext(),userLoc.getLatitude()+"\n"+userLoc.getLongitude(),Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
