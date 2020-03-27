@@ -13,7 +13,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,8 +21,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class BuyerLogin extends AppCompatActivity {
     private final static int RC_SIGN_IN = 2;
     FirebaseAuth mauth;
     GoogleSignInClient mGoogleSignInClient;
@@ -31,31 +32,36 @@ public class RegistrationActivity extends AppCompatActivity {
     private Button Fb;
     private Button phn;
     private FirebaseAuth.AuthStateListener mauthlistner;
-   /* @Override
+    private FirebaseFirestore fstore;
+
+    @Override
     protected void onStart() {
         super.onStart();
         mauth.addAuthStateListener(mauthlistner);
 
-    }*/
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //FirebaseApp.initializeApp(this);
-        setContentView(R.layout.activity_registration);
-        googlereg = (Button) findViewById(R.id.btn_google_signup);
+        setContentView(R.layout.activity_login);
+        googlereg = (Button) findViewById(R.id.btn_google_sigin);
         mauth = FirebaseAuth.getInstance();
+        fstore=FirebaseFirestore.getInstance();
 
-     /*   mauthlistner=new FirebaseAuth.AuthStateListener() {
+        mauthlistner=new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser()!=null)
                 {
-                    //Toast.makeText(RegistrationChoice.this,"User already exists with this account",Toast.LENGTH_LONG).show();
+
+                    startActivity(new Intent(BuyerLogin.this,MainActivity.class));
+                    Toast.makeText(BuyerLogin.this,"Welcome back",Toast.LENGTH_LONG).show();
+                    finish();
                 }
             }
-        };*/
+        };
         googlereg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,16 +94,17 @@ public class RegistrationActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                Toast.makeText(RegistrationActivity.this, "Signed up successfully", Toast.LENGTH_LONG).show();
+                Toast.makeText(BuyerLogin.this,"Logged in successfully",Toast.LENGTH_LONG).show();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(RegistrationActivity.this, "Sign up issues"+e, Toast.LENGTH_LONG).show();
+                Toast.makeText(BuyerLogin.this,"Log in issues",Toast.LENGTH_LONG).show();
                 // ...
             }
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account)
+    {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mauth.signInWithCredential(credential)
@@ -107,11 +114,11 @@ public class RegistrationActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mauth.getCurrentUser();
-                            updateUI(user);
+                            Checkuser(user);
                         } else {
                             // If sign in fails, display a message to the user.
 
-                            Toast.makeText(RegistrationActivity.this, "Authentication Failed", Toast.LENGTH_LONG).show();
+                            Toast.makeText(BuyerLogin.this,"Authentication Failed",Toast.LENGTH_LONG).show();
                             //updateUI(null);
                         }
 
@@ -119,11 +126,29 @@ public class RegistrationActivity extends AppCompatActivity {
                     }
                 });
     }
+    private void Checkuser(FirebaseUser user) {
+        String currentuserid = mauth.getCurrentUser().getUid();
+        fstore.collection("Buyer").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.getResult().exists()) {
+                    Toast.makeText(BuyerLogin.this,"Welcome Back",Toast.LENGTH_LONG).show();
+                    Intent intent=new Intent(BuyerLogin.this,MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
+                    Toast.makeText(BuyerLogin.this,"No such user exists",Toast.LENGTH_LONG).show();
+                    Intent intent= new Intent(BuyerLogin.this, Welcomepage.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
 
-    private void updateUI(FirebaseUser user) {
-        startActivity(new Intent(RegistrationActivity.this, CreateProfileActivity.class));
-        Toast.makeText(RegistrationActivity.this, "Welcome", Toast.LENGTH_LONG).show();
-        finish();
+                }
 
-    }
+
+            }
+        });
+}
 }

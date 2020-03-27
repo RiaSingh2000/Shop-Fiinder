@@ -4,21 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Welcomepage">
+    tools:context=".Welcomepage"
+    android:background="@drawable/welcome_codepth">
     <Button
         android:id="@+id/loginbtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:layout_marginTop="300dp"
-        android:text="LOGIN"></Button>
+        android:textSize="20dp"
+        android:layout_marginTop="400dp"
+        android:text="LOGIN"
+        android:textColor="@android:color/holo_red_light"
+        android:background="@drawable/btn_design">
+    </Button>
     <Button
         android:id="@+id/signupbtn"
         android:layout_below="@+id/loginbtn"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:text="SIGN UP"></Button>
+        android:textSize="20dp"
+        android:text="SIGN UP"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_design1"></Button>
 
 </RelativeLayout>

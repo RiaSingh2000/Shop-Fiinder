@@ -2,10 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codepth.maps">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,26 +9,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".CreateProfileActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegistrationActivity" />
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyC4oSY9sO_ta8qGwLO1oVj-0q6D3vZXMhE" />
-
         <activity android:name=".Welcomepage"></activity>
-        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
-        <meta-data android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyC4oSY9sO_ta8qGwLO1oVj-0q6D3vZXMhE"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".SellerLogin" />
+        <activity android:name=".ChoiceofLoginRole" />
+        <activity android:name=".SellerProfileCreation" />
+        <activity android:name=".SellerRegistration" />
+        <activity android:name=".ChoiceofRegRole" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".BuyeProfileCreation" />
+        <activity android:name=".BuyerLogin" />
+        <activity android:name=".BuyerRegistartion" />
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC4oSY9sO_ta8qGwLO1oVj-0q6D3vZXMhE" />
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>
