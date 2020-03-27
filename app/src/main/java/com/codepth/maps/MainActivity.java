@@ -77,7 +77,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 latLng=new LatLng(userLoc.getLatitude(),userLoc.getLongitude());
                 //TODO: fetch shops latLong one by one from firestore and run
                 Log.d(TAG,"BEGINNING -------------------------------------");
-                //fetchShopsMapDetails(); //TODO fix firestore as per structure required by this function
+                fetchShopsMapDetails(); //TODO fix firestore as per structure required by this function
                 Log.d(TAG,"BEGINNING =====================================");
                 float[] result = new float[3];
                 Location.distanceBetween(userLoc.getLatitude(), userLoc.getLongitude(), 20.353270, 85.826740, result );
@@ -95,7 +95,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             //shopLatLng = new LatLng(20.353270,85.826740); shop's registered location
             float[] result = new float[3];
             Location.distanceBetween(20.2960587, 85.8223511, 20.353270, 85.826740, result );
-            if(result!=null && result.length>0 && result[0]<=7000){
+            if(result!=null && result[0]<=7000){
                 Toast.makeText(this,"Nearby atmaram",Toast.LENGTH_LONG).show();
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(20.353270, 85.826740))
@@ -180,8 +180,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                mShops mshops = (mShops) document.getData();
-                                mShopsArrayList.add(mshops);
+                                mSellerProfile mSellerProfile = (mSellerProfile) document.getData();
+                                mShops mShop = slice(mSellerProfile);
                                 Log.d(TAG, String.valueOf(mShopsArrayList));
 
                             }
@@ -192,5 +192,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     }
                 });
 
+    }
+
+    private mShops slice(mSellerProfile mSellerProfile) {
+        mShops mShop = new mShops();
+        mShop.setLatitude(mSellerProfile.getSellerLat());
+        mShop.setLongitude(mSellerProfile.getSellerLong());
+        mShop.setName(mSellerProfile.getShopName());
+     return mShop;
     }
 }

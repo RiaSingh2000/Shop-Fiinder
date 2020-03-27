@@ -93,9 +93,6 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 });
 
 
-
-
-
             }
         });
     }

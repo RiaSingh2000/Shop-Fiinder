@@ -17,9 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 
 public class SellerProfileCreation extends AppCompatActivity {
-    private EditText name,shopname,cno,loc;
-    private Button Create_pofile;
-    String userid,nm,shpname,no,locality;
+    private EditText etSellerName,etShopName,etSellerPhone,etSellerLocality;
+    private Button btnRegisterSeller;
     private FirebaseFirestore fstore;
     private FirebaseAuth fauth;
 
@@ -27,51 +26,56 @@ public class SellerProfileCreation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profileas_seller);
-        name=findViewById(R.id.etSellerName);
-        shopname=findViewById(R.id.etShopName);
-        loc=findViewById(R.id.etSellerLocality);
-        cno=findViewById(R.id.etSellerPhone);
-        Create_pofile=findViewById(R.id.btRegisterSeller);
+        etSellerName=findViewById(R.id.etSellerName);
+        etShopName=findViewById(R.id.etShopName);
+        etSellerLocality=findViewById(R.id.etSellerLocality);
+        etSellerPhone=findViewById(R.id.etSellerPhone);
+        btnRegisterSeller=findViewById(R.id.btnRegisterSeller);
         fauth=FirebaseAuth.getInstance();
         fstore=FirebaseFirestore.getInstance();
-        Create_pofile.setOnClickListener(new View.OnClickListener() {
+        final mSellerProfile mSellerProfile = new mSellerProfile();
+        btnRegisterSeller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                nm=name.getText().toString();
-                if(nm.isEmpty())
+                mSellerProfile.setSellerName(etSellerName.getText().toString());
+                if(mSellerProfile.getSellerName().isEmpty())
                 {
-                    name.setError("Name is Required");
+                    etSellerName.setError("Name is Required");
                     return ;
                 }
-                shpname=shopname.getText().toString();
-                if(shpname.isEmpty())
+                mSellerProfile.setShopName(etShopName.getText().toString());
+                if(mSellerProfile.getShopName().isEmpty())
                 {
-                    shopname.setError("Name is Required");
+                    etShopName.setError("ShopName is Required");
                     return ;
                 }
 
-                no=cno.getText().toString();
-                if(no.isEmpty())
+                mSellerProfile.setSellerPhone(etSellerPhone.getText().toString());
+                if(mSellerProfile.getSellerPhone().isEmpty())
                 {
-                    cno.setError("Phone number is required");
+                    etSellerPhone.setError("Phone number is required");
                     return;
                 }
-                locality=loc.getText().toString();
-                if(locality.isEmpty())
+                mSellerProfile.setSellerLocality(etSellerLocality.getText().toString());
+                if(mSellerProfile.getSellerLocality().isEmpty())
                 {
-                    loc.setError("Locality is required");
+                    etSellerLocality.setError("Locality is required");
                     return;
                 }
-                userid=fauth.getCurrentUser().getUid();
-                DocumentReference documentReference=fstore.collection("Seller").document(userid);
+               mSellerProfile.setSellerId(fauth.getCurrentUser().getUid());
+                DocumentReference documentReference=fstore.collection("Seller").document(mSellerProfile.getSellerId());
                 HashMap<String,String> profilemap=new HashMap<>();
-                profilemap.put("uid",userid);
-                profilemap.put("name",nm);
-                profilemap.put("Shopname",shpname);
-                profilemap.put("CC",no);
-                profilemap.put("Locality",locality);
-                profilemap.put("lt","0.0");
-                profilemap.put("Ln","0.0");
+                profilemap.put("selname",mSellerProfile.getSellerName());
+                profilemap.put("shopname",mSellerProfile.getShopName());
+                profilemap.put("custcare",mSellerProfile.getSellerPhone());
+                profilemap.put("loc",mSellerProfile.getSellerLocality());
+                mSellerProfile.setSellerLat("20.789");
+                mSellerProfile.setSellerLong("30.6789");
+                profilemap.put("lt",mSellerProfile.getSellerLat());
+                profilemap.put("ln",mSellerProfile.getSellerLong());
+                //TODO: find latitude and longitude(string) for seller's locality and store it on firestore as in line 71 and 72
+                //TODO: description of shop when added should be in a document inside a new collection pointed by each seller's document
+                //TODO: The custcare and seller name can also be moved to this new document
                 documentReference.set(profilemap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -83,9 +87,6 @@ public class SellerProfileCreation extends AppCompatActivity {
 
                     }
                 });
-
-
-
 
 
             }
