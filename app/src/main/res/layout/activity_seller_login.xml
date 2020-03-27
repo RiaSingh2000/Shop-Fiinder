@@ -4,7 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SellerLogin">
+    tools:context=".SellerLogin"
+    android:background="#DF73F6">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_phone_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="40dp" />
+
+
     <EditText
         android:id="@+id/et_phone_number"
         android:layout_width="0dp"
@@ -13,9 +25,9 @@
         android:background="@null"
         android:hint="Phone number in format +91XXXXXXXXXX"
         android:inputType="textPersonName"
-        android:paddingLeft="20dp"
+        android:paddingLeft="10dp"
 
-        android:textColorHint="@android:color/black"
+        android:textColorHint="@android:color/white"
         app:layout_constraintBottom_toTopOf="@id/hor_guide_30_percent_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
@@ -29,7 +41,7 @@
         android:hint="Enter OTP"
         android:inputType="number"
         android:paddingLeft="20dp"
-        android:textColorHint="@android:color/black"
+        android:textColorHint="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/hor_guide_30_percent_2" />
@@ -40,9 +52,11 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:text="GET OTP"
+        android:textColor="@android:color/holo_red_light"
         app:layout_constraintBottom_toTopOf="@id/hor_guide_60_percent_2"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"/>
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/btn_design"/>
     <Button
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
@@ -51,7 +65,8 @@
         android:text="LOGIN"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hor_guide_60_percent_2" />
+        app:layout_constraintTop_toBottomOf="@id/hor_guide_60_percent_2"
+        android:background="@drawable/btn_design1"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/hor_guide_30_percent_2"

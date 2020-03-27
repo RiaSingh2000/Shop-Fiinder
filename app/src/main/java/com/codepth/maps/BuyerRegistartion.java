@@ -91,7 +91,7 @@ public class BuyerRegistartion extends AppCompatActivity {
                 Toast.makeText(BuyerRegistartion.this, "Signed up successfully", Toast.LENGTH_LONG).show();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(RegistrationActivity.this, "Sign up issues"+e, Toast.LENGTH_LONG).show();
+                Toast.makeText(BuyerRegistartion.this, "Sign up issues"+e, Toast.LENGTH_LONG).show();
                 // ...
             }
         }

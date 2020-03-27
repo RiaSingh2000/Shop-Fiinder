@@ -3,13 +3,28 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F400FF">
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Your Profile Here"
+        android:gravity="center"
+        android:textAllCaps="true"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"/>
+
     <ScrollView
+        android:layout_marginTop="80dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#DF73F6">
 
 
             <TextView
@@ -19,7 +34,8 @@
                 android:text="Name"
                 android:textSize="25dp"
                 android:layout_marginLeft="50dp"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:textColor="@android:color/white"/>
             <EditText
                 android:id="@+id/etName"
                 android:layout_width="match_parent"
@@ -35,6 +51,7 @@
                 android:id="@+id/tvPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
                 android:layout_below="@id/etName"
                 android:text="Phone No."
                 android:textSize="25dp"
@@ -62,6 +79,7 @@
                 android:textSize="25dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="10dp"
+                android:textColor="@android:color/white"
                />
             <EditText
                 android:id="@+id/etStreet"
@@ -84,6 +102,7 @@
                 android:textSize="25dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="10dp"
+                android:textColor="@android:color/white"
                />
             <EditText
                 android:id="@+id/etLocality"
@@ -105,6 +124,7 @@
                 android:textSize="25dp"
                 android:layout_marginLeft="50dp"
                 android:layout_marginTop="10dp"
+                android:textColor="@android:color/white"
                />
             <EditText
                 android:id="@+id/etHouse"
@@ -129,6 +149,7 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginBottom="20dp"
                 android:textColor="#ffffff"
+                android:background="@drawable/btn_design1"
 
                 />
         </RelativeLayout>

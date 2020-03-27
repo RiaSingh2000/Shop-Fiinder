@@ -4,22 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChoiceofRegRole">
+    tools:context=".ChoiceofRegRole"
+    android:background="@drawable/codepth_splash">
+
     <Button
         android:id="@+id/Buyer"
-        android:layout_below="@+id/loginbtn"
-        android:layout_marginTop="150dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:text="BUYER"></Button>
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_design"
+        android:layout_marginTop="370dp"
+        android:layout_marginLeft="67dp"
+        android:text="I am a Buyer"
+        android:textColor="@android:color/holo_red_light"/>
+
+
     <Button
         android:id="@+id/Seller"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:layout_marginTop="300dp"
-        android:text="SELLER"></Button>
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:background="@drawable/btn_design1"
+        android:layout_marginTop="440dp"
+        android:layout_marginLeft="67dp"
+        android:text="I am a Seller"
+        android:textColor="@android:color/white"/>
 
 
 </RelativeLayout>
