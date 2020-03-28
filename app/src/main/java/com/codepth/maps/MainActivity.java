@@ -83,6 +83,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        while(userLoc==null);
         LatLng latLng = null;
         LatLng shopLatLng =null;
 

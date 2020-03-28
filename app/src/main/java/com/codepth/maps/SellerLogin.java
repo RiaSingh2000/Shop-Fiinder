@@ -150,7 +150,7 @@ public class SellerLogin extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.getResult().exists()) {
                     Toast.makeText(SellerLogin.this, "Welcome Back", Toast.LENGTH_LONG).show();
-                    Intent intent=new Intent(SellerLogin.this, MainActivity.class);
+                    Intent intent=new Intent(SellerLogin.this, SellerChatActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();

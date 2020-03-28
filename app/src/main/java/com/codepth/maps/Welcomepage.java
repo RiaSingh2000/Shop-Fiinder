@@ -22,9 +22,9 @@ public class Welcomepage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(Welcomepage.this,ChoiceofLoginRole.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+               // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                finish();
+                //finish();
 
             }
         });
@@ -32,9 +32,9 @@ public class Welcomepage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(Welcomepage.this, ChoiceofRegRole.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+               // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
     }
