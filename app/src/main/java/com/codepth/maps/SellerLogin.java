@@ -161,10 +161,7 @@ public class SellerLogin extends AppCompatActivity {
                     startActivity(intent);
                     startActivity(intent);
                     finish();
-
                 }
-
-
             }
         });
     }

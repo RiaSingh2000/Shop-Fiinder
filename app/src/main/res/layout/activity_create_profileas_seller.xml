@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".SellerProfileCreation"
     android:background="#DF73F6">
 
@@ -110,6 +110,25 @@
                 android:layout_marginTop="5dp"
                 android:paddingLeft="10dp"
                 />
+
+<!--            <TextView-->
+<!--                android:id="@+id/tvlocation"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/etSellerLocality"-->
+<!--                android:text="Location"-->
+<!--                android:textSize="25dp"-->
+<!--                android:layout_marginLeft="50dp"-->
+<!--                android:layout_marginTop="10dp"-->
+<!--                android:textColor="@android:color/white"-->
+<!--                />-->
+<!--            <fragment android:id="@+id/autocomplete_fragment"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
+<!--                android:layout_below="@id/tvlocation"-->
+<!--                />-->
+
 
             <Button
                 android:id="@+id/btnRegisterSeller"
