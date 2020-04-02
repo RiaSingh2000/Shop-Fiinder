@@ -100,12 +100,6 @@ public class SellerProfileCreation extends AppCompatActivity {
         btnRegisterSeller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    geoLocate(view);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Toast.makeText(SellerProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show();
-                }
 
                 mSellerProfile.setSellerName(etSellerName.getText().toString());
                 if(mSellerProfile.getSellerName().isEmpty())
@@ -132,6 +126,13 @@ public class SellerProfileCreation extends AppCompatActivity {
                     etSellerLocality.setError("Locality is required");
                     return;
                 }
+                try {
+                    geoLocate(view);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(SellerProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show();
+                }
+
                mSellerProfile.setSellerId(fauth.getCurrentUser().getUid());
                 while (Double.toString(lat)==null&&Double.toString(lng)==null);
                 DocumentReference documentReference=fstore.collection("Seller").document(mSellerProfile.getSellerId());

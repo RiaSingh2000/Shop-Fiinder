@@ -25,8 +25,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.concurrent.TimeUnit;
 
 public class SellerLogin extends AppCompatActivity {
-    private Button otp,signup;
-    private EditText num,enterotp;
+    private Button otpBtn, loginBtn;
+    private EditText numEt, otpEt;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
@@ -38,20 +38,19 @@ public class SellerLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seller_login);
-        setContentView(R.layout.activity_registeras_seller);
-        otp=findViewById(R.id.btn_get_otp);
-        signup=findViewById(R.id.btn_login);
-        num=findViewById(R.id.et_phone_number);
-        enterotp=findViewById(R.id.et_otp);
+        otpBtn =findViewById(R.id.btn_get_otp);
+        loginBtn =findViewById(R.id.btn_login);
+        numEt =findViewById(R.id.et_phone_number);
+        otpEt =findViewById(R.id.et_otp);
         fstore= FirebaseFirestore.getInstance();
 
         mAuth = FirebaseAuth.getInstance();
         loadingbar = new ProgressDialog(this);
-        otp.setOnClickListener(new View.OnClickListener() {
+        otpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String phnno=num.getText().toString();
+                String phnno= numEt.getText().toString();
                 StringBuilder s=new StringBuilder("+91");
                 s.append(phnno);
                 //Toast.makeText(PhnRegistration.this,String.valueOf(s),Toast.LENGTH_LONG).show();
@@ -94,16 +93,16 @@ public class SellerLogin extends AppCompatActivity {
                 mResendToken = token;
                 loadingbar.dismiss();
                 Toast.makeText(SellerLogin.this, "Code sent", Toast.LENGTH_LONG).show();
-                num.setVisibility(View.INVISIBLE);
+                numEt.setVisibility(View.INVISIBLE);
 
 
             }
 
         };
-        signup.setOnClickListener(new View.OnClickListener() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String code = otp.getText().toString();
+                String code = otpEt.getText().toString();
                 if (TextUtils.isEmpty(code)) {
                     Toast.makeText(SellerLogin.this, "Please enter the code", Toast.LENGTH_LONG).show();
                 } else {

@@ -21,8 +21,8 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
-
-public class SellerRegistration extends AppCompatActivity {
+// This activity is responsible for phone number verification for during seller auth
+public class SellerPhoneAuth extends AppCompatActivity {
     private Button otp,signup;
     private EditText num,enterotp;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
@@ -33,7 +33,7 @@ public class SellerRegistration extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registeras_seller);
+        setContentView(R.layout.activity_seller_phone_auth);
         otp=findViewById(R.id.btn_get_otp);
         signup=findViewById(R.id.btn_singup);
         num=findViewById(R.id.et_phone_num);
@@ -48,7 +48,7 @@ public class SellerRegistration extends AppCompatActivity {
                 String phnno=num.getText().toString();
                 StringBuilder s=new StringBuilder("+91");
                 s.append(phnno);
-                Toast.makeText(SellerRegistration.this,String.valueOf(s),Toast.LENGTH_LONG).show();
+                Toast.makeText(SellerPhoneAuth.this,String.valueOf(s),Toast.LENGTH_LONG).show();
                 loadingbar.setTitle("Phone Verification");
                 loadingbar.setMessage("Please wait,while we authenticate your phone");
                 loadingbar.setCanceledOnTouchOutside(false);
@@ -58,7 +58,7 @@ public class SellerRegistration extends AppCompatActivity {
                         String.valueOf(s),        // Phone number to verify
                         60,                 // Timeout duration
                         TimeUnit.SECONDS,   // Unit of timeout
-                        SellerRegistration.this,               // Activity (for callback binding)
+                        SellerPhoneAuth.this,               // Activity (for callback binding)
                         callbacks);        // OnVerificationStateChangedCallbacks
 
 
@@ -76,7 +76,7 @@ public class SellerRegistration extends AppCompatActivity {
             public void onVerificationFailed(FirebaseException e) {
                 loadingbar.dismiss();
 
-                Toast.makeText(SellerRegistration.this, "Invalid please enter correct phone number with your country code", Toast.LENGTH_LONG).show();
+                Toast.makeText(SellerPhoneAuth.this, "Invalid please enter correct phone number with your country code", Toast.LENGTH_LONG).show();
 
             }
 
@@ -87,7 +87,7 @@ public class SellerRegistration extends AppCompatActivity {
                 mVerificationId = verificationId;
                 mResendToken = token;
                 loadingbar.dismiss();
-                Toast.makeText(SellerRegistration.this, "Code sent", Toast.LENGTH_LONG).show();
+                Toast.makeText(SellerPhoneAuth.this, "Code sent", Toast.LENGTH_LONG).show();
                 num.setVisibility(View.INVISIBLE);
 
 
@@ -99,7 +99,7 @@ public class SellerRegistration extends AppCompatActivity {
             public void onClick(View v) {
                 String code = otp.getText().toString();
                 if (TextUtils.isEmpty(code)) {
-                    Toast.makeText(SellerRegistration.this, "Please enter the code", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SellerPhoneAuth.this, "Please enter the code", Toast.LENGTH_LONG).show();
                 } else {
 
                     loadingbar.setTitle("Code Verification");
@@ -122,13 +122,13 @@ public class SellerRegistration extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             loadingbar.dismiss();
-                            Toast.makeText(SellerRegistration.this, "Signup Successfull", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SellerPhoneAuth.this, "Signup Successfull", Toast.LENGTH_LONG).show();
                             sendtoprofilecreation();
 
 
                         } else {
                             String msg = task.getException().toString();
-                            Toast.makeText(SellerRegistration.this, msg, Toast.LENGTH_LONG).show();
+                            Toast.makeText(SellerPhoneAuth.this, msg, Toast.LENGTH_LONG).show();
 
 
                         }
@@ -139,7 +139,7 @@ public class SellerRegistration extends AppCompatActivity {
 
 
     private void  sendtoprofilecreation() {
-        Intent profileintent = new Intent(SellerRegistration.this, SellerProfileCreation.class);
+        Intent profileintent = new Intent(SellerPhoneAuth.this, SellerProfileCreation.class);
         profileintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(profileintent);
         finish();
