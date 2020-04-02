@@ -23,8 +23,8 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import java.util.concurrent.TimeUnit;
 // This activity is responsible for phone number verification for during seller auth
 public class SellerPhoneAuth extends AppCompatActivity {
-    private Button otp,signup;
-    private EditText num,enterotp;
+    private Button getotp,signup;
+    private EditText num,etotp;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
@@ -34,14 +34,14 @@ public class SellerPhoneAuth extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seller_phone_auth);
-        otp=findViewById(R.id.btn_get_otp);
+        getotp=findViewById(R.id.btn_get_otp);
         signup=findViewById(R.id.btn_singup);
         num=findViewById(R.id.et_phone_num);
-        enterotp=findViewById(R.id.et_otp);
+        etotp=findViewById(R.id.et_otp);
 
         mAuth = FirebaseAuth.getInstance();
         loadingbar = new ProgressDialog(this);
-        otp.setOnClickListener(new View.OnClickListener() {
+        getotp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -97,7 +97,7 @@ public class SellerPhoneAuth extends AppCompatActivity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String code = otp.getText().toString();
+                String code = etotp.getText().toString();
                 if (TextUtils.isEmpty(code)) {
                     Toast.makeText(SellerPhoneAuth.this, "Please enter the code", Toast.LENGTH_LONG).show();
                 } else {
