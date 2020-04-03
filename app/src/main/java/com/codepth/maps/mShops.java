@@ -5,6 +5,15 @@ public class mShops {
     private String longitude;
     private String latitude;
 
+    public void setuId(String uId) {
+        this.uId = uId;
+    }
+
+    private String uId;
+    public String getuId() {
+        return uId;
+    }
+
     public void setLatitude(String mLatitude) {
         this.latitude = mLatitude;
     }

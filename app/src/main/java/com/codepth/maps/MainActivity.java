@@ -1,14 +1,12 @@
 package com.codepth.maps;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -18,12 +16,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -40,24 +36,27 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-import static android.location.Location.*;
-
 public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
 
      private FirebaseFirestore db=FirebaseFirestore.getInstance();
      private CollectionReference sellerRef = db.collection("Seller");
-    Location userLoc;
-    FusedLocationProviderClient fusedLocationProviderClient;
-    private static final int REQUEST_CODE=101;
-    int sel=0,findShop=0; //flag variables
+     Location userLoc = null;
+     FusedLocationProviderClient fusedLocationProviderClient;
+     private static final int REQUEST_CODE=101;
+     int sel=0,findShop=0; //flag variables
      FirebaseFirestore fstore;
      FirebaseAuth fauth;
-     Double regLat,regLng;
+     Double lat , lon;
+     LatLng latLng = null;
+
+    ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
+
 
     private static final String[] options=new String[]{
             "Near Current Location","Near Registered Location"
     };
     private static final String TAG = "MainActivity";
+    private GoogleMap googleMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,72 +64,93 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_main);
         fstore=FirebaseFirestore.getInstance();
         fauth=FirebaseAuth.getInstance();
-
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(MainActivity.this);
-        fetchLastLoc();
-        DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.isSuccessful()){
-                    DocumentSnapshot doc = task.getResult();
-                    regLat=Double.parseDouble(doc.get("lat").toString());
-                    regLng=Double.parseDouble(doc.get("lng").toString());
-                }
-            }
-        });
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        final MarkerOptions markerOptions = null;
         while(userLoc==null);
-        LatLng latLng = null;
         LatLng shopLatLng =null;
-
         if(sel ==0 && findShop==0 ) //initial case
         {
-            Log.d(TAG,"sel==-------------------------------------"+sel);
             latLng = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
+            MarkerOptions markerOptions1=new MarkerOptions().position(latLng).title("Current Loc"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+            googleMap.addMarker(markerOptions1);
+            markerOptions1.visible(true);
         }
         else if( sel ==0 && findShop==1 ){ //select shops nearby current location
             if(latLng==null){
+
                 latLng=new LatLng(userLoc.getLatitude(),userLoc.getLongitude());
-                //TODO: fetch shops latLong one by one from firestore and run
-                Log.d(TAG,"BEGINNING -------------------------------------");
-                fetchShopsMapDetails(); //TODO fix firestore as per structure required by this function
-                Log.d(TAG,"BEGINNING =====================================");
-                float[] result = new float[3];
-                Location.distanceBetween(userLoc.getLatitude(), userLoc.getLongitude(), 20.353270, 85.826740, result );
-                if(result!=null && result[0]<=7000){
-                    Toast.makeText(this,"Nearby shop found",Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Toast.makeText(this,"XX NO Nearby shop found XX"+result[0],Toast.LENGTH_LONG).show();
-                }
+                lat=userLoc.getLatitude();
+                lon=userLoc.getLongitude();
+                MarkerOptions markerOptions2=new MarkerOptions().position(latLng).title("Curr loc2"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+                googleMap.addMarker(markerOptions2);
+                markerOptions2.visible(true);
+                fetchShopsMapDetails();
+                    Log.w(TAG, "In main" + "\n");
+
             }
 
         }
-        else {
-            latLng = new LatLng(regLat, regLng); //user's registered location
-            //shopLatLng = new LatLng(20.353270,85.826740); shop's registered location
-            float[] result = new float[3];
-            Location.distanceBetween(20.2960587, 85.8223511, 20.353270, 85.826740, result );
-            if(result!=null && result[0]<=7000){
-                Toast.makeText(this,"Nearby atmaram",Toast.LENGTH_LONG).show();
-                Marker marker = googleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(20.353270, 85.826740))
-                        .title("Atma Ram")
-                        .snippet("A NEARBY SHOP"));
-            }
-            else{
-                Toast.makeText(this,"XX atmaram not nearby XX"+ result[0],Toast.LENGTH_LONG).show();
-            }
+        else { //select shops nearby registered location
+            DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
+            Toast.makeText(this, ""+fauth.getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
+            documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if(task.isSuccessful()){
+                        DocumentSnapshot doc = task.getResult();
+                        lat=Double.parseDouble(doc.get("lat").toString());
+                        lon=Double.parseDouble(doc.get("lng").toString());
+                        latLng = new LatLng(lat,lon);
+                        addMarker();
+                        fetchShopsMapDetails();
+                    }
+                }
+            });
+
+
         }
-        MarkerOptions markerOptions=new MarkerOptions().position(latLng).title("I am here"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+    }
+
+    private void addMarker() {
+        MarkerOptions markerOptions3=new MarkerOptions().position(latLng).title("Reg loc"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-        googleMap.addMarker(markerOptions);
+        googleMap.addMarker(markerOptions3);
+        markerOptions3.visible(true);
     }
+
+    private void calculateAndPlotNearbyShops(double lat, double lon , ArrayList<mShops> mShopsArrayList) {
+       int avail =0;
+        for(int i=0; i< mShopsArrayList.size() ; i++ ){
+            Log.w(TAG,"Inside calculate" +mShopsArrayList.get(i).getLatitude()+"\n");
+            float[] result = new float[3];
+            Location.distanceBetween((float)lat,(float)lon, Float.parseFloat( mShopsArrayList.get(i).getLatitude()),
+                    Float.parseFloat( mShopsArrayList.get(i).getLongitude()), result);
+            if(result!=null && result[0]>=3000 ){
+                avail=1;
+                Toast.makeText(this,"...............",Toast.LENGTH_LONG).show();
+                Marker marker = googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(Float.parseFloat( mShopsArrayList.get(i).getLatitude()), Float.parseFloat( mShopsArrayList.get(i).getLongitude())))
+                        .title(mShopsArrayList.get(i).getName())
+                        .snippet("A NEARBY SHOP"));
+
+            }
+        }
+        Log.w(TAG, "In calc" + "\n");
+    if(avail==0)
+        Toast.makeText(this,"No nearby shops",Toast.LENGTH_LONG).show();
+
+    }
+
     public void fetchLastLoc(){
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(MainActivity.this,new String[]
@@ -143,7 +163,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             public void onSuccess(Location location) {
                 if(location!=null){
                     userLoc=location;
-                    Toast.makeText(getApplicationContext(),userLoc.getLatitude()+"\n"+userLoc.getLongitude(),Toast.LENGTH_LONG).show();
                     SupportMapFragment supportMapFragment=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
                     supportMapFragment.getMapAsync(MainActivity.this);
                 }
@@ -192,7 +211,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     void fetchShopsMapDetails(){ //gets the name of shops and its longitude and latitude values from firestore
-         final ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
+
         db.collection("Seller")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -200,25 +219,29 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                mSellerProfile mSellerProfile = (mSellerProfile) document.getData();
+                                mSellerProfile mSellerProfile = document.toObject(com.codepth.maps.mSellerProfile.class);
                                 mShops mShop = slice(mSellerProfile);
                                 Log.d(TAG, String.valueOf(mShopsArrayList));
-
+                                mShopsArrayList.add(mShop);
                             }
-
+                            for(int i=0; i<mShopsArrayList.size() ; i++) {
+                                Log.w(TAG, mShopsArrayList.get(i).getLatitude() + "\n");
+                            }
+                            calculateAndPlotNearbyShops(lat,lon,mShopsArrayList);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                         }
                     }
                 });
 
-    }
+    return ; }
 
     private mShops slice(mSellerProfile mSellerProfile) {
         mShops mShop = new mShops();
-        mShop.setLatitude(mSellerProfile.getSellerLat());
-        mShop.setLongitude(mSellerProfile.getSellerLong());
-        mShop.setName(mSellerProfile.getShopName());
+        mShop.setLatitude(mSellerProfile.getLat());
+        mShop.setLongitude(mSellerProfile.getLng());
+        mShop.setName(mSellerProfile.getShopname());
+        mShop.setuId(mSellerProfile.getUid());
      return mShop;
     }
 }

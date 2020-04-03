@@ -1,68 +1,70 @@
 package com.codepth.maps;
 
 public class mSellerProfile { //obj of this class is used when creating sellers profile
-    public String getSellerId() {
-        return sellerId;
+
+    private String selname;
+    private String shopname;
+    private String custcare;
+    private String loc;
+    private String lat;
+    private String lng;
+    private String uid;
+
+    public String getUid() {
+        return uid;
     }
 
-    public void setSellerId(String sellerId) {
-        this.sellerId = sellerId;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
-    private String sellerId;
-    private String sellerName;
-    private String shopName;
-    private String sellerPhone;
-    private String sellerLocality;
 
-    public String getSellerLat() {
-        return sellerLat;
+
+    public String getLat() {
+        return lat;
     }
 
-    public void setSellerLat(String sellerLat) {
-        this.sellerLat = sellerLat;
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 
-    public String getSellerLong() {
-        return sellerLong;
+    public String getLng() {
+        return lng;
     }
 
-    public void setSellerLong(String sellerLong) {
-        this.sellerLong = sellerLong;
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
-    private String sellerLat;
-    private String sellerLong;
-
-    public String getSellerName() {
-        return sellerName;
+    public String getSelname() {
+        return selname;
     }
 
-    public void setSellerName(String sellerName) {
-        this.sellerName = sellerName;
+    public void setSelname(String selname) {
+        this.selname = selname;
     }
 
-    public String getShopName() {
-        return shopName;
+    public String getShopname() {
+        return shopname;
     }
 
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
+    public void setShopname(String shopname) {
+        this.shopname = shopname;
     }
 
-    public String getSellerPhone() {
-        return sellerPhone;
+    public String getCustcare() {
+        return custcare;
     }
 
-    public void setSellerPhone(String sellerPhone) {
-        this.sellerPhone = sellerPhone;
+    public void setCustcare(String custcare) {
+        this.custcare = custcare;
     }
 
-    public String getSellerLocality() {
-        return sellerLocality;
+    public String getLoc() {
+        return loc;
     }
 
-    public void setSellerLocality(String sellerLocality) {
-        this.sellerLocality = sellerLocality;
+    public void setLoc(String loc) {
+        this.loc = loc;
     }
 }
