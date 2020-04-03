@@ -1,10 +1,7 @@
 package com.codepth.maps;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.content.Intent;
@@ -13,47 +10,34 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-//import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-//import com.google.android.libraries.places.api.model.Place;
-//import com.google.android.gms.location.places.Place;
-//import com.google.android.gms.location.places.ui.PlacePicker;
-//import com.google.android.libraries.places.api.Places;
-//import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-//import com.google.android.libraries.places.api.net.PlacesClient;
-//import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class SellerProfileCreation extends AppCompatActivity {
     private EditText etSellerName,etShopName,etSellerPhone,etSellerLocality;
-    private Button btnRegisterSeller;//,picker;
+    private Button btnRegisterSeller;
     private FirebaseFirestore fstore;
     private FirebaseAuth fauth;
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE=101;
     Location userLoc;
     double lat,lng;
-   // int PLACE_PICKER_REQUEST=1;
 //    AutocompleteSupportFragment autocompleteFragment;
 //    private  static String TAG="PlacesActivity";
 
@@ -94,21 +78,6 @@ public class SellerProfileCreation extends AppCompatActivity {
         etSellerLocality=findViewById(R.id.etSellerLocality);
         etSellerPhone=findViewById(R.id.etSellerPhone);
         btnRegisterSeller=findViewById(R.id.btnRegisterSeller);
-       // picker=findViewById(R.id.picker);
-
-//        picker.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                PlacePicker.IntentBuilder builder=new PlacePicker.IntentBuilder();
-//                try {
-//                    startActivityForResult(builder.build(SellerProfileCreation.this),PLACE_PICKER_REQUEST);
-//                } catch (GooglePlayServicesRepairableException e) {
-//                    e.printStackTrace();
-//                } catch (GooglePlayServicesNotAvailableException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
 
 
         fauth=FirebaseAuth.getInstance();
@@ -154,8 +123,8 @@ public class SellerProfileCreation extends AppCompatActivity {
                     Toast.makeText(SellerProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show();
                 }
 
-                mSellerProfile.setUid(fauth.getCurrentUser().getUid());
-                while (Double.toString(lat)==null&&Double.toString(lng)==null);
+               mSellerProfile.setUid(fauth.getCurrentUser().getUid());
+               while (Double.toString(lat)==null&&Double.toString(lng)==null);
                 DocumentReference documentReference=fstore.collection("Seller").document(mSellerProfile.getUid());
                 HashMap<String,String> profilemap=new HashMap<>();
                 profilemap.put("selname",mSellerProfile.getSelname());
@@ -164,8 +133,6 @@ public class SellerProfileCreation extends AppCompatActivity {
                 profilemap.put("loc",mSellerProfile.getLoc());
                 mSellerProfile.setLat(Double.toString(userLoc.getLatitude()));
                 mSellerProfile.setLng(Double.toString(userLoc.getLongitude()));
-//                profilemap.put("lt",mSellerProfile.getSellerLat());
-//                profilemap.put("ln",mSellerProfile.getSellerLong());
                 profilemap.put("lat",Double.toString(lat));
                 profilemap.put("lng",Double.toString(lng));
 
@@ -219,25 +186,6 @@ public class SellerProfileCreation extends AppCompatActivity {
         InputMethodManager imm=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(),0);
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == PLACE_PICKER_REQUEST) {
-//            if (resultCode == RESULT_OK) {
-//                Place place= PlacePicker.getPlace(data,SellerProfileCreation.this);
-//                StringBuilder stringBuilder=new StringBuilder();
-//                String lat=String.valueOf(place.getLatLng().latitude);
-//                String lng=String.valueOf(place.getLatLng().longitude);
-//                stringBuilder.append("LATITUDE:");
-//                stringBuilder.append(lat);
-//                stringBuilder.append("LONGITUDE:");
-//                stringBuilder.append(lng);
-//                etSellerLocality.setText(stringBuilder);
-//
-//            }
-//        }
-//    }
 }
 
 

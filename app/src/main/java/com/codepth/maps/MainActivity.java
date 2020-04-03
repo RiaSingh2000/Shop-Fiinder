@@ -101,7 +101,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
         else { //select shops nearby registered location
             DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
-            Toast.makeText(this, ""+fauth.getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
             documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
