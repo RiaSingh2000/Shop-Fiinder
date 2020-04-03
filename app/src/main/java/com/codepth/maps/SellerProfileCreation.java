@@ -1,9 +1,7 @@
 package com.codepth.maps;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
 
 import android.Manifest;
 import android.content.Intent;
@@ -12,30 +10,22 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -101,27 +91,27 @@ public class SellerProfileCreation extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                mSellerProfile.setSellerName(etSellerName.getText().toString());
-                if(mSellerProfile.getSellerName().isEmpty())
+                mSellerProfile.setSelname(etSellerName.getText().toString());
+                if(mSellerProfile.getSelname().isEmpty())
                 {
                     etSellerName.setError("Name is Required");
                     return ;
                 }
-                mSellerProfile.setShopName(etShopName.getText().toString());
-                if(mSellerProfile.getShopName().isEmpty())
+                mSellerProfile.setShopname(etShopName.getText().toString());
+                if(mSellerProfile.getShopname().isEmpty())
                 {
                     etShopName.setError("ShopName is Required");
                     return ;
                 }
 
-                mSellerProfile.setSellerPhone(etSellerPhone.getText().toString());
-                if(mSellerProfile.getSellerPhone().isEmpty())
+                mSellerProfile.setCustcare(etSellerPhone.getText().toString());
+                if(mSellerProfile.getCustcare().isEmpty())
                 {
                     etSellerPhone.setError("Phone number is required");
                     return;
                 }
-                mSellerProfile.setSellerLocality(etSellerLocality.getText().toString());
-                if(mSellerProfile.getSellerLocality().isEmpty())
+                mSellerProfile.setLoc(etSellerLocality.getText().toString());
+                if(mSellerProfile.getLoc().isEmpty())
                 {
                     etSellerLocality.setError("Locality is required");
                     return;
@@ -133,18 +123,16 @@ public class SellerProfileCreation extends AppCompatActivity {
                     Toast.makeText(SellerProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show();
                 }
 
-               mSellerProfile.setSellerId(fauth.getCurrentUser().getUid());
-                while (Double.toString(lat)==null&&Double.toString(lng)==null);
-                DocumentReference documentReference=fstore.collection("Seller").document(mSellerProfile.getSellerId());
+               mSellerProfile.setUid(fauth.getCurrentUser().getUid());
+               while (Double.toString(lat)==null&&Double.toString(lng)==null);
+                DocumentReference documentReference=fstore.collection("Seller").document(mSellerProfile.getUid());
                 HashMap<String,String> profilemap=new HashMap<>();
-                profilemap.put("selname",mSellerProfile.getSellerName());
-                profilemap.put("shopname",mSellerProfile.getShopName());
-                profilemap.put("custcare",mSellerProfile.getSellerPhone());
-                profilemap.put("loc",mSellerProfile.getSellerLocality());
-                mSellerProfile.setSellerLat(Double.toString(userLoc.getLatitude()));
-                mSellerProfile.setSellerLong(Double.toString(userLoc.getLongitude()));
-//                profilemap.put("lt",mSellerProfile.getSellerLat());
-//                profilemap.put("ln",mSellerProfile.getSellerLong());
+                profilemap.put("selname",mSellerProfile.getSelname());
+                profilemap.put("shopname",mSellerProfile.getShopname());
+                profilemap.put("custcare",mSellerProfile.getCustcare());
+                profilemap.put("loc",mSellerProfile.getLoc());
+                mSellerProfile.setLat(Double.toString(userLoc.getLatitude()));
+                mSellerProfile.setLng(Double.toString(userLoc.getLongitude()));
                 profilemap.put("lat",Double.toString(lat));
                 profilemap.put("lng",Double.toString(lng));
 
