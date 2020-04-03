@@ -65,26 +65,34 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         fstore=FirebaseFirestore.getInstance();
         fauth=FirebaseAuth.getInstance();
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(MainActivity.this);
-        fetchLastLoc();
-
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        MarkerOptions markerOptions = null;
+        final MarkerOptions markerOptions = null;
         while(userLoc==null);
         LatLng shopLatLng =null;
         if(sel ==0 && findShop==0 ) //initial case
         {
-
             latLng = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
+            MarkerOptions markerOptions1=new MarkerOptions().position(latLng).title("Current Loc"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+            googleMap.addMarker(markerOptions1);
+            markerOptions1.visible(true);
         }
         else if( sel ==0 && findShop==1 ){ //select shops nearby current location
             if(latLng==null){
+
                 latLng=new LatLng(userLoc.getLatitude(),userLoc.getLongitude());
                 lat=userLoc.getLatitude();
                 lon=userLoc.getLongitude();
+                MarkerOptions markerOptions2=new MarkerOptions().position(latLng).title("Curr loc2"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+                googleMap.addMarker(markerOptions2);
+                markerOptions2.visible(true);
                 fetchShopsMapDetails();
                     Log.w(TAG, "In main" + "\n");
 
@@ -98,19 +106,25 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if(task.isSuccessful()){
                         DocumentSnapshot doc = task.getResult();
-                        double regLat=Double.parseDouble(doc.get("lat").toString());
-                        double regLng=Double.parseDouble(doc.get("lng").toString());
-                        latLng = new LatLng(regLat,regLng);
+                        lat=Double.parseDouble(doc.get("lat").toString());
+                        lon=Double.parseDouble(doc.get("lng").toString());
+                        latLng = new LatLng(lat,lon);
+                        addMarker();
+                        fetchShopsMapDetails();
                     }
                 }
             });
 
+
         }
-        markerOptions=new MarkerOptions().position(latLng).title("I am here"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+    }
+
+    private void addMarker() {
+        MarkerOptions markerOptions3=new MarkerOptions().position(latLng).title("Reg loc"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-        googleMap.addMarker(markerOptions);
-        markerOptions.visible(true);
+        googleMap.addMarker(markerOptions3);
+        markerOptions3.visible(true);
     }
 
     private void calculateAndPlotNearbyShops(double lat, double lon , ArrayList<mShops> mShopsArrayList) {
