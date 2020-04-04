@@ -6,12 +6,14 @@ import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -40,9 +42,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
      private FirebaseFirestore db=FirebaseFirestore.getInstance();
      private CollectionReference sellerRef = db.collection("Seller");
+    FusedLocationProviderClient fusedLocationProviderClient;
+
+    private ProgressDialog progressDialog;
+
      Location userLoc = null;
-     FusedLocationProviderClient fusedLocationProviderClient;
-     private static final int REQUEST_CODE=101;
      int sel=0,findShop=0; //flag variables
      FirebaseFirestore fstore;
      FirebaseAuth fauth;
@@ -51,17 +55,21 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
 
-
+    private static final int REQUEST_CODE=101;
     private static final String[] options=new String[]{
             "Near Current Location","Near Registered Location"
     };
     private static final String TAG = "MainActivity";
     private GoogleMap googleMap;
+    MarkerOptions markerOptions = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        progressDialog=new ProgressDialog(this);
+
         fstore=FirebaseFirestore.getInstance();
         fauth=FirebaseAuth.getInstance();
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(MainActivity.this);
@@ -88,29 +96,30 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
-        final MarkerOptions markerOptions = null;
+
         while(userLoc==null);
         LatLng shopLatLng =null;
         if(sel ==0 && findShop==0 ) //initial case
         {
+
             latLng = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
-            MarkerOptions markerOptions1=new MarkerOptions().position(latLng).title("Current Loc"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+            markerOptions=new MarkerOptions().position(latLng).title("I am here"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-            googleMap.addMarker(markerOptions1);
-            markerOptions1.visible(true);
+            googleMap.addMarker(markerOptions);
+            markerOptions.visible(true);
         }
         else if( sel ==0 && findShop==1 ){ //select shops nearby current location
-          //  if(latLng==null){
-
+           // if(latLng==null){
+                googleMap.clear();
                 latLng=new LatLng(userLoc.getLatitude(),userLoc.getLongitude());
                 lat=userLoc.getLatitude();
                 lon=userLoc.getLongitude();
-                MarkerOptions markerOptions2=new MarkerOptions().position(latLng).title("Curr loc2"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+                markerOptions=new MarkerOptions().position(latLng).title("I am here"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
-                googleMap.addMarker(markerOptions2);
-                markerOptions2.visible(true);
+                googleMap.addMarker(markerOptions);
+                markerOptions.visible(true);
                 fetchShopsMapDetails();
                     Log.w(TAG, "In main" + "\n");
 
@@ -138,6 +147,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void addMarker() {
+        googleMap.clear();
         MarkerOptions markerOptions3=new MarkerOptions().position(latLng).title("Reg loc"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
@@ -148,13 +158,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private void calculateAndPlotNearbyShops(double lat, double lon , ArrayList<mShops> mShopsArrayList) {
        int avail =0;
         for(int i=0; i< mShopsArrayList.size() ; i++ ){
-            Log.w(TAG,"Inside calculate" +mShopsArrayList.get(i).getLatitude()+"\n");
+           // Log.w(TAG,"Inside calculate" +mShopsArrayList.get(i).getLatitude()+"\n");
             float[] result = new float[3];
             Location.distanceBetween((float)lat,(float)lon, Float.parseFloat( mShopsArrayList.get(i).getLatitude()),
                     Float.parseFloat( mShopsArrayList.get(i).getLongitude()), result);
             if(result!=null && result[0]>=3000 ){
                 avail=1;
-                Toast.makeText(this,"...............",Toast.LENGTH_LONG).show();
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(Float.parseFloat( mShopsArrayList.get(i).getLatitude()), Float.parseFloat( mShopsArrayList.get(i).getLongitude())))
                         .title(mShopsArrayList.get(i).getName())
@@ -162,10 +171,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         }
-        Log.w(TAG, "In calc" + "\n");
-    if(avail==0)
-        Toast.makeText(this,"No nearby shops",Toast.LENGTH_LONG).show();
 
+    if(avail==0)
+        Toast.makeText(this,"You have no nearby shops.Invite shops to register with us!",Toast.LENGTH_LONG).show();
+    else
+        Toast.makeText(this,"We have found nearby shops for you!",Toast.LENGTH_LONG).show();
+    progressDialog.dismiss();
     }
 
     public void fetchLastLoc(){
@@ -228,6 +239,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     void fetchShopsMapDetails(){ //gets the name of shops and its longitude and latitude values from firestore
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setMessage("We Are Fetching Nearby Shops...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
 
         db.collection("Seller")
                 .get()
@@ -241,12 +256,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                                 Log.d(TAG, String.valueOf(mShopsArrayList));
                                 mShopsArrayList.add(mShop);
                             }
-                            for(int i=0; i<mShopsArrayList.size() ; i++) {
-                                Log.w(TAG, mShopsArrayList.get(i).getLatitude() + "\n");
-                            }
                             calculateAndPlotNearbyShops(lat,lon,mShopsArrayList);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
+                            progressDialog.dismiss();
+                            Toast.makeText(MainActivity.this,"Error Getting Shops",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
