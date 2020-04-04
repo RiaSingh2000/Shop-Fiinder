@@ -1,15 +1,20 @@
 package com.codepth.maps;
 
+import Adapters.PlacesAutoCompleteAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,10 +28,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 public class BuyeProfileCreation extends AppCompatActivity {
-    private EditText name,phn,street,locality,house;
+    private EditText name,phn,street,house;
+    AutoCompleteTextView locality;
     private Button Create_pofile;
     String userid,nm,pn,Street,loc,phone,House;
     private FirebaseFirestore fstore;
@@ -34,6 +42,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE=101;
     Location userLoc=null;
+    double lat,lng;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +59,8 @@ public class BuyeProfileCreation extends AppCompatActivity {
         fstore=FirebaseFirestore.getInstance();
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(BuyeProfileCreation.this);
         fetchLastLoc();
+        locality.setAdapter(new PlacesAutoCompleteAdapter(BuyeProfileCreation.this,android.R.layout.simple_list_item_1));
+
 
         Create_pofile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +95,12 @@ public class BuyeProfileCreation extends AppCompatActivity {
                     house.setError("House detail is required");
                     return;
                 }
+                try {
+                    geoLocate(view);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(BuyeProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show();
+                }
 
                 userid=fauth.getCurrentUser().getUid();
                 DocumentReference documentReference=fstore.collection("Buyer").document(userid);
@@ -95,8 +112,10 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 profilemap.put("Locality",loc);
                 profilemap.put("House",House);
                 while (userLoc==null);
-                profilemap.put("lat",Double.toString(userLoc.getLatitude()));
-                profilemap.put("lng",Double.toString(userLoc.getLongitude()));
+//                profilemap.put("lat",Double.toString(userLoc.getLatitude()));
+//                profilemap.put("lng",Double.toString(userLoc.getLongitude()));
+                profilemap.put("lat",String.valueOf(lat));
+                profilemap.put("lng",String.valueOf(lng));
 
                 documentReference.set(profilemap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -133,6 +152,22 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void geoLocate(View v) throws IOException {
+        hideSoftKeyboard(v);
+        String location=locality.getText().toString();
+        Geocoder gc=new Geocoder(BuyeProfileCreation.this);
+        List<Address> list=gc.getFromLocationName(location,1);
+        Address address=list.get(0);
+        String locality=address.getLocality();
+        lat=address.getLatitude();
+        lng=address.getLongitude();
+    }
+
+    private void hideSoftKeyboard(View v) {
+        InputMethodManager imm=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(),0);
     }
 }
 

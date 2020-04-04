@@ -8,6 +8,7 @@
     android:background="#DF73F6">
 
     <TextView
+        android:id="@+id/id"
         android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,6 +18,8 @@
         android:textSize="22sp"
         android:textStyle="bold"
         android:textColor="@android:color/white"/>
+
+
 
     <ScrollView
         android:layout_marginTop="100dp"
@@ -100,22 +103,28 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@android:color/white"
                 />
-            <EditText
-                android:id="@+id/etSellerLocality"
+<!--            <EditText-->
+<!--                android:id="@+id/etSellerLocality"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_below="@id/tvLocality"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:layout_marginLeft="50dp"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:paddingLeft="10dp"-->
+<!--                />-->
+            <AutoCompleteTextView
+                android:id="@+id/autoLoc"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_below="@id/tvLocality"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="50dp"
-                android:layout_marginTop="5dp"
-                android:paddingLeft="10dp"
-                />
-            <Button
-                android:id="@+id/picker"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btnRegisterSeller"
-                android:text="picker"/>
+                android:hint="Enter your location"
+                android:layout_below="@id/tvLocality"/>
+<!--            <Button-->
+<!--                android:id="@+id/picker"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/btnRegisterSeller"-->
+<!--                android:text="picker"/>-->
 
 <!--            <TextView-->
 <!--                android:id="@+id/tvlocation"-->
@@ -140,7 +149,7 @@
                 android:id="@+id/btnRegisterSeller"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:layout_below="@id/etSellerLocality"
+                android:layout_below="@id/autoLoc"
                 android:layout_marginTop="10dp"
                 android:layout_centerHorizontal="true"
                 android:text="CREATE PROFILE"
@@ -151,6 +160,8 @@
                 android:background="@drawable/btn_design1"
 
                 />
+
+
         </RelativeLayout>
     </ScrollView>
 

@@ -1,5 +1,6 @@
 package com.codepth.maps;
 
+import Adapters.PlacesAutoCompleteAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -12,6 +13,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -30,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SellerProfileCreation extends AppCompatActivity {
-    private EditText etSellerName,etShopName,etSellerPhone,etSellerLocality;
+    private EditText etSellerName,etShopName,etSellerPhone;//,etSellerLocality;
     private Button btnRegisterSeller;
     private FirebaseFirestore fstore;
     private FirebaseAuth fauth;
@@ -38,6 +40,7 @@ public class SellerProfileCreation extends AppCompatActivity {
     private static final int REQUEST_CODE=101;
     Location userLoc;
     double lat,lng;
+    AutoCompleteTextView autoCompleteTextView;
 //    AutocompleteSupportFragment autocompleteFragment;
 //    private  static String TAG="PlacesActivity";
 
@@ -71,11 +74,11 @@ public class SellerProfileCreation extends AppCompatActivity {
 //            }
 //        });
 
-
-
+        autoCompleteTextView=findViewById(R.id.autoLoc);
+        autoCompleteTextView.setAdapter(new PlacesAutoCompleteAdapter(SellerProfileCreation.this,android.R.layout.simple_list_item_1));
         etSellerName=findViewById(R.id.etSellerName);
         etShopName=findViewById(R.id.etShopName);
-        etSellerLocality=findViewById(R.id.etSellerLocality);
+       // etSellerLocality=findViewById(R.id.etSellerLocality);
         etSellerPhone=findViewById(R.id.etSellerPhone);
         btnRegisterSeller=findViewById(R.id.btnRegisterSeller);
 
@@ -110,10 +113,10 @@ public class SellerProfileCreation extends AppCompatActivity {
                     etSellerPhone.setError("Phone number is required");
                     return;
                 }
-                mSellerProfile.setLoc(etSellerLocality.getText().toString());
+                mSellerProfile.setLoc(autoCompleteTextView.getText().toString());
                 if(mSellerProfile.getLoc().isEmpty())
                 {
-                    etSellerLocality.setError("Locality is required");
+                    autoCompleteTextView.setError("Locality is required");
                     return;
                 }
                 try {
@@ -131,8 +134,8 @@ public class SellerProfileCreation extends AppCompatActivity {
                 profilemap.put("shopname",mSellerProfile.getShopname());
                 profilemap.put("custcare",mSellerProfile.getCustcare());
                 profilemap.put("loc",mSellerProfile.getLoc());
-                mSellerProfile.setLat(Double.toString(userLoc.getLatitude()));
-                mSellerProfile.setLng(Double.toString(userLoc.getLongitude()));
+//                mSellerProfile.setLat(Double.toString(userLoc.getLatitude()));
+//                mSellerProfile.setLng(Double.toString(userLoc.getLongitude()));
                 profilemap.put("lat",Double.toString(lat));
                 profilemap.put("lng",Double.toString(lng));
 
@@ -173,7 +176,7 @@ public class SellerProfileCreation extends AppCompatActivity {
 
     public void geoLocate(View v) throws IOException {
         hideSoftKeyboard(v);
-        String location=etSellerLocality.getText().toString();
+        String location=autoCompleteTextView.getText().toString();
         Geocoder gc=new Geocoder(SellerProfileCreation.this);
         List<Address> list=gc.getFromLocationName(location,1);
         Address address=list.get(0);
