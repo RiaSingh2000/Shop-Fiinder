@@ -33,7 +33,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
     private FirebaseAuth fauth;
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE=101;
-    Location userLoc;
+    Location userLoc=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +94,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 profilemap.put("Street",Street);
                 profilemap.put("Locality",loc);
                 profilemap.put("House",House);
+                while (userLoc==null);
                 profilemap.put("lat",Double.toString(userLoc.getLatitude()));
                 profilemap.put("lng",Double.toString(userLoc.getLongitude()));
 
