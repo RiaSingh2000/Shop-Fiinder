@@ -65,6 +65,24 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         fstore=FirebaseFirestore.getInstance();
         fauth=FirebaseAuth.getInstance();
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(MainActivity.this);
+        fetchLastLoc();
+
+        DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(task.isSuccessful()){
+                    DocumentSnapshot doc = task.getResult();
+                   // Toast.makeText(MainActivity.this, ""+doc, Toast.LENGTH_SHORT).show();
+                    lat=Double.parseDouble(doc.get("lat").toString());
+                    lon=Double.parseDouble(doc.get("lng").toString());
+                    latLng = new LatLng(lat,lon);
+//                    addMarker();
+//                    fetchShopsMapDetails();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -83,7 +101,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             markerOptions1.visible(true);
         }
         else if( sel ==0 && findShop==1 ){ //select shops nearby current location
-            if(latLng==null){
+          //  if(latLng==null){
 
                 latLng=new LatLng(userLoc.getLatitude(),userLoc.getLongitude());
                 lat=userLoc.getLatitude();
@@ -96,7 +114,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 fetchShopsMapDetails();
                     Log.w(TAG, "In main" + "\n");
 
-            }
+          //  }
 
         }
         else { //select shops nearby registered location
