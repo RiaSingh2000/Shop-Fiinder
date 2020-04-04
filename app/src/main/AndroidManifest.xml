@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codepth.maps">
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SellerChatActivity"></activity>
+        <activity android:name=".SellerDisplayActivity"></activity>
+        <activity android:name=".SellerChatActivity" />
         <activity android:name=".Welcomepage" />
         <activity android:name=".SellerLogin" />
         <activity android:name=".ChoiceofLoginRole" />
@@ -35,4 +33,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC4oSY9sO_ta8qGwLO1oVj-0q6D3vZXMhE" />
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
 </manifest>

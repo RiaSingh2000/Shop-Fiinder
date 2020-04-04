@@ -8,12 +8,12 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -38,7 +38,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MainActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
      private FirebaseFirestore db=FirebaseFirestore.getInstance();
      private CollectionReference sellerRef = db.collection("Seller");
@@ -53,7 +53,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
      Double lat , lon;
      LatLng latLng = null;
 
-    ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
+     ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
 
     private static final int REQUEST_CODE=101;
     private static final String[] options=new String[]{
@@ -81,12 +81,9 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
                     DocumentSnapshot doc = task.getResult();
-                   // Toast.makeText(MainActivity.this, ""+doc, Toast.LENGTH_SHORT).show();
                     lat=Double.parseDouble(doc.get("lat").toString());
                     lon=Double.parseDouble(doc.get("lng").toString());
                     latLng = new LatLng(lat,lon);
-//                    addMarker();
-//                    fetchShopsMapDetails();
                 }
             }
         });
@@ -136,7 +133,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         lat=Double.parseDouble(doc.get("lat").toString());
                         lon=Double.parseDouble(doc.get("lng").toString());
                         latLng = new LatLng(lat,lon);
-                        addMarker();
+                        addRegLocationMarker();
                         fetchShopsMapDetails();
                     }
                 }
@@ -146,7 +143,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    private void addMarker() {
+    private void addRegLocationMarker() {
         googleMap.clear();
         MarkerOptions markerOptions3=new MarkerOptions().position(latLng).title("Reg loc"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -168,6 +165,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         .position(new LatLng(Float.parseFloat( mShopsArrayList.get(i).getLatitude()), Float.parseFloat( mShopsArrayList.get(i).getLongitude())))
                         .title(mShopsArrayList.get(i).getName())
                         .snippet("A NEARBY SHOP"));
+                marker.setTag(mShopsArrayList.get(i));
+                googleMap.setOnMarkerClickListener(this);
 
             }
         }
@@ -274,5 +273,13 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         mShop.setName(mSellerProfile.getShopname());
         mShop.setuId(mSellerProfile.getUid());
      return mShop;
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Intent intent = new Intent(this,SellerDisplayActivity.class);
+        intent.putExtra("SellerUid",marker.getTag().toString());
+        startActivity(intent);
+        return false;
     }
 }
