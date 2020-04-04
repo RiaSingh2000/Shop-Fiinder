@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SellerDisplayActivity">
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SellerDisplayActivity"/>
+    android:orientation="vertical"
+    tools:context=".SellerDisplayActivity"
+    android:id="@+id/lL_SellerDisplay">
+
+
 
 </LinearLayout>
