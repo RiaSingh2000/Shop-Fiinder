@@ -50,7 +50,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
      int sel=0,findShop=0; //flag variables
      FirebaseFirestore fstore;
      FirebaseAuth fauth;
-     Double lat , lon;
+    // Double lat, lon;
      LatLng latLng = null;
 
      ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
@@ -80,6 +80,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(task.isSuccessful()){
+                    double lat,lon;
                     DocumentSnapshot doc = task.getResult();
                     lat=Double.parseDouble(doc.get("lat").toString());
                     lon=Double.parseDouble(doc.get("lng").toString());
@@ -109,14 +110,16 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         else if( sel ==0 && findShop==1 ){ //select shops nearby current location
            // if(latLng==null){
                 googleMap.clear();
-                latLng=new LatLng(userLoc.getLatitude(),userLoc.getLongitude());
+                double lat,lon;
                 lat=userLoc.getLatitude();
                 lon=userLoc.getLongitude();
+                latLng = new LatLng(lat,lon);
                 markerOptions=new MarkerOptions().position(latLng).title("I am here"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
                 googleMap.addMarker(markerOptions);
                 markerOptions.visible(true);
+
                 fetchShopsMapDetails();
                     Log.w(TAG, "In main" + "\n");
 
@@ -129,10 +132,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if(task.isSuccessful()){
+                        double lat,lon;
                         DocumentSnapshot doc = task.getResult();
                         lat=Double.parseDouble(doc.get("lat").toString());
                         lon=Double.parseDouble(doc.get("lng").toString());
                         latLng = new LatLng(lat,lon);
+                        while (latLng==null);
                         addRegLocationMarker();
                         fetchShopsMapDetails();
                     }
@@ -152,12 +157,12 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         markerOptions3.visible(true);
     }
 
-    private void calculateAndPlotNearbyShops(double lat, double lon , ArrayList<mShops> mShopsArrayList) {
+    private void calculateAndPlotNearbyShops(@NonNull LatLng ll , ArrayList<mShops> mShopsArrayList) {
        int avail =0;
         for(int i=0; i< mShopsArrayList.size() ; i++ ){
            // Log.w(TAG,"Inside calculate" +mShopsArrayList.get(i).getLatitude()+"\n");
             float[] result = new float[3];
-            Location.distanceBetween((float)lat,(float)lon, Float.parseFloat( mShopsArrayList.get(i).getLatitude()),
+            Location.distanceBetween((float)ll.latitude,(float)ll.longitude, Float.parseFloat( mShopsArrayList.get(i).getLatitude()),
                     Float.parseFloat( mShopsArrayList.get(i).getLongitude()), result);
             if(result!=null && result[0]>=3000 ){
                 avail=1;
@@ -165,7 +170,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                         .position(new LatLng(Float.parseFloat( mShopsArrayList.get(i).getLatitude()), Float.parseFloat( mShopsArrayList.get(i).getLongitude())))
                         .title(mShopsArrayList.get(i).getName())
                         .snippet("A NEARBY SHOP"));
-                marker.setTag(mShopsArrayList.get(i));
+                marker.setTag(mShopsArrayList.get(i).getuId());
+
                 googleMap.setOnMarkerClickListener(this);
 
             }
@@ -255,7 +261,8 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                                 Log.d(TAG, String.valueOf(mShopsArrayList));
                                 mShopsArrayList.add(mShop);
                             }
-                            calculateAndPlotNearbyShops(lat,lon,mShopsArrayList);
+
+                            calculateAndPlotNearbyShops(latLng,mShopsArrayList);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                             progressDialog.dismiss();
@@ -277,6 +284,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        Log.w(TAG,"..........................................................................."+marker.getTag().toString());
         Intent intent = new Intent(this,SellerDisplayActivity.class);
         intent.putExtra("SellerUid",marker.getTag().toString());
         startActivity(intent);
