@@ -7,6 +7,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,6 +46,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
         house=findViewById(R.id.etHouse);
         Create_pofile=findViewById(R.id.btRegister);
         fauth=FirebaseAuth.getInstance();
+        userLoc = new Location(LocationManager.GPS_PROVIDER);
         fstore=FirebaseFirestore.getInstance();
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(BuyeProfileCreation.this);
         fetchLastLoc();
