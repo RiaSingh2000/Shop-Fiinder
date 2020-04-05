@@ -127,7 +127,7 @@ public class SellerProfileCreation extends AppCompatActivity {
                 }
 
                mSellerProfile.setUid(fauth.getCurrentUser().getUid());
-               while (Double.toString(lat)==null&&Double.toString(lng)==null);
+               while (Double.toString(lat)==null && Double.toString(lng)==null && mSellerProfile.getUid()!=null);
                 DocumentReference documentReference=fstore.collection("Seller").document(mSellerProfile.getUid());
                 HashMap<String,String> profilemap=new HashMap<>();
                 profilemap.put("selname",mSellerProfile.getSelname());
@@ -138,8 +138,8 @@ public class SellerProfileCreation extends AppCompatActivity {
 //                mSellerProfile.setLng(Double.toString(userLoc.getLongitude()));
                 profilemap.put("lat",Double.toString(lat));
                 profilemap.put("lng",Double.toString(lng));
+                profilemap.put("uid",mSellerProfile.getUid());
 
-                //TODO: find latitude and longitude(string) for seller's locality and store it on firestore as in line 71 and 72
                 //TODO: description of shop when added should be in a document inside a new collection pointed by each seller's document
                 //TODO: The custcare and seller name can also be moved to this new document
                 documentReference.set(profilemap).addOnSuccessListener(new OnSuccessListener<Void>() {
