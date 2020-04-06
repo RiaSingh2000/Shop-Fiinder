@@ -48,4 +48,5 @@ dependencies {
 
     implementation "androidx.drawerlayout:drawerlayout:1.0.0" //androidx drawer layout
 
+    implementation 'com.google.android.material:material:1.0.0'
 }

@@ -44,7 +44,7 @@ public class BuyerRegistartion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_registration);
-        googlereg = findViewById(R.id.btn_google_signup);
+      googlereg=findViewById(R.id.btn_google_sigin);
         mauth = FirebaseAuth.getInstance();
 
      /*   mauthlistner=new FirebaseAuth.AuthStateListener() {

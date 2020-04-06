@@ -1,30 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Welcomepage"
-    android:background="@drawable/welcome_codepth">
-    <Button
-        android:id="@+id/loginbtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:layout_marginTop="400dp"
-        android:text="LOGIN"
-        android:textColor="@android:color/holo_red_light"
-        android:background="@drawable/btn_design">
-    </Button>
-    <Button
-        android:id="@+id/signupbtn"
-        android:layout_below="@+id/loginbtn"
-        android:layout_marginTop="25dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="SIGN UP"
-        android:textColor="@android:color/white"
-        android:background="@drawable/btn_design1"></Button>
+    android:background="#fece2f"
+    android:orientation="vertical"
+    android:padding="20dp">
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/logo_image"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/shoppingbag"
+        android:transitionName="logo_image"/>
+
+
+    <TextView
+        android:id="@+id/logo_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bungee"
+        android:padding="10dp"
+        android:text="Hello there,\nWelcome Back"
+        android:textColor="@android:color/black"
+        android:textSize="35sp"
+        app:fontFamily="@font/bungee" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/loginbtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_design"
+            android:layout_marginTop="50dp"
+            android:text="LOGIN"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="20dp"></Button>
+
+        <Button
+            android:id="@+id/signupbtn"
+            android:layout_below="@+id/loginbtn"
+            android:layout_marginTop="25dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:text="SIGN UP"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_design1"></Button>
+
+
+    </LinearLayout>
+
+</LinearLayout>

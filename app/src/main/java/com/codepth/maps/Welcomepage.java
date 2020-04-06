@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public class Welcomepage extends AppCompatActivity {
@@ -15,6 +16,7 @@ public class Welcomepage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_welcomepage);
         Login=findViewById(R.id.loginbtn);
         Signup=findViewById(R.id.signupbtn);
@@ -22,9 +24,10 @@ public class Welcomepage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(Welcomepage.this,ChoiceofLoginRole.class);
-               // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                //finish();
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_in_right);
+                finish();
 
             }
         });
@@ -32,9 +35,10 @@ public class Welcomepage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(Welcomepage.this, ChoiceofRegRole.class);
-               // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                //finish();
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_in_right);
+                finish();
             }
         });
     }
