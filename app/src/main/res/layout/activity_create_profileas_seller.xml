@@ -1,44 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".SellerProfileCreation"
-    android:background="#DF73F6">
+    android:background="#fece2f"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/shoppingbag"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        />
 
     <TextView
-        android:id="@+id/id"
-        android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Seller information"
-        android:gravity="center"
         android:textAllCaps="true"
-        android:textSize="22sp"
-        android:textStyle="bold"
+        android:textSize="25sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:fontFamily="@font/bungee"
         android:textColor="@android:color/white"/>
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create your market here!"
+        android:textSize="15sp"
+        android:layout_marginLeft="5dp"
+        android:textColor="@android:color/white"
+        android:includeFontPadding="false"
+        />
 
     <ScrollView
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="20sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <RelativeLayout
-            android:background="#F400FF"
+        android:layout_height="match_parent"
+        android:background="#FFF">
+        <LinearLayout
+            android:background="#FFF"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp">
 
             <TextView
                 android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:text="Name"
-                android:textSize="25dp"
-                android:layout_marginLeft="50dp"
+                android:textSize="20dp"
+                android:fontFamily="@font/antic"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp" />
             <EditText
                 android:id="@+id/etSellerName"
@@ -46,29 +66,34 @@
                 android:layout_height="40dp"
                 android:layout_below="@id/tvName"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:paddingLeft="10dp"
+                android:background="@drawable/edit_text_design"
                 />
             <TextView
                 android:id="@+id/tvShopName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Shop Name"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 android:layout_below="@id/etSellerName"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="20dp"
-                android:textColor="@android:color/white"/>
+                android:fontFamily="@font/antic"
+                android:textColor="@android:color/black"/>
             <EditText
                 android:id="@+id/etShopName"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_below="@id/tvShopName"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:paddingLeft="10dp"
+                android:background="@drawable/edit_text_design"
                 />
             <TextView
                 android:id="@+id/tvPhone"
@@ -76,10 +101,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/etShopName"
                 android:text="CustomerCare Number"
-                android:textSize="25dp"
-                android:layout_marginLeft="50dp"
+                android:textSize="20dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
-                android:textColor="@android:color/white"
+                android:fontFamily="@font/antic"
+                android:textColor="@android:color/black"
                 />
             <EditText
                 android:id="@+id/etSellerPhone"
@@ -87,10 +113,12 @@
                 android:layout_height="40dp"
                 android:layout_below="@id/tvPhone"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="50dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginTop="5dp"
                 android:paddingLeft="10dp"
+                android:layout_marginRight="5dp"
                 android:inputType="number"
+                android:background="@drawable/edit_text_design"
                 />
             <TextView
                 android:id="@+id/tvLocality"
@@ -98,71 +126,40 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/etSellerPhone"
                 android:text="Locality"
-                android:textSize="25dp"
-                android:layout_marginLeft="50dp"
+                android:textSize="20dp"
+                android:layout_marginLeft="10dp"
+                android:fontFamily="@font/antic"
                 android:layout_marginTop="10dp"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 />
-<!--            <EditText-->
-<!--                android:id="@+id/etSellerLocality"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:layout_below="@id/tvLocality"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:layout_marginLeft="50dp"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:paddingLeft="10dp"-->
-<!--                />-->
             <AutoCompleteTextView
                 android:id="@+id/autoLoc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:hint="Enter your location"
+                android:background="@drawable/edit_text_design"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:paddingLeft="10dp"
                 android:layout_below="@id/tvLocality"/>
-<!--            <Button-->
-<!--                android:id="@+id/picker"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/btnRegisterSeller"-->
-<!--                android:text="picker"/>-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/tvlocation"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/etSellerLocality"-->
-<!--                android:text="Location"-->
-<!--                android:textSize="25dp"-->
-<!--                android:layout_marginLeft="50dp"-->
-<!--                android:layout_marginTop="10dp"-->
-<!--                android:textColor="@android:color/white"-->
-<!--                />-->
-<!--            <fragment android:id="@+id/autocomplete_fragment"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
-<!--                android:layout_below="@id/tvlocation"-->
-<!--                />-->
-
 
             <Button
                 android:id="@+id/btnRegisterSeller"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_below="@id/autoLoc"
-                android:layout_marginTop="10dp"
+                android:layout_height="50dp"
+                android:layout_below="@id/tvLocality"
+                android:layout_marginTop="30dp"
                 android:layout_centerHorizontal="true"
                 android:text="CREATE PROFILE"
-                android:textSize="20dp"
-                android:layout_marginLeft="50dp"
+                android:textSize="15sp"
                 android:layout_marginBottom="20dp"
                 android:textColor="#ffffff"
-                android:background="@drawable/btn_design1"
-
+                android:fontFamily="@font/bungee"
+                android:background="@drawable/btn_design2"
                 />
 
 
-        </RelativeLayout>
+        </LinearLayout>
     </ScrollView>
 
-</RelativeLayout>
+</LinearLayout>

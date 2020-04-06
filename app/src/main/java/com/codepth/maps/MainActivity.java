@@ -14,6 +14,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -62,11 +63,11 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private static final String TAG = "MainActivity";
     private GoogleMap googleMap;
     MarkerOptions markerOptions = null;
-    private MarkerOptions markerOptions3= null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
         progressDialog=new ProgressDialog(this);
@@ -120,6 +121,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
                 googleMap.addMarker(markerOptions);
                 markerOptions.visible(true);
+
                 fetchShopsMapDetails();
                     Log.w(TAG, "In main" + "\n");
 
@@ -150,7 +152,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void addRegLocationMarker() {
         googleMap.clear();
-         markerOptions3=new MarkerOptions().position(latLng).title("My Registered location"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+        MarkerOptions markerOptions3=new MarkerOptions().position(latLng).title("Reg loc"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
         googleMap.addMarker(markerOptions3);
@@ -164,7 +166,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             float[] result = new float[3];
             Location.distanceBetween((float)ll.latitude,(float)ll.longitude, Float.parseFloat( mShopsArrayList.get(i).getLatitude()),
                     Float.parseFloat( mShopsArrayList.get(i).getLongitude()), result);
-            if(result!=null && result[0]>=0 ){
+            if(result!=null && result[0]>=3000 ){
                 avail=1;
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(Float.parseFloat( mShopsArrayList.get(i).getLatitude()), Float.parseFloat( mShopsArrayList.get(i).getLongitude())))
@@ -284,22 +286,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-       // if(marker.equals(markerOptions) || marker.equals(markerOptions3)){
-         if (marker.getTitle().equals("My Registered location") || marker.getTitle().equals("I am here")){
-             marker.showInfoWindow();
-            return  true;
-        }
-        else {
-            if(marker.isVisible()) {
-                Log.w(TAG, "..........................................................................." + marker.getTag().toString());
-                Intent intent = new Intent(this, SellerDisplayActivity.class);
-                intent.putExtra("SellerUid", marker.getTag().toString());
-                startActivity(intent);
-                return false;
-            }
-            else
-                return true;
-        }
-
+        Log.w(TAG,"..........................................................................."+marker.getTag().toString());
+        Intent intent = new Intent(this,SellerDisplayActivity.class);
+        intent.putExtra("SellerUid",marker.getTag().toString());
+        startActivity(intent);
+        return false;
     }
 }
