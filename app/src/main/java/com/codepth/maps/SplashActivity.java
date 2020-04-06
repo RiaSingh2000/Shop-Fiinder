@@ -76,23 +76,31 @@ public class SplashActivity extends AppCompatActivity {
         }
         else
         {
-            SharedPreferences sharedPreferences=getSharedPreferences("sharedPrefs",MODE_PRIVATE);
-            String value = sharedPreferences.getString("role","");
-            if(value.equals("0"))
-            {
-                Intent intent = new Intent(SplashActivity.this, SellerChatActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            }
-            else if(value.equals("1"))
-            {
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            }
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    SharedPreferences sharedPreferences=getSharedPreferences("sharedPrefs",MODE_PRIVATE);
+                    String value = sharedPreferences.getString("role","");
+                    if(value.equals("0"))
+                    {
+                        Intent intent = new Intent(SplashActivity.this, SellerChatActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else if(value.equals("1"))
+                    {
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
 
-        }
+                }
+                },SPLASH_SCREEN);
+
+                }
+            
+
     }
 }
