@@ -15,10 +15,10 @@ public class SellerChatActivity extends AppCompatActivity {
         uid = receiveUid();
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         startActivity(new Intent(this, Welcomepage.class));
-    }
+    }*/
 
     private String receiveUid() { //gets uid of the clicked marker shop from intentExtra
         Intent intentRecv = getIntent();
