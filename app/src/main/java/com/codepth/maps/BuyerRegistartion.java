@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
 
 public class BuyerRegistartion extends AppCompatActivity {
     private final static int RC_SIGN_IN = 2;
@@ -88,7 +93,7 @@ public class BuyerRegistartion extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                Toast.makeText(BuyerRegistartion.this, "Signed up successfully", Toast.LENGTH_LONG).show();
+                //Toast.makeText(BuyerRegistartion.this, "Signed up successfully", Toast.LENGTH_LONG).show();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Toast.makeText(BuyerRegistartion.this, "Sign up issues"+e, Toast.LENGTH_LONG).show();
@@ -121,11 +126,33 @@ public class BuyerRegistartion extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-        Intent intent=new Intent(BuyerRegistartion.this, BuyeProfileCreation.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        Toast.makeText(BuyerRegistartion.this, "Welcome", Toast.LENGTH_LONG).show();
-        finish();
+            String currentuserid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            //Toast.makeText(getContext(), "No such user exists", Toast.LENGTH_LONG).show();
+            FirebaseFirestore.getInstance().collection("Buyer").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.getResult().exists()) {
+                        Toast.makeText(BuyerRegistartion.this,"User  already exists..Login instead",Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(BuyerRegistartion.this,Welcomepage.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        SharedPreferences sharedPreferences=getSharedPreferences(Shared_pref,MODE_PRIVATE);
+                        SharedPreferences.Editor editor=sharedPreferences.edit();
+                        editor.putString("role","1");
+                        editor.apply();
+                        Intent intent=new Intent(BuyerRegistartion.this, BuyeProfileCreation.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        Toast.makeText(BuyerRegistartion.this, "Welcome", Toast.LENGTH_LONG).show();
+                        finish();
+
+
+                    }
+                }
+            });
+        }
+
 
     }
-}

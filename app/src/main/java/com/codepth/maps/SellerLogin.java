@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -23,6 +24,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.TimeUnit;
+
+import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
 
 public class SellerLogin extends AppCompatActivity {
     private Button otpBtn, loginBtn;
@@ -148,6 +151,10 @@ public class SellerLogin extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.getResult().exists()) {
+                    SharedPreferences sharedPreferences=getSharedPreferences(Shared_pref,MODE_PRIVATE);
+                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                    editor.putString("role","0");
+                    editor.apply();
                     Toast.makeText(SellerLogin.this, "Welcome Back", Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(SellerLogin.this, SellerChatActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
