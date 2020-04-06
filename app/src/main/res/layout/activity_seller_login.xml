@@ -1,71 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SellerLogin"
-    android:background="#DF73F6">
+    android:background="#fece2f"
+    android:orientation="vertical">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_phone_foreground"
+        android:id="@+id/image_bag"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shoppingbag"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints"
+        android:layout_gravity="center"
         tools:layout_editor_absoluteY="40dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bungee"
+        android:text="Verify Phone no"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:textSize="30sp"
+        />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/antic"
+        android:text="Enter Your Phone no. To get Authenticated"
+        android:layout_gravity="center"
+
+        />
+
+
 
 
     <EditText
         android:id="@+id/et_phone_number"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_marginBottom="10dp"
-        android:background="@null"
+        android:background="@drawable/edit_text_design1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:hint="Phone number in format +91XXXXXXXXXX"
+        android:fontFamily="@font/antic"
         android:inputType="textPersonName"
-        android:paddingLeft="10dp"
-
-        android:textColorHint="@android:color/white"
-        app:layout_constraintBottom_toTopOf="@id/hor_guide_30_percent_2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_marginTop="100dp"
+        android:padding="10dp"
+        />
 
     <EditText
         android:id="@+id/et_otp"
-        android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:layout_marginTop="10dp"
-        android:background="@null"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/edit_text_design1"
         android:hint="Enter OTP"
         android:inputType="number"
         android:paddingLeft="20dp"
-        android:textColorHint="@android:color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hor_guide_30_percent_2" />
+        android:fontFamily="@font/antic"
+        />
 
     <Button
         android:id="@+id/btn_get_otp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
+        android:background="@drawable/btn_design"
         android:text="GET OTP"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/antic"
         android:textColor="@android:color/holo_red_light"
-        app:layout_constraintBottom_toTopOf="@id/hor_guide_60_percent_2"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/btn_design"/>
+        />
     <Button
         android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="LOGIN"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/hor_guide_60_percent_2"
+        android:textColor="#fff"
+        android:layout_gravity="center"
+        android:fontFamily="@font/antic"
         android:background="@drawable/btn_design1"/>
 
     <androidx.constraintlayout.widget.Guideline
@@ -82,4 +109,4 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.6"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

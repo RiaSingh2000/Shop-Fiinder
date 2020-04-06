@@ -7,7 +7,48 @@
     android:orientation="vertical"
     tools:context=".SellerDisplayActivity"
     android:id="@+id/lL_SellerDisplay"
-    android:layout_marginVertical="32dp">
+    android:background="#fff"
+   >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fece2f"
+        >
+
+        <ImageView
+            android:id="@+id/shoppingBag"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/shoppingbag"/>
+
+        <TextView
+            android:id="@+id/app_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/shoppingBag"
+            android:text="Shop Finder"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="5dp"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/app_name"
+            android:layout_toRightOf="@id/shoppingBag"
+            android:text="Details"
+            android:layout_marginLeft="5dp"/>
+
+    </RelativeLayout>
+
+
+
 <TextView
     android:id="@+id/tvShopname"
     android:text="Shopname"
@@ -16,41 +57,58 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="32dp"
     android:textAlignment="center"
+    android:fontFamily="@font/bungee"
+    app:fontFamily="@font/bungee"
+    android:textColor="@android:color/black"
     android:gravity="center_horizontal"
-    android:layout_marginVertical="20dp"/>
+    android:layout_marginVertical="20dp"
+    />
     <TextView
         android:id="@+id/tvSellerName"
         android:textSize="30dp"
         android:text="SellerName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
         android:textAlignment="center"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:fontFamily="@font/antic"
+        app:fontFamily="@font/antic"/>
     <TextView
         android:id="@+id/tvShopLocation"
         android:textSize="30dp"
-        android:text="shop Location"
+        android:text="Shop Location"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="32dp"
         android:textAlignment="center"
-        android:gravity="center_horizontal"/>
+        android:gravity="center_horizontal"
+        android:fontFamily="@font/antic"
+        app:fontFamily="@font/antic"
+        android:layout_marginTop="10dp"/>
     <TextView
         android:id="@+id/tvCall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="CALL"
+        android:textAlignment="center"
         android:autoLink="phone"
-        android:textSize="48dp"
+        android:textSize="35sp"
+        android:fontFamily="@font/bungee"
+        app:fontFamily="@font/bungee"
         android:layout_margin="48dp"
         android:linksClickable="true"
+        android:background="@drawable/edit_text_design"
+        android:gravity="center_horizontal"
         />
     <Button
         android:id="@+id/btnChat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="ORDER VIA APP"
+        android:fontFamily="@font/antic"
+        app:fontFamily="@font/antic"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        android:background="@drawable/btn_design2"
         android:onClick="goToChatActivity"
         android:layout_margin="48dp"
         />
