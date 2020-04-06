@@ -2,6 +2,8 @@ package com.codepth.maps;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
@@ -13,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,6 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -38,21 +42,23 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MainActivity extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
+    //FIREBASE
      private FirebaseFirestore db=FirebaseFirestore.getInstance();
      private CollectionReference sellerRef = db.collection("Seller");
     FusedLocationProviderClient fusedLocationProviderClient;
 
+    //WIDGETS AND LAYOUTS
     private ProgressDialog progressDialog;
+    private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
      Location userLoc = null;
      int sel=0,findShop=0; //flag variables
      FirebaseFirestore fstore;
      FirebaseAuth fauth;
-    // Double lat, lon;
      LatLng latLng = null;
-
      ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
 
     private static final int REQUEST_CODE=101;
@@ -69,7 +75,10 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        drawerLayout=findViewById(R.id.activity_main_drawerlayout);
+        navigationView=findViewById(R.id.nv);
         progressDialog=new ProgressDialog(this);
+
 
         fstore=FirebaseFirestore.getInstance();
         fauth=FirebaseAuth.getInstance();
@@ -89,7 +98,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
-
     }
 
     @Override
@@ -291,7 +299,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
         }
         else {
             if(marker.isVisible()) {
-                Log.w(TAG, "..........................................................................." + marker.getTag().toString());
+                //Log.w(TAG, "..........................................................................." + marker.getTag().toString());
                 Intent intent = new Intent(this, SellerDisplayActivity.class);
                 intent.putExtra("SellerUid", marker.getTag().toString());
                 startActivity(intent);
@@ -301,5 +309,23 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 return true;
         }
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.nav_item_one :{
+                break;
+            }
+            case R.id.nav_item_two :{
+                break;
+            }
+            case R.id.nav_item_three :{
+                break;
+            }
+        }
+        item.setChecked(true);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return false;
     }
 }
