@@ -5,6 +5,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -52,7 +54,7 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
     //WIDGETS AND LAYOUTS
     private ProgressDialog progressDialog;
     private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
+    private NavigationView navView;
 
      Location userLoc = null;
      int sel=0,findShop=0; //flag variables
@@ -75,8 +77,9 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        drawerLayout=findViewById(R.id.activity_main_drawerlayout);
-        navigationView=findViewById(R.id.nv);
+
+        navView = findViewById(R.id.nv);
+        drawerLayout = findViewById(R.id.activity_main_drawerlayout);
         progressDialog=new ProgressDialog(this);
 
 

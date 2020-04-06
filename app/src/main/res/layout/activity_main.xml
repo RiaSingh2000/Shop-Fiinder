@@ -9,10 +9,16 @@
     android:background="@android:color/holo_green_dark"
     tools:openDrawer="start">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <fragment
             android:id="@+id/map"
