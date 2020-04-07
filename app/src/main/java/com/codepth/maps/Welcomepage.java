@@ -73,6 +73,10 @@ public class Welcomepage extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+            else
+            {
+                Toast.makeText(Welcomepage.this,"LOGIN FIRST",Toast.LENGTH_LONG).show();
+            }
 
         }
     }
