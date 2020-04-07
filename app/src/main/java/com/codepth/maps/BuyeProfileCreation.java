@@ -2,6 +2,7 @@ package com.codepth.maps;
 
 import Adapters.PlacesAutoCompleteAdapter;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -29,7 +30,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
@@ -196,6 +201,9 @@ public class BuyeProfileCreation extends AppCompatActivity {
         InputMethodManager imm=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(),0);
     }
+
+
+
 }
 
 
