@@ -15,6 +15,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,14 +27,11 @@ public class SplashActivity extends AppCompatActivity {
     Animation topAnim, bottomAnim;
     ImageView imageView;
     TextView textView, textView1;
-    private FirebaseAuth mauth;
-    private FirebaseUser currentuser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mauth = FirebaseAuth.getInstance();
-        currentuser = mauth.getCurrentUser();
+
 
         //Window window=getWindow();
         // window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -54,45 +52,23 @@ public class SplashActivity extends AppCompatActivity {
         imageView.setAnimation(topAnim);
         textView.setAnimation(bottomAnim);
         textView1.setAnimation(bottomAnim);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
 
-        if (currentuser == null) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent = new Intent(SplashActivity.this, Welcomepage.class);
-                    Pair[] pairs = new Pair[2];
-                    pairs[0] = new Pair<View, String>(imageView, "logo_image");
-                    pairs[1] = new Pair<View, String>(textView, "logo_text");
+                Intent intent = new Intent(SplashActivity.this, Welcomepage.class);
+                Pair[] pairs = new Pair[2];
+                pairs[0] = new Pair<View, String>(imageView, "logo_image");
+                pairs[1] = new Pair<View, String>(textView, "logo_text");
 
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SplashActivity.this, pairs);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent, options.toBundle());
-                        finish();
-                    }
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SplashActivity.this, pairs);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent, options.toBundle());
+                    finish();
                 }
-            }, SPLASH_SCREEN);
-
-        }
-        else
-        {
-            SharedPreferences sharedPreferences=getSharedPreferences("sharedPrefs",MODE_PRIVATE);
-            String value = sharedPreferences.getString("role","");
-            if(value.equals("0"))
-            {
-                Intent intent = new Intent(SplashActivity.this, SellerChatActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
             }
-            else if(value.equals("1"))
-            {
-                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-                finish();
-            }
+        }, SPLASH_SCREEN);
 
-        }
     }
 }

@@ -3,10 +3,10 @@ package com.codepth.maps;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -25,7 +25,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firestore.admin.v1beta1.Progress;
 
 import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
 
@@ -38,7 +37,6 @@ public class BuyerLogin extends AppCompatActivity {
     private Button phn;
     private FirebaseAuth.AuthStateListener mauthlistner;
     private FirebaseFirestore fstore;
-
 
     @Override
     protected void onStart() {
@@ -59,13 +57,13 @@ public class BuyerLogin extends AppCompatActivity {
         mauthlistner=new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser()!=null)
+                /*if(firebaseAuth.getCurrentUser()!=null)
                 {
 
                     startActivity(new Intent(BuyerLogin.this,MainActivity.class));
                     Toast.makeText(BuyerLogin.this,"Welcome back",Toast.LENGTH_LONG).show();
                     finish();
-                }
+                }*/
             }
         };
         googlereg.setOnClickListener(new View.OnClickListener() {
@@ -99,8 +97,9 @@ public class BuyerLogin extends AppCompatActivity {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+
                 firebaseAuthWithGoogle(account);
-                Toast.makeText(BuyerLogin.this,"Logging in...",Toast.LENGTH_LONG).show();
+
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Toast.makeText(BuyerLogin.this,"Log in issues",Toast.LENGTH_LONG).show();
@@ -120,7 +119,7 @@ public class BuyerLogin extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mauth.getCurrentUser();
-                            Checkuser(user);
+                            verifyexistence();
                         } else {
                             // If sign in fails, display a message to the user.
 
@@ -132,33 +131,31 @@ public class BuyerLogin extends AppCompatActivity {
                     }
                 });
     }
-    private void Checkuser(FirebaseUser user) {
+    private void  verifyexistence() {
         String currentuserid = mauth.getCurrentUser().getUid();
         fstore.collection("Buyer").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.getResult().exists()) {
+                if (task.getResult().exists()) {
                     SharedPreferences sharedPreferences=getSharedPreferences(Shared_pref,MODE_PRIVATE);
                     SharedPreferences.Editor editor=sharedPreferences.edit();
                     editor.putString("role","1");
                     editor.apply();
-                    Toast.makeText(BuyerLogin.this,"Welcome Back",Toast.LENGTH_LONG).show();
-                    Intent intent=new Intent(BuyerLogin.this,MainActivity.class);
+                    Toast.makeText(BuyerLogin.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
+                    Intent intent=new Intent(BuyerLogin.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
-                }
-                else {
-                    Toast.makeText(BuyerLogin.this,"No such user exists",Toast.LENGTH_LONG).show();
-                    Intent intent= new Intent(BuyerLogin.this, Welcomepage.class);
+                } else {
+                    Toast.makeText(BuyerLogin.this, "No such user exists", Toast.LENGTH_LONG).show();
+                    Intent intent=new Intent(BuyerLogin.this, Welcomepage.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+                    startActivity(intent);
                     finish();
-
                 }
-
-
             }
         });
+    }
 }
-}
+
