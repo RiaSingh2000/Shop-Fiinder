@@ -1,6 +1,9 @@
 package com.codepth.maps;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -44,7 +47,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class MainActivity extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MainActivity  extends FragmentActivity  implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     //FIREBASE
      private FirebaseFirestore db=FirebaseFirestore.getInstance();
@@ -80,7 +83,13 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
 
         navView = findViewById(R.id.nv);
         drawerLayout = findViewById(R.id.activity_main_drawerlayout);
+        Toolbar toolbar=findViewById(R.id.toolbar);
         progressDialog=new ProgressDialog(this);
+        //setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
 
         fstore=FirebaseFirestore.getInstance();
@@ -101,6 +110,19 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START))
+        {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else
+        {
+            super.onBackPressed();
+        }
+
     }
 
     @Override

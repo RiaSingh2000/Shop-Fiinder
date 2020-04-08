@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BuyerLogin"
+    tools:context=".BuyerRegistartion"
     android:background="#fece2f">
 
     <ImageView
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/icon"
         android:layout_marginTop="50dp"
-        android:text="Please Login using your Google account"
+        android:text="Please register with us using your Google account"
         android:fontFamily="@font/antic"
         app:fontFamily="@font/antic"
         android:textColor="@android:color/white"
