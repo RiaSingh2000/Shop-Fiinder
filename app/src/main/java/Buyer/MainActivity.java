@@ -30,6 +30,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -64,6 +65,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
      FirebaseFirestore fstore;
      FirebaseAuth fauth;
      LatLng latLng = null;
+     private String identifyAct = null;
      ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
 
     private static final int REQUEST_CODE=101;
@@ -80,7 +82,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        identifyAct = "MainActivity";
         navView = findViewById(R.id.nv);
         navView.setNavigationItemSelectedListener(this);
         drawerLayout = findViewById(R.id.activity_main_drawerlayout);
@@ -136,7 +138,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         {
 
             latLng = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
-            markerOptions=new MarkerOptions().position(latLng).title("I am here"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+            markerOptions=new MarkerOptions().position(latLng).title("I am here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
             googleMap.addMarker(markerOptions);
@@ -149,7 +151,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 lat=userLoc.getLatitude();
                 lon=userLoc.getLongitude();
                 latLng = new LatLng(lat,lon);
-                markerOptions=new MarkerOptions().position(latLng).title("I am here"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+                markerOptions=new MarkerOptions().position(latLng).title("I am here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
                 googleMap.addMarker(markerOptions);
@@ -202,8 +204,8 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 avail=1;
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(Float.parseFloat( mShopsArrayList.get(i).getLatitude()), Float.parseFloat( mShopsArrayList.get(i).getLongitude())))
-                        .title(mShopsArrayList.get(i).getName())
-                        .snippet("A NEARBY SHOP"));
+                        .title(mShopsArrayList.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)).
+                                snippet("A NEARBY SHOP"));
                 marker.setTag(mShopsArrayList.get(i).getuId());
 
                 googleMap.setOnMarkerClickListener(this);
@@ -341,7 +343,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.mapDrawableItem :{
-                if(getApplicationContext() instanceof  MainActivity){
+                if(identifyAct.equals("MainActivity")){
                     break;
                 }
                 else {

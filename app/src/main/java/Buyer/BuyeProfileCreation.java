@@ -117,7 +117,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 HashMap<String,String> profilemap=new HashMap<>();
                 profilemap.put("uid",userid);
                 profilemap.put("name",nm);
-                profilemap.put("Phone number",phone);
+                profilemap.put("phone",phone);
                 profilemap.put("Street",Street);
                 profilemap.put("Locality",loc);
                 profilemap.put("House",House);

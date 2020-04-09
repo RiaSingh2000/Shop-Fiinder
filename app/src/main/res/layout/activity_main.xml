@@ -6,7 +6,7 @@
     android:id="@+id/activity_main_drawerlayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_green_dark"
+    android:background="@color/appThemeYellow"
     tools:openDrawer="start">
 <LinearLayout
     android:layout_width="match_parent"
@@ -14,10 +14,35 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/shoppingBag"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/shoppingbag" />
+
+        <TextView
+            android:id="@+id/shopFinder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@id/shoppingBag"
+            android:fontFamily="@font/bungee"
+            android:text="Shop Finder"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:fontFamily="@font/bungee" />
+
+
+    </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -39,7 +64,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:text="Find Shops"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/appThemeYellow"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="18sp"
@@ -54,7 +79,8 @@
         app:menu="@menu/drawer_navigation_menu"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        android:id="@+id/nv">
+        android:id="@+id/nv"
+        >
 
     </com.google.android.material.navigation.NavigationView>
 
