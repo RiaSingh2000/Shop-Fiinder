@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -26,21 +29,33 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
+
 public class BuyerLogin extends AppCompatActivity {
     private final static int RC_SIGN_IN = 2;
-    FirebaseAuth mauth;
+    FirebaseAuth firebaseAuth;
     GoogleSignInClient mGoogleSignInClient;
-    private Button googlereg;
-    private Button Fb;
-    private Button phn;
-    private FirebaseAuth.AuthStateListener mauthlistner;
+    private Button googleSignInBtn;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseFirestore fstore;
 
     @Override
     protected void onStart() {
         super.onStart();
-        mauth.addAuthStateListener(mauthlistner);
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        updateUI(currentUser);
 
+    }
+
+    private void updateUI(FirebaseUser user) {
+        if(user==null){ //ie user not logged in
+            Toast.makeText(this,"You are not logged in",Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Intent intent= new Intent(this,MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
 
@@ -48,23 +63,23 @@ public class BuyerLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        googlereg = (Button) findViewById(R.id.btn_google_sigin);
-        mauth = FirebaseAuth.getInstance();
-        fstore=FirebaseFirestore.getInstance();
+        googleSignInBtn = (Button) findViewById(R.id.btn_google_sigin);
+        firebaseAuth = FirebaseAuth.getInstance();
+        fstore = FirebaseFirestore.getInstance();
 
-        mauthlistner=new FirebaseAuth.AuthStateListener() {
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser()!=null)
+                /*if(firebaseAuth.getCurrentUser()!=null)
                 {
 
                     startActivity(new Intent(BuyerLogin.this, MainActivity.class));
                     Toast.makeText(BuyerLogin.this,"Welcome back",Toast.LENGTH_LONG).show();
                     finish();
-                }
+                }*/
             }
         };
-        googlereg.setOnClickListener(new View.OnClickListener() {
+        googleSignInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
@@ -96,61 +111,76 @@ public class BuyerLogin extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
-                Toast.makeText(BuyerLogin.this,"Logged in successfully",Toast.LENGTH_LONG).show();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Toast.makeText(BuyerLogin.this,"Log in issues",Toast.LENGTH_LONG).show();
+                Toast.makeText(BuyerLogin.this, "Log in issues", Toast.LENGTH_LONG).show();
                 // ...
             }
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount account)
-    {
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mauth.signInWithCredential(credential)
+        firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            FirebaseUser user = mauth.getCurrentUser();
-                            Checkuser(user);
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            verifyexistence();
                         } else {
                             // If sign in fails, display a message to the user.
 
-                            Toast.makeText(BuyerLogin.this,"Authentication Failed",Toast.LENGTH_LONG).show();
+                            Toast.makeText(BuyerLogin.this, "Authentication Failed", Toast.LENGTH_LONG).show();
                             //updateUI(null);
                         }
 
                         // ...
                     }
                 });
+
     }
-    private void Checkuser(FirebaseUser user) {
-        String currentuserid = mauth.getCurrentUser().getUid();
-        fstore.collection("Buyer").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+    private void verifyexistence() {
+        String currentuserid = firebaseAuth.getCurrentUser().getUid();
+        fstore.collection("Buyer").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(task.getResult().exists()) {
-                    Toast.makeText(BuyerLogin.this,"Welcome Back",Toast.LENGTH_LONG).show();
-                    Intent intent=new Intent(BuyerLogin.this,MainActivity.class);
+                if (task.isSuccessful()) {
+                    SharedPreferences sharedPreferences = getSharedPreferences(Shared_pref, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("role", "1");
+                    editor.apply();
+                    Toast.makeText(BuyerLogin.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(BuyerLogin.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 }
-                else {
-                    Toast.makeText(BuyerLogin.this,"No such user exists",Toast.LENGTH_LONG).show();
-                    Intent intent= new Intent(BuyerLogin.this, Welcomepage.class);
+                else
+                {
+                    Toast.makeText(BuyerLogin.this, "No such user exists", Toast.LENGTH_LONG).show();
+                    Intent intent=new Intent(BuyerLogin.this, Welcomepage.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+                    startActivity(intent);
                     finish();
-
                 }
+            }
 
-
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(BuyerLogin.this, "No such user exists", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(BuyerLogin.this, Welcomepage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                startActivity(intent);
+                finish();
             }
         });
-}
+    }
+
 }

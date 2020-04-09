@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:checkableBehavior="single">
+        <item android:id="@+id/mapDrawableItem"
+            android:title="MAP" />
+        <item android:id="@+id/shopListDrawableItem"
+            android:title="SHOP LIST" />
+        <item android:id="@+id/chatListDrawableItem"
+            android:title="CHAT LIST" />
+    </group>
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/aboutUsDrawableList"
+            android:title="ABOUT US"></item>
+        <item
+            android:id="@+id/rateUsDrawableList"
+            android:title="RATE US"></item>
+    </group>
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/settingsDrawableItem"
+            android:title="SETTINGS">
+        </item>
+        <item
+            android:id="@+id/logoutDrawableItem"
+            android:title="LOGOUT"></item>
+    </group>
+</menu>

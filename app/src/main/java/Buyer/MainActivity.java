@@ -1,12 +1,13 @@
-package Buyer;
+package com.codepth.maps;
 
-import Models.mSellerProfile;
-import Models.mShops;
-import Seller.SellerDisplayActivity;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -16,11 +17,10 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.codepth.maps.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -43,21 +44,23 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class MainActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MainActivity  extends FragmentActivity  implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
+    //FIREBASE
      private FirebaseFirestore db=FirebaseFirestore.getInstance();
      private CollectionReference sellerRef = db.collection("Seller");
     FusedLocationProviderClient fusedLocationProviderClient;
 
+    //WIDGETS AND LAYOUTS
     private ProgressDialog progressDialog;
+    private DrawerLayout drawerLayout;
+    private NavigationView navView;
 
      Location userLoc = null;
      int sel=0,findShop=0; //flag variables
      FirebaseFirestore fstore;
      FirebaseAuth fauth;
-    // Double lat, lon;
      LatLng latLng = null;
-
      ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
 
     private static final int REQUEST_CODE=101;
@@ -67,14 +70,25 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     private static final String TAG = "MainActivity";
     private GoogleMap googleMap;
     MarkerOptions markerOptions = null;
+    private MarkerOptions markerOptions3= null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
+
+        navView = findViewById(R.id.nv);
+        navView.setNavigationItemSelectedListener(this);
+        drawerLayout = findViewById(R.id.activity_main_drawerlayout);
+        Toolbar toolbar=findViewById(R.id.toolbar);
         progressDialog=new ProgressDialog(this);
+        //setSupportActionBar(toolbar);
+
+        ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
 
         fstore=FirebaseFirestore.getInstance();
         fauth=FirebaseAuth.getInstance();
@@ -94,6 +108,18 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START))
+        {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else
+        {
+            super.onBackPressed();
+        }
 
     }
 
@@ -125,7 +151,6 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
                 googleMap.addMarker(markerOptions);
                 markerOptions.visible(true);
-
                 fetchShopsMapDetails();
                     Log.w(TAG, "In main" + "\n");
 
@@ -156,7 +181,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void addRegLocationMarker() {
         googleMap.clear();
-        MarkerOptions markerOptions3=new MarkerOptions().position(latLng).title("Reg loc"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+         markerOptions3=new MarkerOptions().position(latLng).title("My Registered location"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
         googleMap.addMarker(markerOptions3);
@@ -170,7 +195,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
             float[] result = new float[3];
             Location.distanceBetween((float)ll.latitude,(float)ll.longitude, Float.parseFloat( mShopsArrayList.get(i).getLatitude()),
                     Float.parseFloat( mShopsArrayList.get(i).getLongitude()), result);
-            if(result!=null && result[0]>=3000 ){
+            if(result!=null && result[0]>=0 ){
                 avail=1;
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(Float.parseFloat( mShopsArrayList.get(i).getLatitude()), Float.parseFloat( mShopsArrayList.get(i).getLongitude())))
@@ -262,7 +287,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                mSellerProfile mSellerProfile = document.toObject(Models.mSellerProfile.class);
+                                mSellerProfile mSellerProfile = document.toObject(com.codepth.maps.mSellerProfile.class);
                                 mShops mShop = slice(mSellerProfile);
                                 Log.d(TAG, String.valueOf(mShopsArrayList));
                                 mShopsArrayList.add(mShop);
@@ -290,10 +315,65 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Log.w(TAG,"..........................................................................."+marker.getTag().toString());
-        Intent intent = new Intent(this, SellerDisplayActivity.class);
-        intent.putExtra("SellerUid",marker.getTag().toString());
-        startActivity(intent);
-        return false;
+       // if(marker.equals(markerOptions) || marker.equals(markerOptions3)){
+         if (marker.getTitle().equals("My Registered location") || marker.getTitle().equals("I am here")){
+             marker.showInfoWindow();
+            return  true;
+        }
+        else {
+            if(marker.isVisible()) {
+                //Log.w(TAG, "..........................................................................." + marker.getTag().toString());
+                Intent intent = new Intent(this, SellerDisplayActivity.class);
+                intent.putExtra("SellerUid", marker.getTag().toString());
+                startActivity(intent);
+                return false;
+            }
+            else
+                return true;
+        }
+
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.mapDrawableItem :{
+                if(getApplicationContext() instanceof  MainActivity){
+                    break;
+                }
+                else {
+                    Intent intent = new Intent(this,MainActivity.class);
+                    startActivity(intent);
+                    break;
+                }
+            }
+            case R.id.shopListDrawableItem :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.chatListDrawableItem :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.aboutUsDrawableList :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.rateUsDrawableList :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.settingsDrawableItem :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.logoutDrawableItem :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                break;
+            }
+        }
+        item.setChecked(true);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 }
