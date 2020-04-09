@@ -1,76 +1,59 @@
 package com.codepth.maps;
 
 public class mBuyerProfile {
-    String lat;
-    String lng;
-    String Locality;
-    String phone;
-    String Street;
-    String name;
-    String uid;
-    String House;
 
-    public String getLat() {
-        return lat;
-    }
-
-    public void setLat(String lat) {
-        this.lat = lat;
-    }
-
-    public String getLng() {
-        return lng;
-    }
-
-    public void setLng(String lng) {
-        this.lng = lng;
-    }
-
-    public String getLocality() {
-        return Locality;
-    }
-
-    public void setLocality(String locality) {
-        Locality = locality;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getStreet() {
-        return Street;
-    }
-
-    public void setStreet(String street) {
-        Street = street;
-    }
-
-    public String getName() {
-        return name;
-    }
+        private String name;
+        private String phone;
+        private String Street;
+        private String Locality;
+        private String House;
+        private String uid;
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getUid() {
-        return uid;
+    public void setphone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setStreet(String Street) {
+        this.Street = Street;
+    }
+
+    public void setLocaity(String Locality) {
+        this.Locality = Locality;
+    }
+
+    public void setHouse(String House) {
+        this.House = House;
     }
 
     public void setUid(String uid) {
         this.uid = uid;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getphone() {
+        return phone;
+    }
+
+    public String getStreet() {
+        return Street;
+    }
+
+    public String getLocality() {
+        return Locality;
+    }
+
     public String getHouse() {
         return House;
     }
 
-    public void setHouse(String house) {
-        House = house;
+    public String getUid() {
+        return uid;
     }
 }
