@@ -1,8 +1,10 @@
-package com.codepth.maps;
+package Buyer;
 
+import Models.mSellerProfile;
+import Models.mShops;
+import Seller.SellerDisplayActivity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
@@ -21,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.codepth.maps.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -287,7 +290,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                mSellerProfile mSellerProfile = document.toObject(com.codepth.maps.mSellerProfile.class);
+                                mSellerProfile mSellerProfile = document.toObject(Models.mSellerProfile.class);
                                 mShops mShop = slice(mSellerProfile);
                                 Log.d(TAG, String.valueOf(mShopsArrayList));
                                 mShopsArrayList.add(mShop);
@@ -348,11 +351,11 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 }
             }
             case R.id.shopListDrawableItem :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this,SellerListActivity.class));
                 break;
             }
             case R.id.chatListDrawableItem :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this,BuyerChatActivity.class));
                 break;
             }
             case R.id.aboutUsDrawableList :{

@@ -27,7 +27,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
+import static Seller.SellerPhoneAuth.Shared_pref;
+
+//import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
 
 public class SellerLogin extends AppCompatActivity {
     private Button otpBtn, loginBtn;

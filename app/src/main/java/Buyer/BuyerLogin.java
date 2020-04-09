@@ -19,7 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -29,7 +28,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
+import static Seller.SellerPhoneAuth.Shared_pref;
+
+//import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
 
 public class BuyerLogin extends AppCompatActivity {
     private final static int RC_SIGN_IN = 2;
@@ -52,7 +53,7 @@ public class BuyerLogin extends AppCompatActivity {
             Toast.makeText(this,"You are not logged in",Toast.LENGTH_SHORT).show();
         }
         else{
-            Intent intent= new Intent(this,MainActivity.class);
+            Intent intent= new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }
