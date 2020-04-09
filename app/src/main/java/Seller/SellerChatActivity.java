@@ -74,7 +74,7 @@ public class SellerChatActivity extends AppCompatActivity {
                     list.clear();
                     for(QueryDocumentSnapshot snapshot:task.getResult()){
                        if(buyerUid.contains(snapshot.getData().get("uid").toString())){
-                           list.add(new BuyerList(snapshot.getData().get("House").toString(),snapshot.getData().get("uid").toString()));
+                           list.add(new BuyerList(snapshot.getData().get("name").toString(),snapshot.getData().get("uid").toString()));
                            Toast.makeText(SellerChatActivity.this, ""+list, Toast.LENGTH_SHORT).show();
                     }
                     }

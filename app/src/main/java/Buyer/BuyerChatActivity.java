@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import com.codepth.maps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,11 +33,15 @@ public class BuyerChatActivity extends AppCompatActivity {
     ArrayList<SellerList> list;
     FirebaseFirestore db;
     FirebaseAuth auth;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buyer_chat);
+        toolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         sAuth=FirebaseAuth.getInstance();
         uid=sAuth.getUid();
         listOfSellers=findViewById(R.id.listOfShops);

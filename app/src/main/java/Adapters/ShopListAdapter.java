@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepth.maps.R;
 
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 
 import Chats.ChatActivity;
 import Models.SellerList;
+import Seller.SellerDisplayActivity;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,6 +56,13 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ShopLi
                 context.startActivity(i);
             }
         });
+        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //context.startActivity(new Intent(context, SellerDisplayActivity.class));
+                Toast.makeText(context, "Open SellerDisplayActivity", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -63,13 +73,14 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ShopLi
     public class ShopListViewHolder extends RecyclerView.ViewHolder{
         TextView shopName,desc;
         ImageView chat,call;
-
+        LinearLayout linearLayout;
         public ShopListViewHolder(@NonNull View itemView) {
             super(itemView);
             shopName=itemView.findViewById(R.id.shopName);
             desc=itemView.findViewById(R.id.desc);
             chat=itemView.findViewById(R.id.chat);
             call=itemView.findViewById(R.id.call);
+            linearLayout=itemView.findViewById(R.id.linear);
         }
     }
 }

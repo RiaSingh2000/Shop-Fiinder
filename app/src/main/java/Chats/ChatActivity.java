@@ -80,7 +80,7 @@ public class ChatActivity extends AppCompatActivity {
         send=findViewById(R.id.send);
         chatsRv=findViewById(R.id.chatsRv);
         msg=findViewById(R.id.msg);
-        chatsRv.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+        chatsRv.setLayoutManager(new LinearLayoutManager(ChatActivity.this,LinearLayoutManager.VERTICAL,true));
         firestore=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
         VerticalSpacingItemDecoration itemDecoration=new VerticalSpacingItemDecoration(20);

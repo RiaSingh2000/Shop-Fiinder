@@ -4,10 +4,7 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="appThemeYellow">#fece2f</color>
-    <color name="colorPrimary">#546E7A</color>
-    <color name="colorPrimaryDark">#000000</color>
     <color name="colorPrimaryLight">#1E88E5</color>
-    <color name="colorAccent">#76FF03</color>
     <color name="colorAccentDark">#F50057</color>
     <color name="colorAccentLight">#FF80AB</color>
 
