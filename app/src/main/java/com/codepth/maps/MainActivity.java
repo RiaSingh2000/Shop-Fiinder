@@ -8,9 +8,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -82,6 +79,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
 
 
         navView = findViewById(R.id.nv);
+        navView.setNavigationItemSelectedListener(this);
         drawerLayout = findViewById(R.id.activity_main_drawerlayout);
         Toolbar toolbar=findViewById(R.id.toolbar);
         progressDialog=new ProgressDialog(this);
@@ -339,18 +337,43 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
-            case R.id.nav_item_one :{
+            case R.id.mapDrawableItem :{
+                if(getApplicationContext() instanceof  MainActivity){
+                    break;
+                }
+                else {
+                    Intent intent = new Intent(this,MainActivity.class);
+                    startActivity(intent);
+                    break;
+                }
+            }
+            case R.id.shopListDrawableItem :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
                 break;
             }
-            case R.id.nav_item_two :{
+            case R.id.chatListDrawableItem :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
                 break;
             }
-            case R.id.nav_item_three :{
+            case R.id.aboutUsDrawableList :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.rateUsDrawableList :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.settingsDrawableItem :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.logoutDrawableItem :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
                 break;
             }
         }
         item.setChecked(true);
         drawerLayout.closeDrawer(GravityCompat.START);
-        return false;
+        return true;
     }
 }
