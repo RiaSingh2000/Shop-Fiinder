@@ -249,7 +249,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
             name.setText(mBuyerProfile.getName());
             phn.setText(mBuyerProfile.getphone());
             street.setText(mBuyerProfile.getStreet());
-            //Toast.makeText(BuyeProfileCreation.this,mBuyerProfile.getStreet(),Toast.LENGTH_LONG).show();
+            Toast.makeText(BuyeProfileCreation.this,mBuyerProfile.getStreet(),Toast.LENGTH_LONG).show();
             locality.setText(mBuyerProfile.getLocality());
             house.setText(mBuyerProfile.getHouse());
             progressDialog.dismiss();
