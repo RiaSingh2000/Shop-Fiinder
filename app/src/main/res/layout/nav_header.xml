@@ -3,7 +3,7 @@
 android:id="@+id/nav_header"
 android:layout_width="match_parent"
 android:layout_height="160dp"
-android:background="@color/colorAccent"
+android:background="@color/appThemeYellow"
 android:clickable="true"
 android:focusable="true"
 android:foreground="?attr/selectableItemBackgroundBorderless"
@@ -23,6 +23,6 @@ android:theme="@style/ThemeOverlay.AppCompat.Dark">
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="16dp"
-    android:text="Roli Verma"
+    android:text="USER NAME"
     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 </LinearLayout>
