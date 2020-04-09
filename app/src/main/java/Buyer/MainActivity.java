@@ -1,5 +1,8 @@
-package com.codepth.maps;
+package Buyer;
 
+import Models.mSellerProfile;
+import Models.mShops;
+import Seller.SellerDisplayActivity;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -17,6 +20,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.codepth.maps.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -258,7 +262,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                mSellerProfile mSellerProfile = document.toObject(com.codepth.maps.mSellerProfile.class);
+                                mSellerProfile mSellerProfile = document.toObject(Models.mSellerProfile.class);
                                 mShops mShop = slice(mSellerProfile);
                                 Log.d(TAG, String.valueOf(mShopsArrayList));
                                 mShopsArrayList.add(mShop);
@@ -287,7 +291,7 @@ public class MainActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public boolean onMarkerClick(Marker marker) {
         Log.w(TAG,"..........................................................................."+marker.getTag().toString());
-        Intent intent = new Intent(this,SellerDisplayActivity.class);
+        Intent intent = new Intent(this, SellerDisplayActivity.class);
         intent.putExtra("SellerUid",marker.getTag().toString());
         startActivity(intent);
         return false;

@@ -1,4 +1,4 @@
-package com.codepth.maps;
+package Seller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.codepth.maps.R;
+import com.codepth.maps.Welcomepage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -19,36 +21,41 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.TimeUnit;
-// This activity is responsible for phone number verification for during seller auth
-public class SellerPhoneAuth extends AppCompatActivity {
-    private Button getotp,signup;
-    private EditText num,etotp;
+
+public class SellerLogin extends AppCompatActivity {
+    private Button otpBtn, loginBtn;
+    private EditText numEt, otpEt;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
     private String mVerificationId;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingbar;
+    private FirebaseFirestore fstore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_seller_phone_auth);
-        getotp=findViewById(R.id.btn_get_otp);
-        signup=findViewById(R.id.btn_singup);
-        num=findViewById(R.id.et_phone_num);
-        etotp=findViewById(R.id.et_otp);
+        setContentView(R.layout.activity_seller_login);
+        otpBtn =findViewById(R.id.btn_get_otp);
+        loginBtn =findViewById(R.id.btn_login);
+        numEt =findViewById(R.id.et_phone_number);
+        otpEt =findViewById(R.id.et_otp);
+        fstore= FirebaseFirestore.getInstance();
 
         mAuth = FirebaseAuth.getInstance();
         loadingbar = new ProgressDialog(this);
-        getotp.setOnClickListener(new View.OnClickListener() {
+        otpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String phnno=num.getText().toString();
+                String phnno= numEt.getText().toString();
                 StringBuilder s=new StringBuilder("+91");
                 s.append(phnno);
-                Toast.makeText(SellerPhoneAuth.this,String.valueOf(s),Toast.LENGTH_LONG).show();
+                //Toast.makeText(PhnRegistration.this,String.valueOf(s),Toast.LENGTH_LONG).show();
                 loadingbar.setTitle("Phone Verification");
                 loadingbar.setMessage("Please wait,while we authenticate your phone");
                 loadingbar.setCanceledOnTouchOutside(false);
@@ -58,7 +65,7 @@ public class SellerPhoneAuth extends AppCompatActivity {
                         String.valueOf(s),        // Phone number to verify
                         60,                 // Timeout duration
                         TimeUnit.SECONDS,   // Unit of timeout
-                        SellerPhoneAuth.this,               // Activity (for callback binding)
+                        SellerLogin.this,               // Activity (for callback binding)
                         callbacks);        // OnVerificationStateChangedCallbacks
 
 
@@ -76,7 +83,7 @@ public class SellerPhoneAuth extends AppCompatActivity {
             public void onVerificationFailed(FirebaseException e) {
                 loadingbar.dismiss();
 
-                Toast.makeText(SellerPhoneAuth.this, "Invalid please enter correct phone number with your country code", Toast.LENGTH_LONG).show();
+                Toast.makeText(SellerLogin.this, "Invalid please enter correct phone number with your country code", Toast.LENGTH_LONG).show();
 
             }
 
@@ -87,19 +94,19 @@ public class SellerPhoneAuth extends AppCompatActivity {
                 mVerificationId = verificationId;
                 mResendToken = token;
                 loadingbar.dismiss();
-                Toast.makeText(SellerPhoneAuth.this, "Code sent", Toast.LENGTH_LONG).show();
-                num.setVisibility(View.INVISIBLE);
+                Toast.makeText(SellerLogin.this, "Code sent", Toast.LENGTH_LONG).show();
+                numEt.setVisibility(View.INVISIBLE);
 
 
             }
 
         };
-        signup.setOnClickListener(new View.OnClickListener() {
+        loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String code = etotp.getText().toString();
+                String code = otpEt.getText().toString();
                 if (TextUtils.isEmpty(code)) {
-                    Toast.makeText(SellerPhoneAuth.this, "Please enter the code", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SellerLogin.this, "Please enter the code", Toast.LENGTH_LONG).show();
                 } else {
 
                     loadingbar.setTitle("Code Verification");
@@ -122,13 +129,12 @@ public class SellerPhoneAuth extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             loadingbar.dismiss();
-                            Toast.makeText(SellerPhoneAuth.this, "Signup Successfull", Toast.LENGTH_LONG).show();
-                            sendtoprofilecreation();
+                            verifyexistence();
 
 
                         } else {
                             String msg = task.getException().toString();
-                            Toast.makeText(SellerPhoneAuth.this, msg, Toast.LENGTH_LONG).show();
+                            Toast.makeText(SellerLogin.this, msg, Toast.LENGTH_LONG).show();
 
 
                         }
@@ -138,10 +144,27 @@ public class SellerPhoneAuth extends AppCompatActivity {
     }
 
 
-    private void  sendtoprofilecreation() {
-        Intent profileintent = new Intent(SellerPhoneAuth.this, SellerProfileCreation.class);
-        profileintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(profileintent);
-        finish();
+    private void  verifyexistence() {
+        String currentuserid = mAuth.getCurrentUser().getUid();
+        fstore.collection("Seller").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.getResult().exists()) {
+                    Toast.makeText(SellerLogin.this, "Welcome Back", Toast.LENGTH_LONG).show();
+                    Intent intent=new Intent(SellerLogin.this, SellerChatActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(SellerLogin.this, "No such user exists", Toast.LENGTH_LONG).show();
+                    Intent intent=new Intent(SellerLogin.this, Welcomepage.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
     }
 }
+

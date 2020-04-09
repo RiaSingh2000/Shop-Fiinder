@@ -1,4 +1,4 @@
-package com.codepth.maps;
+package Models;
 
 public class mShops {
     private String name;

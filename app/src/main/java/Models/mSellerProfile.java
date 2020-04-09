@@ -1,4 +1,4 @@
-package com.codepth.maps;
+package Models;
 
 public class mSellerProfile { //obj of this class is used when creating sellers profile
 

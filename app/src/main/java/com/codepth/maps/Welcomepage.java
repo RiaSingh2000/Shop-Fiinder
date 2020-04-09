@@ -1,5 +1,6 @@
 package com.codepth.maps;
 
+import Seller.SellerChatActivity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -20,6 +21,13 @@ public class Welcomepage extends AppCompatActivity {
         setContentView(R.layout.activity_welcomepage);
         Login=findViewById(R.id.loginbtn);
         Signup=findViewById(R.id.signupbtn);
+        Button list =findViewById(R.id.list);
+        list.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Welcomepage.this, SellerChatActivity.class));
+            }
+        });
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

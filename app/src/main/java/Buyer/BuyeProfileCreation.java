@@ -1,4 +1,4 @@
-package com.codepth.maps;
+package Buyer;
 
 import Adapters.PlacesAutoCompleteAdapter;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,9 +19,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.codepth.maps.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
