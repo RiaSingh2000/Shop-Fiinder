@@ -1,5 +1,6 @@
-package com.codepth.maps;
+package Seller;
 
+import Models.mSellerProfile;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,19 +11,14 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.codepth.maps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.List;
 
 public class SellerDisplayActivity extends AppCompatActivity {
 
@@ -71,7 +67,7 @@ public class SellerDisplayActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        mSellerProfile = document.toObject(com.codepth.maps.mSellerProfile.class);
+                        mSellerProfile = document.toObject(Models.mSellerProfile.class);
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         //setLayoutWidgets(mSellerProfile);
                         editWidgets(mSellerProfile);
@@ -85,7 +81,7 @@ public class SellerDisplayActivity extends AppCompatActivity {
         });
     }
 
-    private void editWidgets(com.codepth.maps.mSellerProfile mSellerProfile) {
+    private void editWidgets(Models.mSellerProfile mSellerProfile) {
         tvShopName.setText(mSellerProfile.getShopname());
         tvSellerName.setText(mSellerProfile.getSelname());
         tvLocation.setText(mSellerProfile.getLoc());
@@ -101,7 +97,7 @@ public class SellerDisplayActivity extends AppCompatActivity {
 
 
     public void goToChatActivity(View view) {
-        Intent intent = new Intent(this,SellerChatActivity.class);
+        Intent intent = new Intent(this, SellerChatActivity.class);
         intent.putExtra("uid",mSellerProfile.getUid());
         startActivity(intent);
     }

@@ -1,11 +1,12 @@
 package com.codepth.maps;
 
+import Buyer.MainActivity;
 import androidx.appcompat.app.AppCompatActivity;
+import  Seller.SellerChatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -68,7 +69,7 @@ public class Welcomepage extends AppCompatActivity {
                 finish();
             } else if (value.equals("1")) {
                 Toast.makeText(Welcomepage.this, "Welcome Back!!", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(Welcomepage.this,MainActivity.class);
+                Intent intent = new Intent(Welcomepage.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();

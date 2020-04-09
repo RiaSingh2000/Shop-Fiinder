@@ -1,4 +1,4 @@
-package com.codepth.maps;
+package Seller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -15,6 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.codepth.maps.R;
+import Seller.SellerProfileCreation;
+import com.codepth.maps.Welcomepage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -173,7 +176,7 @@ public class SellerPhoneAuth extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.getResult().exists()) {
                         Toast.makeText(SellerPhoneAuth.this,"User  already exists..Login instead",Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(SellerPhoneAuth.this,Welcomepage.class);
+                        Intent intent = new Intent(SellerPhoneAuth.this, Welcomepage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
@@ -182,7 +185,7 @@ public class SellerPhoneAuth extends AppCompatActivity {
                         SharedPreferences.Editor editor=sharedPreferences.edit();
                         editor.putString("role","0");
                         editor.apply();
-                        Intent intent=new Intent(SellerPhoneAuth.this,SellerProfileCreation.class);
+                        Intent intent=new Intent(SellerPhoneAuth.this, SellerProfileCreation.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         Toast.makeText(SellerPhoneAuth.this, "Welcome", Toast.LENGTH_LONG).show();

@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="Seller.SellerChatActivity"
+    tools:context="Buyer.SellerListActivity"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:title="Buyers List"/>
+        app:title="Shops List"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/listOfBuyers"
+        android:id="@+id/listOfShops"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"

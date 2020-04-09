@@ -1,4 +1,4 @@
-package com.codepth.maps;
+package Buyer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.codepth.maps.R;
+import com.codepth.maps.Welcomepage;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -17,7 +19,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -27,7 +28,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
+import static Seller.SellerPhoneAuth.Shared_pref;
+
+//import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
 
 public class BuyerLogin extends AppCompatActivity {
     private final static int RC_SIGN_IN = 2;
@@ -50,7 +53,7 @@ public class BuyerLogin extends AppCompatActivity {
             Toast.makeText(this,"You are not logged in",Toast.LENGTH_SHORT).show();
         }
         else{
-            Intent intent= new Intent(this,MainActivity.class);
+            Intent intent= new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -71,7 +74,7 @@ public class BuyerLogin extends AppCompatActivity {
                 /*if(firebaseAuth.getCurrentUser()!=null)
                 {
 
-                    startActivity(new Intent(BuyerLogin.this,MainActivity.class));
+                    startActivity(new Intent(BuyerLogin.this, MainActivity.class));
                     Toast.makeText(BuyerLogin.this,"Welcome back",Toast.LENGTH_LONG).show();
                     finish();
                 }*/

@@ -1,5 +1,7 @@
 package com.codepth.maps;
 
+import Buyer.BuyerLogin;
+import Seller.SellerLogin;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -19,7 +21,7 @@ public class ChoiceofLoginRole extends AppCompatActivity {
         seller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChoiceofLoginRole.this,SellerLogin.class);
+                Intent intent = new Intent(ChoiceofLoginRole.this, SellerLogin.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right,R.anim.slide_in_right);

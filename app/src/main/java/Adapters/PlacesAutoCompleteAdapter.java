@@ -23,11 +23,11 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter implements Filterabl
         this.resource=resource;
     }
 
-    @Override
+
     public int getCount() {
         return results.size();
     }
-    @Override
+
     public  String getItem(int pos){
         return results.get(pos);
     }

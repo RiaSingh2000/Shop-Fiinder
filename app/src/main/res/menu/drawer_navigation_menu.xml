@@ -1,31 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <group
-        android:checkableBehavior="single">
-        <item android:id="@+id/mapDrawableItem"
-            android:title="MAP" />
-        <item android:id="@+id/shopListDrawableItem"
-            android:title="SHOP LIST" />
-        <item android:id="@+id/chatListDrawableItem"
-            android:title="CHAT LIST" />
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/mapDrawableItem"
+            android:title="Map"
+            android:icon="@drawable/ic_home"/>
+
+        <item
+            android:id="@+id/shopListDrawableItem"
+            android:title="Shop Lists"
+            android:icon="@drawable/ic_list_activity"/>
+
+        <item
+            android:id="@+id/chatListDrawableItem"
+            android:title="Chat Lists"
+            android:icon="@drawable/ic_chat_activity"/>
     </group>
-    <group
-        android:checkableBehavior="single">
+    <group android:checkableBehavior="single">
+
         <item
             android:id="@+id/aboutUsDrawableList"
-            android:title="ABOUT US"></item>
+            android:title="About Us"
+            android:icon="@drawable/ic_about_us"/>
         <item
             android:id="@+id/rateUsDrawableList"
-            android:title="RATE US"></item>
+            android:title="Rate Us"
+            android:icon="@drawable/ic_rate_us"/>
     </group>
     <group
         android:checkableBehavior="single">
         <item
             android:id="@+id/settingsDrawableItem"
-            android:title="SETTINGS">
-        </item>
+            android:title="Settings"
+            android:icon="@drawable/ic_settings"/>
+
         <item
             android:id="@+id/logoutDrawableItem"
-            android:title="LOGOUT"></item>
+            android:title="LogOut"
+            android:icon="@drawable/ic_log_out"/>
     </group>
 </menu>

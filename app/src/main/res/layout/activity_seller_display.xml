@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SellerDisplayActivity"
+    tools:context="Seller.SellerDisplayActivity"
     android:id="@+id/lL_SellerDisplay"
     android:background="#fff"
    >

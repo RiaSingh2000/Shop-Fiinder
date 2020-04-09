@@ -1,4 +1,4 @@
-package com.codepth.maps;
+package Seller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.codepth.maps.R;
+import com.codepth.maps.Welcomepage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -25,7 +27,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.concurrent.TimeUnit;
 
-import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
+import static Seller.SellerPhoneAuth.Shared_pref;
+
+//import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
 
 public class SellerLogin extends AppCompatActivity {
     private Button otpBtn, loginBtn;

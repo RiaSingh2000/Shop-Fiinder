@@ -1,5 +1,7 @@
 package com.codepth.maps;
 
+import Buyer.BuyerRegistartion;
+import Seller.SellerPhoneAuth;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;

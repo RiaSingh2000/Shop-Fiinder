@@ -1,4 +1,4 @@
-package com.codepth.maps;
+package Buyer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,11 +10,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.codepth.maps.R;
+import com.codepth.maps.Welcomepage;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,7 +27,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
+import static Seller.SellerPhoneAuth.Shared_pref;
+
+//import static com.codepth.maps.SellerPhoneAuth.Shared_pref;
 
 public class BuyerRegistartion extends AppCompatActivity {
     private final static int RC_SIGN_IN = 2;
@@ -134,7 +137,7 @@ public class BuyerRegistartion extends AppCompatActivity {
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.getResult().exists()) {
                         Toast.makeText(BuyerRegistartion.this,"User  already exists..Login instead",Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(BuyerRegistartion.this,Welcomepage.class);
+                        Intent intent = new Intent(BuyerRegistartion.this, Welcomepage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();

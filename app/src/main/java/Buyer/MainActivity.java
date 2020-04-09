@@ -1,8 +1,10 @@
-package com.codepth.maps;
+package Buyer;
 
+import Models.mSellerProfile;
+import Models.mShops;
+import Seller.SellerDisplayActivity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
@@ -21,12 +23,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.codepth.maps.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -61,6 +65,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
      FirebaseFirestore fstore;
      FirebaseAuth fauth;
      LatLng latLng = null;
+     private String identifyAct = null;
      ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
 
     private static final int REQUEST_CODE=101;
@@ -77,7 +82,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        identifyAct = "MainActivity";
         navView = findViewById(R.id.nv);
         navView.setNavigationItemSelectedListener(this);
         drawerLayout = findViewById(R.id.activity_main_drawerlayout);
@@ -133,7 +138,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         {
 
             latLng = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
-            markerOptions=new MarkerOptions().position(latLng).title("I am here"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+            markerOptions=new MarkerOptions().position(latLng).title("I am here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
             googleMap.addMarker(markerOptions);
@@ -146,7 +151,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 lat=userLoc.getLatitude();
                 lon=userLoc.getLongitude();
                 latLng = new LatLng(lat,lon);
-                markerOptions=new MarkerOptions().position(latLng).title("I am here"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+                markerOptions=new MarkerOptions().position(latLng).title("I am here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
                 googleMap.addMarker(markerOptions);
@@ -199,8 +204,8 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 avail=1;
                 Marker marker = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(Float.parseFloat( mShopsArrayList.get(i).getLatitude()), Float.parseFloat( mShopsArrayList.get(i).getLongitude())))
-                        .title(mShopsArrayList.get(i).getName())
-                        .snippet("A NEARBY SHOP"));
+                        .title(mShopsArrayList.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)).
+                                snippet("A NEARBY SHOP"));
                 marker.setTag(mShopsArrayList.get(i).getuId());
 
                 googleMap.setOnMarkerClickListener(this);
@@ -287,7 +292,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                mSellerProfile mSellerProfile = document.toObject(com.codepth.maps.mSellerProfile.class);
+                                mSellerProfile mSellerProfile = document.toObject(Models.mSellerProfile.class);
                                 mShops mShop = slice(mSellerProfile);
                                 Log.d(TAG, String.valueOf(mShopsArrayList));
                                 mShopsArrayList.add(mShop);
@@ -338,7 +343,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.mapDrawableItem :{
-                if(getApplicationContext() instanceof  MainActivity){
+                if(identifyAct.equals("MainActivity")){
                     break;
                 }
                 else {
@@ -348,11 +353,11 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 }
             }
             case R.id.shopListDrawableItem :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this,SellerListActivity.class));
                 break;
             }
             case R.id.chatListDrawableItem :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(MainActivity.this,BuyerChatActivity.class));
                 break;
             }
             case R.id.aboutUsDrawableList :{
