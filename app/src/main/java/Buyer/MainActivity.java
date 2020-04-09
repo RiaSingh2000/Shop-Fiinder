@@ -23,7 +23,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import Buyer.BuyeProfileCreation;
 import com.codepth.maps.R;
+import com.codepth.maps.Welcomepage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -369,16 +371,28 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 break;
             }
             case R.id.settingsDrawableItem :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                Intent loginintent=new Intent(MainActivity.this,BuyeProfileCreation.class);
+                loginintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(loginintent);
                 break;
             }
             case R.id.logoutDrawableItem :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                FirebaseAuth.getInstance().signOut();
+                sendUsertologinactivity();
+                finish();
+
                 break;
             }
         }
         item.setChecked(true);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void sendUsertologinactivity() {
+        Intent loginintent=new Intent(MainActivity.this, Welcomepage.class);
+        loginintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loginintent);
+        finish();
     }
 }

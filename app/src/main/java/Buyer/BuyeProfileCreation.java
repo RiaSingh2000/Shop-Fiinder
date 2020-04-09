@@ -1,6 +1,8 @@
-package com.codepth.maps;
+package Buyer;
 
 import Adapters.PlacesAutoCompleteAdapter;
+import Buyer.MainActivity;
+import Models.mBuyerProfile;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -18,7 +20,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
@@ -26,27 +27,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.codepth.maps.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.annotation.Nullable;
 
 public class BuyeProfileCreation extends AppCompatActivity {
     private EditText name,phn,street,house;
@@ -227,7 +221,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Create_pofile.setText("Update Profile");
-                        mBuyerProfile = document.toObject(com.codepth.maps.mBuyerProfile.class);
+                        mBuyerProfile = document.toObject(Models.mBuyerProfile.class);
                         setExistingData(mBuyerProfile);
                         //setLayoutWidgets(mBuyerPrsetExistingData(mBuyerProfile);
                     } else {
@@ -245,7 +239,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
 
     }
 
-    private void setExistingData(com.codepth.maps.mBuyerProfile mBuyerProfile) {
+    private void setExistingData(Models.mBuyerProfile mBuyerProfile) {
             name.setText(mBuyerProfile.getName());
             phn.setText(mBuyerProfile.getphone());
             street.setText(mBuyerProfile.getStreet());
