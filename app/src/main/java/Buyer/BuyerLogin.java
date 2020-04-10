@@ -162,6 +162,7 @@ public class BuyerLogin extends AppCompatActivity {
                 }
                 else
                 {
+                    FirebaseAuth.getInstance().signOut();
                     Toast.makeText(BuyerLogin.this, "No such user exists", Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(BuyerLogin.this, Welcomepage.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
