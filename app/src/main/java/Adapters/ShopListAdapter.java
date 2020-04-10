@@ -15,7 +15,6 @@ import com.codepth.maps.R;
 import java.util.ArrayList;
 
 import Chats.ChatActivity;
-import Models.SellerList;
 import Models.mSellerProfile;
 import Seller.SellerDisplayActivity;
 import androidx.annotation.NonNull;

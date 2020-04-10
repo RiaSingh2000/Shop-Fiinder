@@ -2,7 +2,6 @@ package Buyer;
 
 import Adapters.ShopListAdapter;
 import Common.VerticalSpacingItemDecoration;
-import Models.SellerList;
 import Models.mSellerProfile;
 import Models.mShops;
 

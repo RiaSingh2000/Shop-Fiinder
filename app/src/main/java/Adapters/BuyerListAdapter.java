@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import Chats.ChatActivity;
 import Models.BuyerList;
-import Models.SellerList;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 

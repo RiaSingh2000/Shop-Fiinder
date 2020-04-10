@@ -3,8 +3,6 @@ package Buyer;
 import Adapters.BuyerListAdapter;
 import Adapters.ShopListAdapter;
 import Common.VerticalSpacingItemDecoration;
-import Models.BuyerList;
-import Models.SellerList;
 import Models.mSellerProfile;
 import Seller.SellerChatActivity;
 import androidx.annotation.NonNull;
