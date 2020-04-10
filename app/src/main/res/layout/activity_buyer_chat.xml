@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:openDrawer="start">
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -16,6 +17,7 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
+        android:background="@color/appThemeYellow"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
