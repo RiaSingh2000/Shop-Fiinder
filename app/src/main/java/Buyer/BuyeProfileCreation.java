@@ -2,6 +2,7 @@ package Buyer;
 
 import Adapters.PlacesAutoCompleteAdapter;
 import Buyer.MainActivity;
+import Common.DrawerController;
 import Models.mBuyerProfile;
 
 import androidx.annotation.NonNull;
@@ -62,6 +63,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
+        DrawerController.setIdentity("SettingsActivity");
         progressDialog=new ProgressDialog(this);
         name = findViewById(R.id.etName);
         phn = findViewById(R.id.etPhone);

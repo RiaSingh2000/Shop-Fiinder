@@ -1,5 +1,6 @@
 package Buyer;
 
+import Common.DrawerController;
 import Models.mSellerProfile;
 import Models.mShops;
 import Seller.SellerDisplayActivity;
@@ -23,7 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import Buyer.BuyeProfileCreation;
+
 import com.codepth.maps.R;
 import com.codepth.maps.Welcomepage;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -67,8 +68,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
      FirebaseFirestore fstore;
      FirebaseAuth fauth;
      private static LatLng latLng = null;
-     private String identifyAct = null;
-     ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
+     ArrayList<mShops> mShopsArrayList = new ArrayList<>();
 
     private static final int REQUEST_CODE=101;
     private static final String[] options=new String[]{
@@ -87,8 +87,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        identifyAct = "MainActivity";
+        DrawerController.setIdentity("MainActivity");
         navView = findViewById(R.id.nv);
         navView.setNavigationItemSelectedListener(this);
         drawerLayout = findViewById(R.id.activity_main_drawerlayout);
@@ -349,21 +348,27 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.mapDrawableItem :{
-                if(identifyAct.equals("MainActivity")){
-                    break;
+                if(DrawerController.toMainActivity(getApplicationContext())){
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
                 }
-                else {
-                    Intent intent = new Intent(this,MainActivity.class);
-                    startActivity(intent);
-                    break;
-                }
+                break;
             }
             case R.id.shopListDrawableItem :{
-                startActivity(new Intent(MainActivity.this,SellerListActivity.class));
+                if(DrawerController.toShopList(getApplicationContext())){
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
                 break;
             }
             case R.id.chatListDrawableItem :{
-                startActivity(new Intent(MainActivity.this,BuyerChatActivity.class));
+                if(DrawerController.toChatList(getApplicationContext())) {
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
                 break;
             }
             case R.id.aboutUsDrawableList :{
@@ -375,16 +380,20 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 break;
             }
             case R.id.settingsDrawableItem :{
-                Intent loginintent=new Intent(MainActivity.this,BuyeProfileCreation.class);
-                loginintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(loginintent);
+                if(DrawerController.sendUserToSettingActivity(getApplicationContext())) {
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
                 break;
             }
             case R.id.logoutDrawableItem :{
                 FirebaseAuth.getInstance().signOut();
-                sendUsertologinactivity();
-                finish();
-
+                if(DrawerController.sendUsertologinactivity(getApplicationContext())) {
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
                 break;
             }
         }
@@ -393,10 +402,4 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         return true;
     }
 
-    private void sendUsertologinactivity() {
-        Intent loginintent=new Intent(MainActivity.this, Welcomepage.class);
-        loginintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(loginintent);
-        finish();
-    }
 }

@@ -8,24 +8,25 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
         <activity android:name="Buyer.BuyerChatActivity"
-            android:parentActivityName="Buyer.MainActivity"></activity>
+            android:parentActivityName="Buyer.MainActivity" ></activity>
         <activity android:name="Buyer.SellerListActivity" />
-        <activity android:name="Chats.ChatActivity" />
-        <activity android:name="Seller.SellerDisplayActivity" />
+        <activity android:name="Chats.ChatActivity"  />
+        <activity android:name="Seller.SellerDisplayActivity"/>
         <activity android:name="Seller.SellerChatActivity" />
         <activity android:name=".Welcomepage" />
         <activity android:name="Seller.SellerLogin" />
         <activity android:name=".ChoiceofLoginRole" />
         <activity android:name="Seller.SellerProfileCreation" />
-        <activity android:name="Seller.SellerPhoneAuth" />
+        <activity android:name="Seller.SellerPhoneAuth"/>
         <activity android:name=".ChoiceofRegRole" />
         <activity android:name="Buyer.MainActivity" />
         <activity android:name="Buyer.BuyeProfileCreation" />
-        <activity android:name="Buyer.BuyerLogin" />
+        <activity android:name="Buyer.BuyerLogin"/>
         <activity android:name="Buyer.BuyerRegistartion" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".SplashActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

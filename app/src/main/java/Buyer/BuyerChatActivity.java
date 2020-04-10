@@ -2,21 +2,26 @@ package Buyer;
 
 import Adapters.BuyerListAdapter;
 import Adapters.ShopListAdapter;
+import Common.DrawerController;
 import Common.VerticalSpacingItemDecoration;
 import Models.mSellerProfile;
 import Seller.SellerChatActivity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
 import com.codepth.maps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -24,7 +29,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class BuyerChatActivity extends AppCompatActivity {
+public class BuyerChatActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private DrawerLayout drawerLayout;
+    private NavigationView navView;
     private String uid;
     FirebaseAuth sAuth;
     RecyclerView listOfSellers;
@@ -33,15 +40,19 @@ public class BuyerChatActivity extends AppCompatActivity {
     ArrayList<mSellerProfile> list;
     FirebaseFirestore db;
     FirebaseAuth auth;
-    Toolbar toolbar;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buyer_chat);
+        DrawerController.setIdentity("BuyerChatActivity");
+        navView = findViewById(R.id.nv);
+        navView.setNavigationItemSelectedListener(this);
+        drawerLayout = findViewById(R.id.activity_main_drawerlayout2);
         toolbar=findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //setSupportActionBar(toolbar);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         sAuth=FirebaseAuth.getInstance();
         uid=sAuth.getUid();
         listOfSellers=findViewById(R.id.listOfShops);
@@ -92,4 +103,65 @@ public class BuyerChatActivity extends AppCompatActivity {
         });
 
     }
+
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.mapDrawableItem :{
+                if(DrawerController.toMainActivity(getApplicationContext())){
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
+                break;
+            }
+            case R.id.shopListDrawableItem :{
+                if(DrawerController.toShopList(getApplicationContext())){
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
+                break;
+            }
+            case R.id.chatListDrawableItem :{
+                if(DrawerController.toChatList(getApplicationContext())) {
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
+                break;
+            }
+            case R.id.aboutUsDrawableList :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.rateUsDrawableList :{
+                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                break;
+            }
+            case R.id.settingsDrawableItem :{
+                if(DrawerController.sendUserToSettingActivity(getApplicationContext())) {
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
+                break;
+            }
+            case R.id.logoutDrawableItem :{
+                FirebaseAuth.getInstance().signOut();
+                if(DrawerController.sendUsertologinactivity(getApplicationContext())) {
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
+                break;
+            }
+        }
+        item.setChecked(true);
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
 }
+
