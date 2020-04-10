@@ -93,11 +93,14 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         drawerLayout = findViewById(R.id.activity_main_drawerlayout);
         Toolbar toolbar=findViewById(R.id.toolbar);
         progressDialog=new ProgressDialog(this);
-        //setSupportActionBar(toolbar);
+
+
+
 
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
 
 
         fstore=FirebaseFirestore.getInstance();
