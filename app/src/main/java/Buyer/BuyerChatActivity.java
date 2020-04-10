@@ -5,6 +5,7 @@ import Adapters.ShopListAdapter;
 import Common.VerticalSpacingItemDecoration;
 import Models.BuyerList;
 import Models.SellerList;
+import Models.mSellerProfile;
 import Seller.SellerChatActivity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +31,8 @@ public class BuyerChatActivity extends AppCompatActivity {
     FirebaseAuth sAuth;
     RecyclerView listOfSellers;
     ArrayList<String> sellerUid;
-    ArrayList<SellerList> list;
+    //ArrayList<SellerList> list;
+    ArrayList<mSellerProfile> list;
     FirebaseFirestore db;
     FirebaseAuth auth;
     Toolbar toolbar;
@@ -80,7 +82,9 @@ public class BuyerChatActivity extends AppCompatActivity {
                     list.clear();
                     for(QueryDocumentSnapshot snapshot:task.getResult()){
                         if(sellerUid.contains(snapshot.getData().get("uid").toString())){
-                            list.add(new SellerList(snapshot.getData().get("shopname").toString(),snapshot.getData().get("custcare").toString(),snapshot.getData().get("shopname").toString(),snapshot.getData().get("uid").toString()));
+                            mSellerProfile mSellerProfile = snapshot.toObject(Models.mSellerProfile.class);
+                           // list.add(new SellerList(snapshot.getData().get("shopname").toString(),snapshot.getData().get("custcare").toString(),snapshot.getData().get("shopname").toString(),snapshot.getData().get("uid").toString()));
+                            list.add(mSellerProfile);
                             Toast.makeText(BuyerChatActivity.this, ""+list, Toast.LENGTH_SHORT).show();
                         }
                     }

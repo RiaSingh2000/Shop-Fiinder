@@ -18,8 +18,6 @@ public class mSellerProfile { //obj of this class is used when creating sellers 
         this.uid = uid;
     }
 
-
-
     public String getLat() {
         return lat;
     }

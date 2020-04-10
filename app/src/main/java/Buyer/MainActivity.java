@@ -66,7 +66,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
      int sel=0,findShop=0; //flag variables
      FirebaseFirestore fstore;
      FirebaseAuth fauth;
-     LatLng latLng = null;
+     private static LatLng latLng = null;
      private String identifyAct = null;
      ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
 
@@ -78,6 +78,10 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     private GoogleMap googleMap;
     MarkerOptions markerOptions = null;
     private MarkerOptions markerOptions3= null;
+
+    public  static  LatLng getLatLng(){
+        return latLng;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

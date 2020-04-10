@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepth.maps.R;
 
@@ -17,15 +16,16 @@ import java.util.ArrayList;
 
 import Chats.ChatActivity;
 import Models.SellerList;
+import Models.mSellerProfile;
 import Seller.SellerDisplayActivity;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ShopListViewHolder> {
     Context context;
-    ArrayList<SellerList> list;
+    ArrayList<mSellerProfile> list;
 
-    public ShopListAdapter(Context context, ArrayList<SellerList> list) {
+    public ShopListAdapter(Context context, ArrayList<mSellerProfile> list) {
         this.context = context;
         this.list = list;
     }
@@ -39,13 +39,13 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ShopLi
 
     @Override
     public void onBindViewHolder(@NonNull ShopListViewHolder holder, int position) {
-        final SellerList obj=list.get(position);
-        holder.shopName.setText(obj.getName());
-        holder.desc.setText(obj.getDesc());
+        final mSellerProfile obj=list.get(position);
+        holder.shopName.setText(obj.getShopname());
+        holder.desc.setText(obj.getSelname());
         holder.call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity( new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + obj.getPh())));
+                context.startActivity( new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + obj.getCustcare())));
             }
         });
         holder.chat.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +59,9 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ShopLi
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //context.startActivity(new Intent(context, SellerDisplayActivity.class));
-                Toast.makeText(context, "Open SellerDisplayActivity", Toast.LENGTH_SHORT).show();
+                Intent i=new Intent(context, SellerDisplayActivity.class);
+                i.putExtra("SellerUid", obj.getUid());
+                context.startActivity(i);
             }
         });
     }
