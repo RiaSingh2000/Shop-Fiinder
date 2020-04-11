@@ -40,7 +40,6 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
     FirebaseAuth sAuth;
     RecyclerView listOfSellers;
     ArrayList<String> sellerUid;
-    //ArrayList<SellerList> list;
     ArrayList<mSellerProfile> list;
     FirebaseFirestore db;
     FirebaseAuth auth;
@@ -72,7 +71,7 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
         sellerUid=new ArrayList<>();
         auth=FirebaseAuth.getInstance();
 
-         FoldingCube foldingCube = new FoldingCube();
+        FoldingCube foldingCube = new FoldingCube();
         progressBar.setIndeterminateDrawable(foldingCube);
         db=FirebaseFirestore.getInstance();
         db.collection("Chats").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

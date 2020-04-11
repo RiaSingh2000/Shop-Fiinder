@@ -1,5 +1,6 @@
 package Seller;
 
+import Chats.ChatActivity;
 import Models.mSellerProfile;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -97,7 +98,7 @@ public class SellerDisplayActivity extends AppCompatActivity {
 
 
     public void goToChatActivity(View view) {
-        Intent intent = new Intent(this, SellerChatActivity.class);
+        Intent intent = new Intent(SellerDisplayActivity.this, ChatActivity.class);
         intent.putExtra("uid",mSellerProfile.getUid());
         startActivity(intent);
     }
