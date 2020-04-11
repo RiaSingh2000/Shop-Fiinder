@@ -9,6 +9,7 @@ public class mSellerProfile { //obj of this class is used when creating sellers 
     private String lat;
     private String lng;
     private String uid;
+    private String token;
 
     public String getUid() {
         return uid;
@@ -64,5 +65,13 @@ public class mSellerProfile { //obj of this class is used when creating sellers 
 
     public void setLoc(String loc) {
         this.loc = loc;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

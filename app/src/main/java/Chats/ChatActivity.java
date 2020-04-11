@@ -50,6 +50,7 @@ import com.codepth.maps.MyFirebaseMessagingService;
 import com.codepth.maps.R;
 import com.codepth.maps.SplashActivity;
 //import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.maps.internal.ICameraUpdateFactoryDelegate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -139,11 +140,11 @@ public class ChatActivity extends AppCompatActivity {
         cam.setOnClickListener(new View.OnClickListener() {
                                    @Override
                                    public void onClick(View view) {
-//                                       ImagePicker.Companion.with(ChatActivity.this)
-//                                               .cropSquare()
-//                                               .compress(512)
-//                                               .maxResultSize(720, 720)
-//                                               .start();
+                                       ImagePicker.Companion.with(ChatActivity.this)
+                                               .cropSquare()
+                                               .compress(512)
+                                               .maxResultSize(720, 720)
+                                               .start();
                                    }
                                });
 
@@ -152,7 +153,7 @@ public class ChatActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (msg.getText().toString().trim() != null || imageUri != null) {
+                if (!msg.getText().toString().trim().equals("") || imageUri != null) {
                     sendMessage();
                     msg.setText("");
                 }
@@ -166,16 +167,16 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == Activity.RESULT_OK) {
-//            filePath = ImagePicker.Companion.getFilePath(data);
-//            imageUri=Uri.parse(new File(filePath).toString());
-//            Toast.makeText(ChatActivity.this,filePath,Toast.LENGTH_LONG).show();
-//                }
-//        else if (resultCode == ImagePicker.RESULT_ERROR) {
-//            Toast.makeText(this, "Error Loading File", Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
-//        }
+        if (resultCode == Activity.RESULT_OK) {
+            filePath = ImagePicker.Companion.getFilePath(data);
+            imageUri=Uri.parse(new File(filePath).toString());
+            Toast.makeText(ChatActivity.this,filePath,Toast.LENGTH_LONG).show();
+                }
+        else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, "Error Loading File", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
