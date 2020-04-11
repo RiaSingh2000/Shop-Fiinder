@@ -32,6 +32,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -44,6 +45,7 @@ import com.android.volley.toolbox.Volley;
 import com.codepth.maps.MyFirebaseMessagingService;
 import com.codepth.maps.R;
 import com.codepth.maps.SplashActivity;
+//import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.maps.internal.ICameraUpdateFactoryDelegate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -97,13 +99,16 @@ public class ChatActivity extends AppCompatActivity {
         send = findViewById(R.id.send);
         chatsRv = findViewById(R.id.chatsRv);
         msg = findViewById(R.id.msg);
-        chatsRv.setLayoutManager(new LinearLayoutManager(ChatActivity.this, LinearLayoutManager.VERTICAL, false));
+        LinearLayoutManager manager=new LinearLayoutManager(ChatActivity.this, LinearLayoutManager.VERTICAL, false);
+        manager.setStackFromEnd(true);
+        chatsRv.setLayoutManager(manager);
         firestore = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
         VerticalSpacingItemDecoration itemDecoration = new VerticalSpacingItemDecoration(20);
         chatsRv.addItemDecoration(itemDecoration);
         receiveMessage();
         getToken();
+        Toast.makeText(this, "Uid"+uid, Toast.LENGTH_SHORT).show();
 
         if (ContextCompat.checkSelfPermission(ChatActivity.this,
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
@@ -128,8 +133,11 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 100);
-
-
+//                ImagePicker.Companion.with(ChatActivity.this)
+//                        .crop()        //Crop image(Optional), Check Customization for more option
+//                        .compress(1024)   //Final image size will be less than 1 MB(Optional)
+//                        .maxResultSize(1080, 1080) //Final image resolution will be less than 1080 x 1080(Optional)
+//                        .start();
             }
         });
 
@@ -163,10 +171,9 @@ public class ChatActivity extends AppCompatActivity {
                                 Toast.makeText(ChatActivity.this, "Token:"+tok, Toast.LENGTH_SHORT).show();
                             }
                         }
-
                     }
                 });
-        else
+        else if(role.equals("0"))
             firestore.collection("Buyer").get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -187,16 +194,18 @@ public class ChatActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-
         if (requestCode == 100) {
             if (resultCode == RESULT_OK) {
                 image = (Bitmap) data.getExtras().get("data");
                 cam.setImageBitmap(image);
             }
         }
+//        if (resultCode == RESULT_OK) {
+//            //Image Uri will not be null for RESULT_OK
+//            Uri fileUri = data.getData();
+//            Toast.makeText(this, "" + fileUri, Toast.LENGTH_SHORT).show();
+//        }
     }
-
-
 
     public void sendMessage() {
         String message = msg.getText().toString();

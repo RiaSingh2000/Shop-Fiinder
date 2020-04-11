@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
@@ -14,8 +15,12 @@ import android.widget.Toast;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import Buyer.BuyerChatActivity;
 import Buyer.MainActivity;
+import Seller.SellerChatActivity;
 import androidx.core.app.NotificationCompat;
+
+import static Seller.SellerPhoneAuth.Shared_pref;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
@@ -69,7 +74,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     }
 
     private void sendNotification(String messageBody) {
-        Intent intent = new Intent(this, MainActivity.class);
+        SharedPreferences sharedPreferences = getSharedPreferences(Shared_pref, MODE_PRIVATE);
+        String role = sharedPreferences.getString("role", "-1");
+        Intent intent;
+        if(role.equals("1"))
+         intent= new Intent(this, BuyerChatActivity.class);
+        else if(role.equals("0"))
+            intent= new Intent(this, SellerChatActivity.class);
+        else
+            intent=new Intent(this,SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);

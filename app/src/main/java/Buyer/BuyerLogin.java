@@ -154,7 +154,6 @@ public class BuyerLogin extends AppCompatActivity {
         DocumentReference documentReference=fstore.collection("Buyer").document(currentuserid);
         documentReference.update("token",SplashActivity.token);
 
-        fstore.collection("Buyer").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
         fstore.collection("Buyer").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
