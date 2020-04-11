@@ -10,8 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Buyer name"
-        android:textSize="25dp"
+        android:textSize="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:textAllCaps="true"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/bungee"
+        app:fontFamily="@font/bungee"/>
 
 </androidx.cardview.widget.CardView>
