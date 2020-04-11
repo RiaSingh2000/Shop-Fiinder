@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 
 import com.codepth.maps.R;
+import com.codepth.maps.SplashActivity;
 import com.codepth.maps.Welcomepage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -50,6 +51,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity  extends FragmentActivity  implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -391,6 +393,9 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 break;
             }
             case R.id.logoutDrawableItem :{
+                DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
+                documentReference.update("token","");
+
                 FirebaseAuth.getInstance().signOut();
                 if(DrawerController.sendUsertologinactivity(getApplicationContext())) {
                     this.overridePendingTransition(0,0);

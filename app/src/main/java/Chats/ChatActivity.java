@@ -160,6 +160,7 @@ public class ChatActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot snapshot : task.getResult()) {
                                 if (snapshot.getData().get("uid").toString().equals(uid))
                                     tok = snapshot.getData().get("token").toString();
+                                Toast.makeText(ChatActivity.this, "Token:"+tok, Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -174,6 +175,7 @@ public class ChatActivity extends AppCompatActivity {
                                 for (QueryDocumentSnapshot snapshot : task.getResult()) {
                                     if (snapshot.getData().get("uid").toString().equals(uid))
                                         tok = snapshot.getData().get("token").toString();
+                                    Toast.makeText(ChatActivity.this, ""+tok, Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
