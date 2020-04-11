@@ -15,11 +15,35 @@
       },
       "oauth_client": [
         {
-          "client_id": "505309036747-80j8s0vrgq1f7pv5uqlacu30qm0gi8so.apps.googleusercontent.com",
+          "client_id": "505309036747-ug2qh32pl1anul03g6vb31crpujc722h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codepth.maps",
+            "certificate_hash": "f38b1031185150c6a0e7af3de9976cf9c0b7ddcc"
+          }
+        },
+        {
+          "client_id": "505309036747-ah0f7uf2qpnifh2okeikf57mjq4uibf4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codepth.maps",
+            "certificate_hash": "dff5f3a0f38233502e984af5d7ad43caf82640b9"
+          }
+        },
+        {
+          "client_id": "505309036747-kjt96ige9h76o2gv8tth3l4ds1giuh4s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.codepth.maps",
             "certificate_hash": "7e6278d029502fbeabd031fbd0198cec69a865bb"
+          }
+        },
+        {
+          "client_id": "505309036747-ii3nvbihkq5gdbq84qf7dvjqm6qhq7vd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codepth.maps",
+            "certificate_hash": "223bade8ad826b895bfffab13c380a25b0fd7a3a"
           }
         },
         {

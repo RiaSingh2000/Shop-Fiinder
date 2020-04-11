@@ -25,6 +25,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.codepth.maps.R;
+import com.codepth.maps.SplashActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -121,6 +123,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 profilemap.put("Street",Street);
                 profilemap.put("Locality",loc);
                 profilemap.put("House",House);
+                profilemap.put("token", SplashActivity.token);
                 while (userLoc==null);
 //                profilemap.put("lat",Double.toString(userLoc.getLatitude()));
 //                profilemap.put("lng",Double.toString(userLoc.getLongitude()));
