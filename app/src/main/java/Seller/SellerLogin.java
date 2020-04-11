@@ -90,7 +90,7 @@ public class SellerLogin extends AppCompatActivity {
             public void onVerificationFailed(FirebaseException e) {
                 loadingbar.dismiss();
 
-                Toast.makeText(SellerLogin.this, "Invalid please enter correct phone number with your country code", Toast.LENGTH_LONG).show();
+                Toast.makeText(SellerLogin.this, "Invalid please enter correct phone number"+e, Toast.LENGTH_LONG).show();
 
             }
 
@@ -180,7 +180,7 @@ public class SellerLogin extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SellerLogin.this, "Failed with Exception" + e, Toast.LENGTH_LONG).show();
+                Toast.makeText(SellerLogin.this, "Failed with Exception", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(SellerLogin.this, Welcomepage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

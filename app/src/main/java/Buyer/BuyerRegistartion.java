@@ -161,7 +161,7 @@ public class BuyerRegistartion extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(BuyerRegistartion.this, "Failed with:" + e, Toast.LENGTH_LONG).show();
+                Toast.makeText(BuyerRegistartion.this, "Failed with:", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(BuyerRegistartion.this, Welcomepage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

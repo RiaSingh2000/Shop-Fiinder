@@ -200,7 +200,7 @@ public class SellerPhoneAuth extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SellerPhoneAuth.this, "Failed with Exception:" + e, Toast.LENGTH_LONG).show();
+                Toast.makeText(SellerPhoneAuth.this, "Failed with Exception:", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(SellerPhoneAuth.this, Welcomepage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

@@ -30,6 +30,9 @@ import android.widget.Toast;
 
 import com.codepth.maps.R;
 import com.codepth.maps.SplashActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -196,13 +199,16 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 //if user pressed "yes", then he is allowed to exit from application
                 if(existence==true)
                 {
+
                     Intent intent = new Intent(BuyeProfileCreation.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 }
                 else
+                {
                 finish();
+                signout();}
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -215,6 +221,24 @@ public class BuyeProfileCreation extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+    private void signout() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // Firebase sign out
+        FirebaseAuth.getInstance().signOut();
+
+        // Google revoke access
+        mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                    }
+                });
+}
 
     private void hideSoftKeyboard(View v) {
         InputMethodManager imm=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
