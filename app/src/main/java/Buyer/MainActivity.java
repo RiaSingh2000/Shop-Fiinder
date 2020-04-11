@@ -27,6 +27,9 @@ import android.widget.Toast;
 
 import com.codepth.maps.R;
 import com.codepth.maps.Welcomepage;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -391,7 +394,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 break;
             }
             case R.id.logoutDrawableItem :{
-                FirebaseAuth.getInstance().signOut();
+              revokeAccess();
                 if(DrawerController.sendUsertologinactivity(getApplicationContext())) {
                     this.overridePendingTransition(0,0);
                     finish();
@@ -403,6 +406,23 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         item.setChecked(true);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private void revokeAccess() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+       GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // Firebase sign out
+        FirebaseAuth.getInstance().signOut();
+
+        // Google revoke access
+        mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                    }
+                });
     }
 
 }
