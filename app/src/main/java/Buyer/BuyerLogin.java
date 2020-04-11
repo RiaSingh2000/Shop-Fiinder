@@ -146,10 +146,10 @@ public class BuyerLogin extends AppCompatActivity {
 
     private void verifyexistence() {
         String currentuserid = firebaseAuth.getCurrentUser().getUid();
-        fstore.collection("Buyer").document(firebaseAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        fstore.collection("Buyer").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
+                if (task.getResult().exists()) {
                     SharedPreferences sharedPreferences = getSharedPreferences(Shared_pref, MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("role", "1");
@@ -162,11 +162,10 @@ public class BuyerLogin extends AppCompatActivity {
                 }
                 else
                 {
-                    FirebaseAuth.getInstance().signOut();
+                    signOut();
                     Toast.makeText(BuyerLogin.this, "No such user exists", Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(BuyerLogin.this, Welcomepage.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
                     startActivity(intent);
                     finish();
                 }
@@ -184,5 +183,25 @@ public class BuyerLogin extends AppCompatActivity {
             }
         });
     }
+
+    private void signOut() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // Firebase sign out
+        FirebaseAuth.getInstance().signOut();
+
+        // Google revoke access
+        mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                    }
+                });
+
+}
+
 
 }
