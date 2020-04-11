@@ -1,17 +1,22 @@
 package Seller;
 
+import Chats.ChatActivity;
 import Models.mSellerProfile;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepth.maps.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,8 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class SellerDisplayActivity extends AppCompatActivity {
 
     //ACTIVITY WIDGETS
-    TextView tvShopName , tvSellerName , tvLocation , tvCall;
-    Button  btnChat ;
+    TextView tvShopName , tvSellerName , tvLocation;
+    Button btnChat ,tvCall,nav;
     private ProgressDialog progressDialog;
 
     //FIREBASE
@@ -52,6 +57,7 @@ public class SellerDisplayActivity extends AppCompatActivity {
         tvSellerName = findViewById(R.id.tvSellerName);
         tvLocation = findViewById(R.id.tvShopLocation);
         progressDialog=new ProgressDialog(this);
+        nav=findViewById(R.id.nav);
     }
 
     private void fetchSellerInfoFromFirebase() {
@@ -81,12 +87,32 @@ public class SellerDisplayActivity extends AppCompatActivity {
         });
     }
 
-    private void editWidgets(Models.mSellerProfile mSellerProfile) {
+    private void editWidgets(final Models.mSellerProfile mSellerProfile) {
         tvShopName.setText(mSellerProfile.getShopname());
         tvSellerName.setText(mSellerProfile.getSelname());
         tvLocation.setText(mSellerProfile.getLoc());
-        tvCall.setText(mSellerProfile.getCustcare());
+        //tvCall.setText(mSellerProfile.getCustcare());
         progressDialog.dismiss();
+
+        nav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String uri = "google.navigation:q=" + Double.parseDouble(mSellerProfile.getLat()) + "," + Double.parseDouble(mSellerProfile.getLng());
+                Uri navigationIntentUri = Uri.parse(uri);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, navigationIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                try {
+                    startActivity(mapIntent);
+                } catch (ActivityNotFoundException ex) {
+                    try {
+                        Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                        startActivity(unrestrictedIntent);
+                    } catch (ActivityNotFoundException innerEx) {
+                        Toast.makeText(SellerDisplayActivity.this, "Please install a maps application", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
     }
 
     private String receiveUid() { //gets uid of the clicked marker shop from intentExtra
@@ -97,9 +123,13 @@ public class SellerDisplayActivity extends AppCompatActivity {
 
 
     public void goToChatActivity(View view) {
-        Intent intent = new Intent(this, SellerChatActivity.class);
+        Intent intent = new Intent(this, ChatActivity.class);
         intent.putExtra("uid",mSellerProfile.getUid());
         startActivity(intent);
+    }
+
+    public void call(View view) {
+       startActivity( new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mSellerProfile.getCustcare())));
     }
 
 }

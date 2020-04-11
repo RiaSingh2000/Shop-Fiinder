@@ -3,6 +3,7 @@ package Adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,7 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ShopLi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ShopListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ShopListViewHolder holder, int position) {
         final mSellerProfile obj=list.get(position);
         holder.shopName.setText(obj.getShopname());
         holder.desc.setText(obj.getSelname());
@@ -61,6 +62,14 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ShopLi
                 Intent i=new Intent(context, SellerDisplayActivity.class);
                 i.putExtra("SellerUid", obj.getUid());
                 context.startActivity(i);
+            }
+        });
+        holder.linearLayout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Log.w("TESTING LONG PRESS=>","testin------------------------");
+                //holder.linearLayout.removeView(view);
+                return true;
             }
         });
     }

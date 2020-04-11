@@ -20,9 +20,13 @@ import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepth.maps.R;
+import com.github.ybq.android.spinkit.style.FoldingCube;
+import com.github.ybq.android.spinkit.style.RotatingPlane;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,6 +45,7 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
     FirebaseFirestore db;
     private DrawerLayout drawerLayout;
     private NavigationView navView;
+    private ProgressBar progressBar;
     private static LatLng myLatLng = MainActivity.getLatLng();
 
     @Override
@@ -52,6 +57,7 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
         navView = findViewById(R.id.nv);
         navView.setNavigationItemSelectedListener(this);
         drawerLayout = findViewById(R.id.activity_main_drawerlayout);
+        progressBar = findViewById(R.id.spinKit);
         Toolbar toolbar = findViewById(R.id.toolbar_list);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
@@ -78,7 +84,9 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
             }
         });*/
 
-
+        FoldingCube foldingCube = new FoldingCube();
+        //foldingCube.setColor(R.color.appThemeYellow);
+        progressBar.setIndeterminateDrawable(foldingCube);
         db.collection("Seller")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -96,10 +104,13 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
                                     mSellerProfileArrayList.add(mSellerProfile);
                                 }
                                 listOFShops.setAdapter(new ShopListAdapter(SellerListActivity.this, mSellerProfileArrayList));
+                                progressBar.setVisibility(View.INVISIBLE);
                             }
 
-                        } else
+                        } else {
+                            progressBar.setVisibility(View.INVISIBLE);
                             Toast.makeText(SellerListActivity.this, "No shops registered", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
     }

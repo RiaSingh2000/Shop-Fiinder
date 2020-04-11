@@ -84,34 +84,50 @@
         android:fontFamily="@font/antic"
         app:fontFamily="@font/antic"
         android:layout_marginTop="10dp"/>
-    <TextView
-        android:id="@+id/tvCall"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CALL"
-        android:textAlignment="center"
-        android:autoLink="phone"
-        android:textSize="35sp"
-        android:fontFamily="@font/bungee"
-        app:fontFamily="@font/bungee"
-        android:layout_margin="48dp"
-        android:linksClickable="true"
-        android:background="@drawable/edit_text_design"
-        android:gravity="center_horizontal"
-        />
-    <Button
-        android:id="@+id/btnChat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ORDER VIA APP"
-        android:fontFamily="@font/antic"
-        app:fontFamily="@font/antic"
-        android:textStyle="bold"
-        android:textColor="@android:color/white"
-        android:background="@drawable/btn_design2"
-        android:onClick="goToChatActivity"
-        android:layout_margin="48dp"
-        />
+        android:weightSum="3">
+
+        <Button
+            android:id="@+id/tvCall"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="48dp"
+            android:layout_weight="1"
+            android:onClick="call"
+            android:background="@drawable/call"
+            android:linksClickable="true" />
+
+        <Button
+            android:id="@+id/btnChat"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/chat"
+            android:fontFamily="@font/antic"
+            android:onClick="goToChatActivity"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:fontFamily="@font/antic" />
+
+        <Button
+            android:id="@+id/nav"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/navigation"
+            android:fontFamily="@font/antic"
+            android:onClick="goToChatActivity"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            app:fontFamily="@font/antic" />
+
+
+    </LinearLayout>
 
 
 </LinearLayout>
