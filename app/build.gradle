@@ -45,10 +45,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-places:17.0.0'
     implementation 'com.google.android.libraries.places:places:2.2.0'
 
-    //implementation "androidx.drawerlayout:drawerlayout:1.0.0" //androidx drawer layout
-
-    //implementation 'com.google.android.material:material:1.0.0'
-    //implementation 'androidx.navigation:navigation-runtime:2.0.0' // androidx navigation
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation "androidx.navigation:navigation-ui:2.0.0"
     implementation 'com.google.firebase:firebase-messaging:20.1.5'
 }

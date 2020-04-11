@@ -26,7 +26,7 @@ import android.widget.Toast;
 
 
 import com.codepth.maps.R;
-import com.codepth.maps.Welcomepage;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;

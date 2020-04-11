@@ -16,10 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
 import com.codepth.maps.R;
+import com.github.ybq.android.spinkit.style.FoldingCube;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -41,6 +44,7 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
     ArrayList<mSellerProfile> list;
     FirebaseFirestore db;
     FirebaseAuth auth;
+    private ProgressBar progressBar;
     private Toolbar toolbar;
 
     @Override
@@ -48,6 +52,8 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buyer_chat);
         DrawerController.setIdentity("BuyerChatActivity");
+
+        progressBar = findViewById(R.id.spinKit);
         navView = findViewById(R.id.nv);
         navView.setNavigationItemSelectedListener(this);
         drawerLayout = findViewById(R.id.activity_main_drawerlayout2);
@@ -55,8 +61,7 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        //setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         sAuth=FirebaseAuth.getInstance();
         uid=sAuth.getUid();
         listOfSellers=findViewById(R.id.listOfShops);
@@ -67,7 +72,8 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
         sellerUid=new ArrayList<>();
         auth=FirebaseAuth.getInstance();
 
-
+         FoldingCube foldingCube = new FoldingCube();
+        progressBar.setIndeterminateDrawable(foldingCube);
         db=FirebaseFirestore.getInstance();
         db.collection("Chats").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -102,6 +108,7 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
                         }
                     }
                     listOfSellers.setAdapter(new ShopListAdapter(BuyerChatActivity.this,list));
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             }
         });
