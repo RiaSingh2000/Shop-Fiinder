@@ -29,8 +29,6 @@ import android.widget.Toast;
 
 
 import com.codepth.maps.R;
-import com.codepth.maps.SplashActivity;
-import com.codepth.maps.Welcomepage;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;

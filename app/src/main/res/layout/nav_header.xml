@@ -23,6 +23,6 @@ android:theme="@style/ThemeOverlay.AppCompat.Dark">
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="16dp"
-    android:text="USER NAME"
+    android:text="SHOP FINDER"
     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 </LinearLayout>

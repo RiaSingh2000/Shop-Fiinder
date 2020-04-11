@@ -11,9 +11,12 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.util.Base64;
 
 import android.Manifest;
@@ -42,12 +45,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
 import com.codepth.maps.MyFirebaseMessagingService;
 import com.codepth.maps.R;
 import com.codepth.maps.SplashActivity;
 //import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.maps.internal.ICameraUpdateFactoryDelegate;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -70,6 +75,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -87,6 +93,8 @@ public class ChatActivity extends AppCompatActivity {
     Bitmap image;
     private RequestQueue requestQueue;
     String tok;
+    private boolean hasDataEdited = false;
+    private String filePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +116,7 @@ public class ChatActivity extends AppCompatActivity {
         chatsRv.addItemDecoration(itemDecoration);
         receiveMessage();
         getToken();
-        Toast.makeText(this, "Uid"+uid, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Uid"+uid, //Toast.LENGTH_SHORT).show();
 
         if (ContextCompat.checkSelfPermission(ChatActivity.this,
                 Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
@@ -129,17 +137,17 @@ public class ChatActivity extends AppCompatActivity {
         }
 
         cam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 100);
-//                ImagePicker.Companion.with(ChatActivity.this)
-//                        .crop()        //Crop image(Optional), Check Customization for more option
-//                        .compress(1024)   //Final image size will be less than 1 MB(Optional)
-//                        .maxResultSize(1080, 1080) //Final image resolution will be less than 1080 x 1080(Optional)
-//                        .start();
-            }
-        });
+                                   @Override
+                                   public void onClick(View view) {
+//                                       ImagePicker.Companion.with(ChatActivity.this)
+//                                               .cropSquare()
+//                                               .compress(512)
+//                                               .maxResultSize(720, 720)
+//                                               .start();
+                                   }
+                               });
+
+
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,6 +163,22 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        if (resultCode == Activity.RESULT_OK) {
+//            filePath = ImagePicker.Companion.getFilePath(data);
+//            imageUri=Uri.parse(new File(filePath).toString());
+//            Toast.makeText(ChatActivity.this,filePath,Toast.LENGTH_LONG).show();
+//                }
+//        else if (resultCode == ImagePicker.RESULT_ERROR) {
+//            Toast.makeText(this, "Error Loading File", Toast.LENGTH_SHORT).show();
+//        } else {
+//            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
+//        }
+    }
+
+
 
     public  void  getToken() {
         SharedPreferences sharedPreferences = getSharedPreferences(Shared_pref, MODE_PRIVATE);
@@ -190,7 +214,7 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -203,9 +227,9 @@ public class ChatActivity extends AppCompatActivity {
 //        if (resultCode == RESULT_OK) {
 //            //Image Uri will not be null for RESULT_OK
 //            Uri fileUri = data.getData();
-//            Toast.makeText(this, "" + fileUri, Toast.LENGTH_SHORT).show();
+//            //Toast.makeText(this, "" + fileUri, //Toast.LENGTH_SHORT).show();
 //        }
-    }
+    }*/
 
     public void sendMessage() {
         String message = msg.getText().toString();
@@ -213,7 +237,7 @@ public class ChatActivity extends AppCompatActivity {
         map.put("msg", msg.getText().toString());
         map.put("sender", auth.getUid());
         map.put("receiver", uid);
-        map.put("img", "");
+        map.put("img","");
         map.put("timestamp", String.valueOf(System.currentTimeMillis()));
 
 
@@ -244,7 +268,7 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
-        // Toast.makeText(this, "Received", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Received",Toast.LENGTH_SHORT).show();
     }
 
 
@@ -270,7 +294,7 @@ public class ChatActivity extends AppCompatActivity {
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(ChatActivity.this, "Error"+error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChatActivity.this, "Error"+error,Toast.LENGTH_SHORT).show();
                         }
                     })
             {

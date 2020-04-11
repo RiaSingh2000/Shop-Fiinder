@@ -7,12 +7,12 @@
 
         <item
             android:id="@+id/mapDrawableItem"
-            android:title="Map"
+            android:title="Shops In Map"
             android:icon="@drawable/ic_home"/>
 
         <item
             android:id="@+id/shopListDrawableItem"
-            android:title="Shop Lists"
+            android:title="Nearby Shops List"
             android:icon="@drawable/ic_list_activity"/>
 
         <item
@@ -20,6 +20,7 @@
             android:title="Chat Lists"
             android:icon="@drawable/ic_chat_activity"
             app:actionLayout="@layout/notification_counter"/>
+
     </group>
 
 

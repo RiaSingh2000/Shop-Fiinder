@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
@@ -38,10 +40,10 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
     FirebaseAuth sAuth;
     RecyclerView listOfSellers;
     ArrayList<String> sellerUid;
-    //ArrayList<SellerList> list;
     ArrayList<mSellerProfile> list;
     FirebaseFirestore db;
     FirebaseAuth auth;
+    private ProgressBar progressBar;
     private Toolbar toolbar;
 
     @Override
@@ -49,6 +51,8 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buyer_chat);
         DrawerController.setIdentity("BuyerChatActivity");
+
+        progressBar = findViewById(R.id.spinKit);
         navView = findViewById(R.id.nv);
         navView.setNavigationItemSelectedListener(this);
         drawerLayout = findViewById(R.id.activity_main_drawerlayout2);
@@ -56,8 +60,7 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        //setSupportActionBar(toolbar);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         sAuth=FirebaseAuth.getInstance();
         uid=sAuth.getUid();
         listOfSellers=findViewById(R.id.listOfShops);
@@ -108,6 +111,7 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
                         }
                     }
                     listOfSellers.setAdapter(new ShopListAdapter(BuyerChatActivity.this,list));
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
                 else {
                     Toast.makeText(BuyerChatActivity.this, "Loading...", Toast.LENGTH_SHORT).show();

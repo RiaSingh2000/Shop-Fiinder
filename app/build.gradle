@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.codepth.maps"
-        minSdkVersion 16
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -44,6 +44,8 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.android.gms:play-services-places:17.0.0'
     implementation 'com.google.android.libraries.places:places:2.2.0'
+
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'com.android.volley:volley:1.1.1'
     //implementation "androidx.drawerlayout:drawerlayout:1.0.0" //androidx drawer layout
 
@@ -51,4 +53,13 @@ dependencies {
     //implementation 'androidx.navigation:navigation-runtime:2.0.0' // androidx navigation
     implementation "androidx.navigation:navigation-ui:2.0.0"
     implementation 'com.google.firebase:firebase-messaging:20.1.5'
+    implementation("androidx.work:work-runtime:2.3.4") {
+        exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+    //Image Picker
+    implementation 'com.github.dhaval2404:imagepicker:1.7.1'
+    implementation 'com.karumi:dexter:6.1.0'
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+
 }
