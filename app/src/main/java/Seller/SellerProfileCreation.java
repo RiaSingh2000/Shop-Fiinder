@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.codepth.maps.R;
+import com.codepth.maps.SplashActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -145,6 +146,7 @@ public class SellerProfileCreation extends AppCompatActivity {
                 profilemap.put("lat",Double.toString(lat));
                 profilemap.put("lng",Double.toString(lng));
                 profilemap.put("uid",mSellerProfile.getUid());
+                profilemap.put("token", SplashActivity.token);
 
                 //TODO: description of shop when added should be in a document inside a new collection pointed by each seller's document
                 //TODO: The custcare and seller name can also be moved to this new document

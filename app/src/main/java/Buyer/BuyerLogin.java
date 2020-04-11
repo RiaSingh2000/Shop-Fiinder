@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.codepth.maps.R;
+import com.codepth.maps.SplashActivity;
 import com.codepth.maps.Welcomepage;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,8 +27,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 import static Seller.SellerPhoneAuth.Shared_pref;
 
@@ -147,6 +151,10 @@ public class BuyerLogin extends AppCompatActivity {
 
     private void verifyexistence() {
         String currentuserid = firebaseAuth.getCurrentUser().getUid();
+        DocumentReference documentReference=fstore.collection("Buyer").document(currentuserid);
+        documentReference.update("token",SplashActivity.token);
+
+        fstore.collection("Buyer").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
         fstore.collection("Buyer").document(currentuserid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {

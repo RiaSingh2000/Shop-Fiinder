@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.codepth.maps.R;
+import com.codepth.maps.SplashActivity;
 import com.codepth.maps.Welcomepage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -151,6 +153,8 @@ public class SellerLogin extends AppCompatActivity {
 
     private void  verifyexistence() {
         String currentuserid = mAuth.getCurrentUser().getUid();
+        DocumentReference documentReference=fstore.collection("Seller").document(currentuserid);
+        documentReference.update("token", SplashActivity.token);
         fstore.collection("Seller").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
