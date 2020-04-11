@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import Buyer.BuyeProfileCreation;
 import com.codepth.maps.R;
 import com.codepth.maps.Welcomepage;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -136,6 +137,7 @@ public class BuyerRegistartion extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.getResult().exists()) {
+                        FirebaseAuth.getInstance().signOut();
                         Toast.makeText(BuyerRegistartion.this,"User  already exists..Login instead",Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(BuyerRegistartion.this, Welcomepage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

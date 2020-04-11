@@ -11,7 +11,17 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        app:title="Buyers List"/>
+        app:title="Buyers List"
+        app:titleTextColor="@android:color/white"
+        android:background="#fece2f">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/shoppingbag"
+            android:layout_marginLeft="10dp"/>
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listOfBuyers"

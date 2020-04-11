@@ -1,6 +1,9 @@
 package Buyer;
 
 import Adapters.PlacesAutoCompleteAdapter;
+import Buyer.MainActivity;
+import Common.DrawerController;
+import Models.mBuyerProfile;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -9,6 +12,7 @@ import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -28,12 +32,10 @@ import com.codepth.maps.R;
 import com.codepth.maps.SplashActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -54,26 +56,32 @@ public class BuyeProfileCreation extends AppCompatActivity {
     private static final int REQUEST_CODE=101;
     Location userLoc=null;
     double lat,lng;
+    private mBuyerProfile mBuyerProfile=null;
+    private ProgressDialog progressDialog;
+    Boolean existence=false;
+
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
-        name=findViewById(R.id.etName);
-        phn=findViewById(R.id.etPhone);
-        street=findViewById(R.id.etStreet);
-        locality=findViewById(R.id.etLocality);
-        house=findViewById(R.id.etHouse);
-        Create_pofile=findViewById(R.id.btRegister);
-        fauth=FirebaseAuth.getInstance();
+        DrawerController.setIdentity("SettingsActivity");
+        progressDialog=new ProgressDialog(this);
+        name = findViewById(R.id.etName);
+        phn = findViewById(R.id.etPhone);
+        street = findViewById(R.id.etStreet);
+        locality = findViewById(R.id.etLocality);
+        house = findViewById(R.id.etHouse);
+        Create_pofile = findViewById(R.id.btRegister);
+        fauth = FirebaseAuth.getInstance();
         userLoc = new Location(LocationManager.GPS_PROVIDER);
-        fstore=FirebaseFirestore.getInstance();
-        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(BuyeProfileCreation.this);
+        userid = fauth.getCurrentUser().getUid();
+        fstore = FirebaseFirestore.getInstance();
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(BuyeProfileCreation.this);
         fetchLastLoc();
-        locality.setAdapter(new PlacesAutoCompleteAdapter(BuyeProfileCreation.this,android.R.layout.simple_list_item_1));
-
-
+        locality.setAdapter(new PlacesAutoCompleteAdapter(BuyeProfileCreation.this, android.R.layout.simple_list_item_1));
+        Retriveinfo();
         Create_pofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +122,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
                     Toast.makeText(BuyeProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show();
                 }
 
-                userid=fauth.getCurrentUser().getUid();
+
                 DocumentReference documentReference=fstore.collection("Buyer").document(userid);
                 HashMap<String,String> profilemap=new HashMap<>();
                 profilemap.put("uid",userid);
@@ -186,6 +194,14 @@ public class BuyeProfileCreation extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //if user pressed "yes", then he is allowed to exit from application
+                if(existence==true)
+                {
+                    Intent intent = new Intent(BuyeProfileCreation.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+                else
                 finish();
             }
         });
@@ -205,9 +221,51 @@ public class BuyeProfileCreation extends AppCompatActivity {
         imm.hideSoftInputFromWindow(v.getWindowToken(),0);
     }
 
+    private void Retriveinfo() {
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setMessage("We Are Fetching Your Information...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+        fstore= FirebaseFirestore.getInstance();
+        DocumentReference docRef = fstore.collection("Buyer").document(userid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        existence=true;
+                        Create_pofile.setText("Update Profile");
+                        mBuyerProfile = document.toObject(Models.mBuyerProfile.class);
+                        setExistingData(mBuyerProfile);
+                        //setLayoutWidgets(mBuyerPrsetExistingData(mBuyerProfile);
+                    } else {
+                        progressDialog.dismiss();
+                        //Toast.makeText(BuyeProfileCreation.this,"No data history found",Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(BuyeProfileCreation.this,"No data history found task failed",Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
 
 
-}
+    }
+
+    private void setExistingData(Models.mBuyerProfile mBuyerProfile) {
+            name.setText(mBuyerProfile.getName());
+            phn.setText(mBuyerProfile.getphone());
+            street.setText(mBuyerProfile.getStreet());
+            Toast.makeText(BuyeProfileCreation.this,mBuyerProfile.getStreet(),Toast.LENGTH_LONG).show();
+            locality.setText(mBuyerProfile.getLocality());
+            house.setText(mBuyerProfile.getHouse());
+            progressDialog.dismiss();
+
+
+        }
+    }
 
 
 

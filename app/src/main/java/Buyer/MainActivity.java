@@ -1,5 +1,6 @@
 package Buyer;
 
+import Common.DrawerController;
 import Models.mSellerProfile;
 import Models.mShops;
 import Seller.SellerDisplayActivity;
@@ -23,7 +24,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+
 import com.codepth.maps.R;
+import com.codepth.maps.Welcomepage;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -64,9 +67,8 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
      int sel=0,findShop=0; //flag variables
      FirebaseFirestore fstore;
      FirebaseAuth fauth;
-     LatLng latLng = null;
-     private String identifyAct = null;
-     ArrayList<mShops> mShopsArrayList = new ArrayList<mShops>();
+     private static LatLng latLng = null;
+     ArrayList<mShops> mShopsArrayList = new ArrayList<>();
 
     private static final int REQUEST_CODE=101;
     private static final String[] options=new String[]{
@@ -77,22 +79,28 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     MarkerOptions markerOptions = null;
     private MarkerOptions markerOptions3= null;
 
+    public  static  LatLng getLatLng(){
+        return latLng;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        identifyAct = "MainActivity";
+        DrawerController.setIdentity("MainActivity");
         navView = findViewById(R.id.nv);
         navView.setNavigationItemSelectedListener(this);
         drawerLayout = findViewById(R.id.activity_main_drawerlayout);
         Toolbar toolbar=findViewById(R.id.toolbar);
         progressDialog=new ProgressDialog(this);
-        //setSupportActionBar(toolbar);
+
+
+
 
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
 
 
         fstore=FirebaseFirestore.getInstance();
@@ -343,21 +351,27 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.mapDrawableItem :{
-                if(identifyAct.equals("MainActivity")){
-                    break;
+                if(DrawerController.toMainActivity(getApplicationContext())){
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
                 }
-                else {
-                    Intent intent = new Intent(this,MainActivity.class);
-                    startActivity(intent);
-                    break;
-                }
+                break;
             }
             case R.id.shopListDrawableItem :{
-                startActivity(new Intent(MainActivity.this,SellerListActivity.class));
+                if(DrawerController.toShopList(getApplicationContext())){
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
                 break;
             }
             case R.id.chatListDrawableItem :{
-                startActivity(new Intent(MainActivity.this,BuyerChatActivity.class));
+                if(DrawerController.toChatList(getApplicationContext())) {
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
                 break;
             }
             case R.id.aboutUsDrawableList :{
@@ -369,11 +383,20 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 break;
             }
             case R.id.settingsDrawableItem :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                if(DrawerController.sendUserToSettingActivity(getApplicationContext())) {
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
                 break;
             }
             case R.id.logoutDrawableItem :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                FirebaseAuth.getInstance().signOut();
+                if(DrawerController.sendUsertologinactivity(getApplicationContext())) {
+                    this.overridePendingTransition(0,0);
+                    finish();
+                    this.overridePendingTransition(0,0);
+                }
                 break;
             }
         }
@@ -381,4 +404,5 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }
