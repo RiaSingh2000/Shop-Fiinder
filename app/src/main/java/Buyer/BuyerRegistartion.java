@@ -19,6 +19,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -131,13 +133,48 @@ public class BuyerRegistartion extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
-            String currentuserid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            //Toast.makeText(getContext(), "No such user exists", Toast.LENGTH_LONG).show();
-            FirebaseFirestore.getInstance().collection("Buyer").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        String currentuserid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        //Toast.makeText(getContext(), "No such user exists", Toast.LENGTH_LONG).show();
+        FirebaseFirestore.getInstance().collection("Buyer").document(currentuserid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    signOut();
+                    Toast.makeText(BuyerRegistartion.this, "User  already exists..Login instead", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(BuyerRegistartion.this, Welcomepage.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+
+                } else {
+                    SharedPreferences sharedPreferences = getSharedPreferences(Shared_pref, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("role", "1");
+                    editor.apply();
+                    Intent intent = new Intent(BuyerRegistartion.this, BuyeProfileCreation.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    Toast.makeText(BuyerRegistartion.this, "Welcome", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(BuyerRegistartion.this, "Failed with:" + e, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(BuyerRegistartion.this, Welcomepage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
+           /* FirebaseFirestore.getInstance().collection("Buyer").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.getResult().exists()) {
-                        FirebaseAuth.getInstance().signOut();
+                        signOut();
                         Toast.makeText(BuyerRegistartion.this,"User  already exists..Login instead",Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(BuyerRegistartion.this, Welcomepage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -159,6 +196,25 @@ public class BuyerRegistartion extends AppCompatActivity {
                 }
             });
         }
+*/
+    private void signOut() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // Firebase sign out
+        FirebaseAuth.getInstance().signOut();
 
+        // Google revoke access
+        mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                    }
+                });
 
     }
+
+
+}
