@@ -14,6 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -67,6 +68,11 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
         sellerUid=new ArrayList<>();
         auth=FirebaseAuth.getInstance();
 
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("count",0);
+        editor.apply();
+
 
         db=FirebaseFirestore.getInstance();
         db.collection("Chats").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -102,6 +108,9 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
                         }
                     }
                     listOfSellers.setAdapter(new ShopListAdapter(BuyerChatActivity.this,list));
+                }
+                else {
+                    Toast.makeText(BuyerChatActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
                 }
             }
         });

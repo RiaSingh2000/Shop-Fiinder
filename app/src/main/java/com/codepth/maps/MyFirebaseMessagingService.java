@@ -17,6 +17,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import Buyer.BuyerChatActivity;
 import Buyer.MainActivity;
+import Buyer.SellerListActivity;
 import Seller.SellerChatActivity;
 import androidx.core.app.NotificationCompat;
 
@@ -31,6 +32,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // ...
         sendNotification(remoteMessage.getNotification().getBody());
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        int count=sharedPreferences.getInt("count",0);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("count",count+1);
+        editor.apply();
 
         // TODO(developer): Handle FCM messages here.
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ

@@ -6,6 +6,7 @@ import Common.VerticalSpacingItemDecoration;
 import Models.mSellerProfile;
 import Models.mShops;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,10 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepth.maps.R;
@@ -40,7 +43,7 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
     ArrayList<mSellerProfile> mSellerProfileArrayList;
     FirebaseFirestore db;
     private DrawerLayout drawerLayout;
-    private NavigationView navView;
+    private static NavigationView navView;
     private static LatLng myLatLng = MainActivity.getLatLng();
 
     @Override
@@ -56,6 +59,10 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        int count=sharedPreferences.getInt("count",0);
+        SellerListActivity.setMenuCounter(R.id.chatListDrawableItem,count);
 
         listOFShops = findViewById(R.id.listOfShops);
         listOFShops.setLayoutManager(new LinearLayoutManager(SellerListActivity.this));
@@ -102,6 +109,11 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
                             Toast.makeText(SellerListActivity.this, "No shops registered", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    public static void setMenuCounter(@IdRes int itemId, int count) {
+        TextView view = (TextView) navView.getMenu().findItem(itemId).getActionView();
+        view.setText(count > 0 ? String.valueOf(count) : null);
     }
 
     @Override
