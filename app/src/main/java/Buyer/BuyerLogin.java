@@ -155,8 +155,45 @@ public class BuyerLogin extends AppCompatActivity {
         documentReference.update("token",SplashActivity.token);
 
         fstore.collection("Buyer").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        fstore.collection("Buyer").document(currentuserid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if(documentSnapshot.exists())
+                {
+                    SharedPreferences sharedPreferences = getSharedPreferences(Shared_pref, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("role", "1");
+                    editor.apply();
+                    Toast.makeText(BuyerLogin.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(BuyerLogin.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+                else
+                {
+                    signOut();
+                    Toast.makeText(BuyerLogin.this, "No such user exists", Toast.LENGTH_LONG).show();
+                    Intent intent=new Intent(BuyerLogin.this, Welcomepage.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(BuyerLogin.this, "On Failure No such user exists", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(BuyerLogin.this, Welcomepage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+    }
+           /* public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.getResult().exists()) {
                     SharedPreferences sharedPreferences = getSharedPreferences(Shared_pref, MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -182,7 +219,7 @@ public class BuyerLogin extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(BuyerLogin.this, "No such user exists", Toast.LENGTH_LONG).show();
+                Toast.makeText(BuyerLogin.this, "On Failure No such user exists", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(BuyerLogin.this, Welcomepage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
@@ -191,7 +228,7 @@ public class BuyerLogin extends AppCompatActivity {
             }
         });
     }
-
+*/
     private void signOut() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
