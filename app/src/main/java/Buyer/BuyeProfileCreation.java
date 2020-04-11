@@ -56,6 +56,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
     double lat,lng;
     private mBuyerProfile mBuyerProfile=null;
     private ProgressDialog progressDialog;
+    Boolean existence=false;
 
 
     @SuppressLint("WrongViewCast")
@@ -190,6 +191,14 @@ public class BuyeProfileCreation extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //if user pressed "yes", then he is allowed to exit from application
+                if(existence==true)
+                {
+                    Intent intent = new Intent(BuyeProfileCreation.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+                else
                 finish();
             }
         });
@@ -222,13 +231,14 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
+                        existence=true;
                         Create_pofile.setText("Update Profile");
                         mBuyerProfile = document.toObject(Models.mBuyerProfile.class);
                         setExistingData(mBuyerProfile);
                         //setLayoutWidgets(mBuyerPrsetExistingData(mBuyerProfile);
                     } else {
                         progressDialog.dismiss();
-                        Toast.makeText(BuyeProfileCreation.this,"No data history found",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(BuyeProfileCreation.this,"No data history found",Toast.LENGTH_LONG).show();
                     }
                 } else {
                     progressDialog.dismiss();
