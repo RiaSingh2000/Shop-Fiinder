@@ -1,8 +1,10 @@
 package Chats;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Parcelable;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +19,15 @@ import java.util.ArrayList;
 
 import Models.Messages;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
+ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder> {
     Context context;
     ArrayList<Messages>messages;
     String fuserId;
+    ImageView imageView;
+
 
     int MSG_LEFT=1;
     int MSG_RIGHT=2;
@@ -31,6 +36,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
         this.context = context;
         this.messages = messages;
         this.fuserId = fuserId;
+
     }
 
     @NonNull
@@ -69,6 +75,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             super(itemView);
             msg=itemView.findViewById(R.id.msg);
             img=itemView.findViewById(R.id.img);
+
+            img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    Intent intent=new Intent(v.getContext(),Zoom.class);
+                    intent.putExtra("resId", (Parcelable) img);
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 
@@ -78,5 +94,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
             return MSG_RIGHT;
         else
             return MSG_LEFT;
+
     }
+
+
+
 }
