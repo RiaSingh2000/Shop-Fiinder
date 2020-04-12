@@ -77,6 +77,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,24 +94,26 @@ public class ChatActivity extends AppCompatActivity {
     ImageView cam, send;
     EditText msg;
     ArrayList<Messages> messages;
-    Uri imageUri, fileUri;
+    Uri imageUri;
+    Uri fileUri;
     FirebaseFirestore firestore;
     FirebaseAuth auth;
     Bitmap image;
     private RequestQueue requestQueue;
     String tok;
     private boolean hasDataEdited = false;
-    private String filePath;
+    private File filePath;
     StorageReference storageReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        storageReference= FirebaseStorage.getInstance().getReference("images");
+        storageReference= FirebaseStorage.getInstance().getReference();
         requestQueue = Volley.newRequestQueue(ChatActivity.this);
         messages = new ArrayList<>();
         uid = getIntent().getStringExtra("uid");
+        storageReference= FirebaseStorage.getInstance().getReference();
         cam = findViewById(R.id.cam);
         send = findViewById(R.id.send);
         chatsRv = findViewById(R.id.chatsRv);
@@ -175,12 +178,12 @@ public class ChatActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            filePath = ImagePicker.Companion.getFilePath(data);
-            imageUri=Uri.parse(new File(filePath).toString());
-            cam.setImageURI(imageUri);
-            uploadImage();
+            filePath = new File(ImagePicker.Companion.getFilePath(data));
+           // imageUri=Uri.parse(new File(filePath).toString());
+            Toast.makeText(ChatActivity.this,""+imageUri,Toast.LENGTH_LONG).show();
+            imageUri=Uri.fromFile(filePath);
+           uploadImage();
 
-            //Toast.makeText(ChatActivity.this,""+imageUri,Toast.LENGTH_LONG).show();
 
                 }
         else if (resultCode == ImagePicker.RESULT_ERROR) {
@@ -264,18 +267,19 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
-       // Toast.makeText(this, "Received",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Received",Toast.LENGTH_SHORT).show();
     }
 
     public void uploadImage(){
-        Toast.makeText(this, "UploadImage"+imageUri, Toast.LENGTH_SHORT).show();
         if(imageUri!=null){
+            Toast.makeText(ChatActivity.this,imageUri.toString(),Toast.LENGTH_LONG).show();
+           // Toast.makeText(ChatActivity.this,filePath,Toast.LENGTH_LONG).show();
             final ProgressDialog progressDialog=new ProgressDialog(ChatActivity.this);
             progressDialog.setTitle("Uploading");
             progressDialog.show();
             progressDialog.setCancelable(false);
 
-            final StorageReference reference=storageReference.child(System.currentTimeMillis()+"."+getExtension(imageUri));// "images/"+UUID.randomUUID().toString()
+            final StorageReference reference=storageReference.child("images/"+UUID.randomUUID().toString());//  System.currentTimeMillis()+"."+getExtension(imageUri)
             reference.putFile(imageUri)
                     .addOnSuccessListener(ChatActivity.this,new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -298,7 +302,7 @@ public class ChatActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(ChatActivity.this, "Error:/n"+e, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChatActivity.this, "Error"+e, Toast.LENGTH_SHORT).show();
 
                         }
                     })
