@@ -107,9 +107,9 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
                                 float[] result = new float[3];
                                 Location.distanceBetween((float) myLatLng.latitude, (float) myLatLng.longitude, Float.parseFloat(mSellerProfile.getLat()),
                                         Float.parseFloat(mSellerProfile.getLng()), result);
-                                if (result != null && result[0] <= 5000) {
+                               // if (result != null && result[0] <= 5000) {
                                     mSellerProfileArrayList.add(mSellerProfile);
-                                }
+                                //}
                                 listOFShops.setAdapter(new ShopListAdapter(SellerListActivity.this, mSellerProfileArrayList));
                                 progressBar.setVisibility(View.INVISIBLE);
                             }

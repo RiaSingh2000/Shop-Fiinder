@@ -107,7 +107,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        storageReference= FirebaseStorage.getInstance().getReference();
+        storageReference= FirebaseStorage.getInstance().getReference("images");
         requestQueue = Volley.newRequestQueue(ChatActivity.this);
         messages = new ArrayList<>();
         uid = getIntent().getStringExtra("uid");
@@ -177,7 +177,9 @@ public class ChatActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             filePath = ImagePicker.Companion.getFilePath(data);
             imageUri=Uri.parse(new File(filePath).toString());
-           uploadImage();
+            cam.setImageURI(imageUri);
+            uploadImage();
+
             //Toast.makeText(ChatActivity.this,""+imageUri,Toast.LENGTH_LONG).show();
 
                 }
@@ -262,17 +264,18 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
-        Toast.makeText(this, "Received",Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "Received",Toast.LENGTH_SHORT).show();
     }
 
     public void uploadImage(){
+        Toast.makeText(this, "UploadImage"+imageUri, Toast.LENGTH_SHORT).show();
         if(imageUri!=null){
             final ProgressDialog progressDialog=new ProgressDialog(ChatActivity.this);
             progressDialog.setTitle("Uploading");
             progressDialog.show();
             progressDialog.setCancelable(false);
 
-            final StorageReference reference=storageReference.child("images/"+UUID.randomUUID().toString());//  System.currentTimeMillis()+"."+getExtension(imageUri)
+            final StorageReference reference=storageReference.child(System.currentTimeMillis()+"."+getExtension(imageUri));// "images/"+UUID.randomUUID().toString()
             reference.putFile(imageUri)
                     .addOnSuccessListener(ChatActivity.this,new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -295,7 +298,7 @@ public class ChatActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChatActivity.this, "Error:/n"+e, Toast.LENGTH_SHORT).show();
 
                         }
                     })
