@@ -207,7 +207,6 @@ public class ChatActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot snapshot : task.getResult()) {
                                 if (snapshot.getData().get("uid").toString().equals(uid))
                                     tok = snapshot.getData().get("token").toString();
-                                Toast.makeText(ChatActivity.this, "Token:"+tok, Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -221,8 +220,7 @@ public class ChatActivity extends AppCompatActivity {
                                 for (QueryDocumentSnapshot snapshot : task.getResult()) {
                                     if (snapshot.getData().get("uid").toString().equals(uid))
                                         tok = snapshot.getData().get("token").toString();
-                                    Toast.makeText(ChatActivity.this, ""+tok, Toast.LENGTH_SHORT).show();
-                                }
+                                    }
                             }
                         }
                     });
@@ -267,13 +265,10 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
-        Toast.makeText(this, "Received",Toast.LENGTH_SHORT).show();
     }
 
     public void uploadImage(){
         if(imageUri!=null){
-            Toast.makeText(ChatActivity.this,imageUri.toString(),Toast.LENGTH_LONG).show();
-           // Toast.makeText(ChatActivity.this,filePath,Toast.LENGTH_LONG).show();
             final ProgressDialog progressDialog=new ProgressDialog(ChatActivity.this);
             progressDialog.setTitle("Uploading");
             progressDialog.show();
@@ -285,13 +280,13 @@ public class ChatActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Toast.makeText(ChatActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                             reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     String downUri=uri.toString();
-                                    Toast.makeText(ChatActivity.this, ""+downUri, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ChatActivity.this, "DownUri:"+downUri, Toast.LENGTH_SHORT).show();
                                     sendMessage(downUri);
+                                    receiveMessage();
                                     imageUri=null;
                                     msg.setText("");
                                 }

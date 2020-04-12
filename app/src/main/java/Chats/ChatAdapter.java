@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepth.maps.R;
 
 import java.util.ArrayList;
@@ -49,6 +50,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ChatViewHolder
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
         Messages obj=messages.get(position);
         holder.msg.setText(obj.getMsg());
+        if(!obj.getImg().equals("")) {
+            Glide.with(context).load(obj.getImg()).into(holder.img);
+            holder.img.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
