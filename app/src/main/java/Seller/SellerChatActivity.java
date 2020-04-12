@@ -60,7 +60,7 @@ public class SellerChatActivity extends AppCompatActivity {
                         !buyerUid.contains(snapshot.getData().get("sender").toString())
                         )
                             buyerUid.add(snapshot.getData().get("sender").toString());
-                        //Toast.makeText(SellerChatActivity.this, ""+buyerUid, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SellerChatActivity.this, ""+buyerUid, Toast.LENGTH_SHORT).show();
                          }
                 }
             }
