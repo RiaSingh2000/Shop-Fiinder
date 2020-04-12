@@ -14,16 +14,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.codepth.maps.R;
-import com.codepth.maps.SplashActivity;
 import com.codepth.maps.Welcomepage;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -47,11 +47,11 @@ public class SellerLogin extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seller_login);
-        otpBtn =findViewById(R.id.btn_get_otp);
-        loginBtn =findViewById(R.id.btn_login);
-        numEt =findViewById(R.id.et_phone_number);
-        otpEt =findViewById(R.id.et_otp);
-        fstore= FirebaseFirestore.getInstance();
+        otpBtn = findViewById(R.id.btn_get_otp);
+        loginBtn = findViewById(R.id.btn_login);
+        numEt = findViewById(R.id.et_phone_number);
+        otpEt = findViewById(R.id.et_otp);
+        fstore = FirebaseFirestore.getInstance();
 
         mAuth = FirebaseAuth.getInstance();
         loadingbar = new ProgressDialog(this);
@@ -59,8 +59,8 @@ public class SellerLogin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String phnno= numEt.getText().toString();
-                StringBuilder s=new StringBuilder("+91");
+                String phnno = numEt.getText().toString();
+                StringBuilder s = new StringBuilder("+91");
                 s.append(phnno);
                 //Toast.makeText(PhnRegistration.this,String.valueOf(s),Toast.LENGTH_LONG).show();
                 loadingbar.setTitle("Phone Verification");
@@ -90,7 +90,7 @@ public class SellerLogin extends AppCompatActivity {
             public void onVerificationFailed(FirebaseException e) {
                 loadingbar.dismiss();
 
-                Toast.makeText(SellerLogin.this, "Invalid please enter correct phone number with your country code", Toast.LENGTH_LONG).show();
+                Toast.makeText(SellerLogin.this, "Invalid please enter correct phone number"+e, Toast.LENGTH_LONG).show();
 
             }
 
@@ -151,33 +151,42 @@ public class SellerLogin extends AppCompatActivity {
     }
 
 
-    private void  verifyexistence() {
+    private void verifyexistence() {
         String currentuserid = mAuth.getCurrentUser().getUid();
-        DocumentReference documentReference=fstore.collection("Seller").document(currentuserid);
-        documentReference.update("token", SplashActivity.token);
-        fstore.collection("Seller").document(currentuserid).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        fstore.collection("Seller").document(currentuserid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.getResult().exists()) {
-                    SharedPreferences sharedPreferences=getSharedPreferences(Shared_pref,MODE_PRIVATE);
-                    SharedPreferences.Editor editor=sharedPreferences.edit();
-                    editor.putString("role","0");
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                if (documentSnapshot.exists()) {
+                    SharedPreferences sharedPreferences = getSharedPreferences(Shared_pref, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("role", "0");
                     editor.apply();
                     Toast.makeText(SellerLogin.this, "Welcome Back", Toast.LENGTH_LONG).show();
-                    Intent intent=new Intent(SellerLogin.this, SellerChatActivity.class);
+                    Intent intent = new Intent(SellerLogin.this, SellerChatActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 } else {
                     Toast.makeText(SellerLogin.this, "No such user exists", Toast.LENGTH_LONG).show();
-                    Intent intent=new Intent(SellerLogin.this, Welcomepage.class);
+                    Intent intent = new Intent(SellerLogin.this, Welcomepage.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     startActivity(intent);
                     finish();
+
                 }
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(SellerLogin.this, "Failed with Exception", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(SellerLogin.this, Welcomepage.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                startActivity(intent);
+                finish();
             }
         });
     }
 }
-

@@ -21,7 +21,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
@@ -31,16 +30,14 @@ import android.widget.Toast;
 
 import com.codepth.maps.R;
 import com.codepth.maps.SplashActivity;
-import com.google.android.gms.common.api.Status;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,13 +45,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class BuyeProfileCreation extends AppCompatActivity {
-
-    private static String TAG ="autoCompleteTextView";
     private EditText name,phn,street,house;
     AutoCompleteTextView locality;
     private Button Create_pofile;
@@ -75,7 +69,6 @@ public class BuyeProfileCreation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
-
         DrawerController.setIdentity("SettingsActivity");
         progressDialog=new ProgressDialog(this);
         name = findViewById(R.id.etName);
@@ -84,35 +77,12 @@ public class BuyeProfileCreation extends AppCompatActivity {
         locality = findViewById(R.id.etLocality);
         house = findViewById(R.id.etHouse);
         Create_pofile = findViewById(R.id.btRegister);
-
         fauth = FirebaseAuth.getInstance();
         userLoc = new Location(LocationManager.GPS_PROVIDER);
         userid = fauth.getCurrentUser().getUid();
         fstore = FirebaseFirestore.getInstance();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(BuyeProfileCreation.this);
         fetchLastLoc();
-        // Initialize the AutocompleteSupportFragment.
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-
-// Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-
-// Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                LatLng latlngPlace = place.getLatLng();
-                Toast.makeText(BuyeProfileCreation.this,latlngPlace.toString(),Toast.LENGTH_LONG);
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-            }
-
-            @Override
-            public void onError(Status status) {
-                // TODO: Handle the error.
-                Log.i(TAG, "An error occurred: " + status);
-            }
-        });
         locality.setAdapter(new PlacesAutoCompleteAdapter(BuyeProfileCreation.this, android.R.layout.simple_list_item_1));
         Retriveinfo();
         Create_pofile.setOnClickListener(new View.OnClickListener() {
@@ -229,13 +199,16 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 //if user pressed "yes", then he is allowed to exit from application
                 if(existence==true)
                 {
+
                     Intent intent = new Intent(BuyeProfileCreation.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 }
                 else
+                {
                 finish();
+                signout();}
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -248,6 +221,24 @@ public class BuyeProfileCreation extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+    private void signout() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // Firebase sign out
+        FirebaseAuth.getInstance().signOut();
+
+        // Google revoke access
+        mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                    }
+                });
+}
 
     private void hideSoftKeyboard(View v) {
         InputMethodManager imm=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);

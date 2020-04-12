@@ -14,6 +14,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,7 +23,6 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 
 import com.codepth.maps.R;
-import com.github.ybq.android.spinkit.style.FoldingCube;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -71,8 +71,12 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
         sellerUid=new ArrayList<>();
         auth=FirebaseAuth.getInstance();
 
-        FoldingCube foldingCube = new FoldingCube();
-        progressBar.setIndeterminateDrawable(foldingCube);
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt("count",0);
+        editor.apply();
+
+
         db=FirebaseFirestore.getInstance();
         db.collection("Chats").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -108,6 +112,9 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
                     }
                     listOfSellers.setAdapter(new ShopListAdapter(BuyerChatActivity.this,list));
                     progressBar.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    Toast.makeText(BuyerChatActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
                 }
             }
         });
