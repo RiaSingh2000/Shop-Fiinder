@@ -2,12 +2,18 @@ package Seller;
 
 import Adapters.PlacesAutoCompleteAdapter;
 
+import Buyer.BuyeProfileCreation;
+import Buyer.MainActivity;
+import Models.mBuyerProfile;
 import Models.mSellerProfile;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,11 +33,13 @@ import com.codepth.maps.R;
 import com.codepth.maps.SplashActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
@@ -47,7 +55,10 @@ public class SellerProfileCreation extends AppCompatActivity {
     private static final int REQUEST_CODE=101;
     Location userLoc;
     double lat,lng;
+    private Models.mSellerProfile mSellerProfile=null;
     AutoCompleteTextView autoCompleteTextView;
+    private ProgressDialog progressDialog;
+    private Boolean existence=false;
 //    AutocompleteSupportFragment autocompleteFragment;
 //    private  static String TAG="PlacesActivity";
 
@@ -56,6 +67,7 @@ public class SellerProfileCreation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profileas_seller);
+        progressDialog=new ProgressDialog(this);
 //Places
 //        if (!Places.isInitialized()) {
 //            Places.initialize(getApplicationContext(), "AIzaSyC4oSY9sO_ta8qGwLO1oVj-0q6D3vZXMhE");
@@ -94,7 +106,7 @@ public class SellerProfileCreation extends AppCompatActivity {
         fstore=FirebaseFirestore.getInstance();
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(SellerProfileCreation.this);
         fetchLastLoc();
-
+        Retriveinfo();
 
         final mSellerProfile mSellerProfile = new mSellerProfile();
         btnRegisterSeller.setOnClickListener(new View.OnClickListener() {
@@ -164,6 +176,8 @@ public class SellerProfileCreation extends AppCompatActivity {
         });
     }
 
+
+
     private void fetchLastLoc() {
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(SellerProfileCreation.this,new String[]
@@ -201,7 +215,16 @@ public class SellerProfileCreation extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //if user pressed "yes", then he is allowed to exit from application
-                finish();
+                if (existence == true) {
+
+                    Intent intent = new Intent(SellerProfileCreation.this, SellerChatActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    FirebaseAuth.getInstance().signOut();
+                    finish();
+                }
             }
         });
         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -213,11 +236,55 @@ public class SellerProfileCreation extends AppCompatActivity {
         });
         AlertDialog alert = builder.create();
         alert.show();
-    }
+}
 
     private void hideSoftKeyboard(View v) {
         InputMethodManager imm=(InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+    }
+    private void Retriveinfo() {
+        String curruserid=  curruserid = fauth.getCurrentUser().getUid();
+        //Toast.makeText(SellerProfileCreation.this,curruserid,Toast.LENGTH_LONG).show();
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setMessage("We Are Fetching Your Information...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+        fstore= FirebaseFirestore.getInstance();
+        DocumentReference docRef = fstore.collection("Seller").document(curruserid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        existence=true;
+                        btnRegisterSeller.setText("Update Profile");
+                        mSellerProfile = document.toObject(Models.mSellerProfile.class);
+                        setExistingData(mSellerProfile);
+                        //setLayoutWidgets(mBuyerPrsetExistingData(mBuyerProfile);
+                    } else {
+                        progressDialog.dismiss();
+                        Toast.makeText(SellerProfileCreation.this,"No data history found",Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(SellerProfileCreation.this,"No data history found task failed",Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+
+
+    }
+
+    private void setExistingData(Models.mSellerProfile mSellerProfile) {
+        etSellerName.setText(mSellerProfile.getSelname());
+        etSellerPhone.setText(mSellerProfile.getCustcare());
+        etShopName.setText(mSellerProfile.getShopname());
+        autoCompleteTextView.setText(mSellerProfile.getLoc());
+        progressDialog.dismiss();
+
+
     }
 }
 
