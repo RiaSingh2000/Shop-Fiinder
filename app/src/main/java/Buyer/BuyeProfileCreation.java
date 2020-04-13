@@ -1,7 +1,6 @@
 package Buyer;
 
 import Adapters.PlacesAutoCompleteAdapter;
-import Buyer.MainActivity;
 import Common.DrawerController;
 import Models.mBuyerProfile;
 
@@ -21,12 +20,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepth.maps.R;
@@ -34,46 +33,42 @@ import com.codepth.maps.SplashActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.api.model.RectangularBounds;
-import com.google.android.libraries.places.api.model.TypeFilter;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class BuyeProfileCreation extends AppCompatActivity {
-    private EditText name,phn,street,house;
+public class BuyeProfileCreation extends AppCompatActivity  {
+    private static final int REQUEST_CODE = 101;
     AutoCompleteTextView locality;
     private Button Create_pofile;
-    String userid,nm,pn,Street,loc,phone,House;
+    private static String type = "Curr";
+    String userid, nm, pn, Street, loc, phone, House;
     private FirebaseFirestore fstore;
     private FirebaseAuth fauth;
     FusedLocationProviderClient fusedLocationProviderClient;
-    private static final int REQUEST_CODE=101;
-    Location userLoc=null;
-    double lat,lng;
-    private mBuyerProfile mBuyerProfile=null;
+    Location userLoc = null;
+    double lat, lng;
+    String curLat , curLng;
+    Boolean existence = false;
+    private EditText name, phn, street, house;
     private ProgressDialog progressDialog;
-    Boolean existence=false;
-    public static String TAG = "autoComplete=>>>";
+    private TextView currentLocTv,hiddenTv;
+    private mBuyerProfile mBuyerProfile = null;
+
+    private static void setType(String string){
+        BuyeProfileCreation.type= string;
+    }
+
 
 
     @SuppressLint("WrongViewCast")
@@ -83,40 +78,59 @@ public class BuyeProfileCreation extends AppCompatActivity {
         setContentView(R.layout.activity_create_profile);
         DrawerController.setIdentity("SettingsActivity");
 
-        Places.initialize(BuyeProfileCreation.this,"AIzaSyBe1tmgpLujgxK64FfL7n0eNJaWIijdy58");
-        PlacesClient placesClient = Places.createClient(BuyeProfileCreation.this);
+        //    Places.initialize(BuyeProfileCreation.this,"AIzaSyBe1tmgpLujgxK64FfL7n0eNJaWIijdy58");
+        //  PlacesClient placesClient = Places.createClient(BuyeProfileCreation.this);
 
-        progressDialog=new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         name = findViewById(R.id.etName);
         phn = findViewById(R.id.etPhone);
         street = findViewById(R.id.etStreet);
-        locality = findViewById(R.id.etLocality);
+        locality = (AutoCompleteTextView) findViewById(R.id.autoLoc);
         house = findViewById(R.id.etHouse);
         Create_pofile = findViewById(R.id.btRegister);
+        currentLocTv = findViewById(R.id.currentLocTv);
+        hiddenTv= findViewById(R.id.HiddenTv);
         fauth = FirebaseAuth.getInstance();
         userLoc = new Location(LocationManager.GPS_PROVIDER);
         userid = fauth.getCurrentUser().getUid();
         fstore = FirebaseFirestore.getInstance();
 
-        AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        autocompleteSupportFragment.setTypeFilter(TypeFilter.ADDRESS);
-        autocompleteSupportFragment.setLocationBias(RectangularBounds.newInstance(new LatLng(7.798000, 68.14712),
-               new LatLng(37.090000, 97.34466)));
-        autocompleteSupportFragment.setCountry("IN");
-        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG,Place.Field.NAME));
-        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+        //BACK TO CURRENT LOCATION
+        hiddenTv.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                Log.w(TAG,place.getName()+"  "+place.getLatLng());
-            }
-
-            @Override
-            public void onError(@NonNull Status status) {
-                Log.w(TAG,"ERROR AUTOCOMPLETE ON CLICK");
+            public void onClick(View view) {
+                locality.setVisibility(View.INVISIBLE);
+                currentLocTv.setVisibility(View.VISIBLE);
+                hiddenTv.setVisibility(View.INVISIBLE);
+                BuyeProfileCreation.type="Curr";
             }
         });
 
+
+        currentLocTv.setOnClickListener(new View.OnClickListener() {
+            //CHOOSING OTHER LOCATION THAN CURRENT
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(BuyeProfileCreation.this);
+                builder.setMessage(R.string.ask_for_autocomplete)
+                        .setPositiveButton("Yes,change!", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                locality.setVisibility(View.VISIBLE);
+                                currentLocTv.setVisibility(View.INVISIBLE);
+                                hiddenTv.setVisibility(View.VISIBLE);
+                                BuyeProfileCreation.type="Reg";
+                            }
+                        })
+                        .setNegativeButton("No!", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                BuyeProfileCreation.type="Curr";
+                                // User cancelled the dialog
+                            }
+                        });
+                // Create the AlertDialog object and return it
+                builder.show();
+            }
+        });
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(BuyeProfileCreation.this);
         fetchLastLoc();
         locality.setAdapter(new PlacesAutoCompleteAdapter(BuyeProfileCreation.this, android.R.layout.simple_list_item_1));
@@ -142,12 +156,23 @@ public class BuyeProfileCreation extends AppCompatActivity {
                     street.setError("Street number is required");
                     return;
                 }
-                loc=locality.getText().toString();
-                if(loc.isEmpty())
-                {
-                    locality.setError("Locality is required");
-                    return;
+                if(type=="Curr"){
+                    loc=currentLocTv.getText().toString();
+                    if(loc.isEmpty())
+                    {
+                        locality.setError("Locality is required");
+                        return;
+                    }
                 }
+                if(type =="Reg") {
+                    loc = locality.getText().toString();
+                    if(loc.isEmpty())
+                    {
+                        locality.setError("Locality is required");
+                        return;
+                    }
+                }
+
                 House=house.getText().toString();
                 if(House.isEmpty())
                 {
@@ -161,7 +186,6 @@ public class BuyeProfileCreation extends AppCompatActivity {
                     Toast.makeText(BuyeProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show();
                 }
 
-
                 DocumentReference documentReference=fstore.collection("Buyer").document(userid);
                 HashMap<String,String> profilemap=new HashMap<>();
                 profilemap.put("uid",userid);
@@ -174,14 +198,21 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 while (userLoc==null);
 //                profilemap.put("lat",Double.toString(userLoc.getLatitude()));
 //                profilemap.put("lng",Double.toString(userLoc.getLongitude()));
+                if(type=="Reg"){
                 profilemap.put("lat",String.valueOf(lat));
                 profilemap.put("lng",String.valueOf(lng));
+                }
+                else{
+                    profilemap.put("lat",curLat);
+                    profilemap.put("lng",curLng);
+                }
 
                 documentReference.set(profilemap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(BuyeProfileCreation.this,"Profile set up Successfully",Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(BuyeProfileCreation.this, MainActivity.class);
+                        //if(type=="Reg")
                         intent.putExtra("lat",userLoc.getLatitude());
                         intent.putExtra("lng",userLoc.getLongitude());
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -209,6 +240,16 @@ public class BuyeProfileCreation extends AppCompatActivity {
                 if(location!=null){
                     userLoc=location;
                     Toast.makeText(getApplicationContext(),userLoc.getLatitude()+"\n"+userLoc.getLongitude(),Toast.LENGTH_LONG).show();
+                    curLat=String.valueOf(userLoc.getLatitude());
+                    curLng = String.valueOf(userLoc.getLongitude());
+                    Geocoder geocoder = new Geocoder(BuyeProfileCreation.this);
+                    try {
+                       List<Address> list =geocoder.getFromLocation(userLoc.getLatitude(),userLoc.getLongitude(),1);
+                       Address add=list.get(0);
+                       currentLocTv.setText(add.getAddressLine(0).toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -320,12 +361,16 @@ public class BuyeProfileCreation extends AppCompatActivity {
             street.setText(mBuyerProfile.getStreet());
             Toast.makeText(BuyeProfileCreation.this,mBuyerProfile.getStreet(),Toast.LENGTH_LONG).show();
             locality.setText(mBuyerProfile.getLocality());
+            currentLocTv.setVisibility(View.INVISIBLE);
+            locality.setVisibility(View.VISIBLE);
+            hiddenTv.setVisibility(View.VISIBLE);
             house.setText(mBuyerProfile.getHouse());
             progressDialog.dismiss();
 
 
         }
-    }
+
+}
 
 
 

@@ -15,11 +15,13 @@ import androidx.fragment.app.FragmentActivity;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -211,7 +213,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
 
     private void addRegLocationMarker() {
         googleMap.clear();
-         markerOptions3=new MarkerOptions().position(latLng).title("My Registered location"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+         markerOptions3=new MarkerOptions().position(latLng).title("My Registered location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
         googleMap.addMarker(markerOptions3);
@@ -404,7 +406,15 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 break;
             }
             case R.id.rateUsDrawableList :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+               // Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +getPackageName())));
+                }catch (ActivityNotFoundException e)
+                {
+                    startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://play.google.com/store/apps/details?id="+getPackageName())));
+                }
+
                 break;
             }
             case R.id.settingsDrawableItem :{

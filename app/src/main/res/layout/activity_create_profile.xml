@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fece2f"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <ImageView
         android:layout_width="100dp"
@@ -20,11 +22,12 @@
         android:layout_height="wrap_content"
         android:text="Customers information"
         android:textAllCaps="true"
-        android:textSize="25sp"
+        android:textSize="20sp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
         android:fontFamily="@font/bungee"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white"
+        android:includeFontPadding="false"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -37,7 +40,7 @@
         />
 
     <ScrollView
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFF">
@@ -45,7 +48,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#FFF"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
 
 
@@ -143,31 +147,48 @@
                 android:textColor="@android:color/black"
                 android:layout_marginLeft="10dp"
                 />
-            <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                android:id="@+id/etLocality"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_below="@id/tvLocality"
-                android:layout_centerHorizontal="true"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/edit_text_design"
-                android:paddingLeft="10dp"
-                />
-            <fragment
-                android:id="@+id/autocomplete_fragment"
-                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_height="wrap_content">
+                <AutoCompleteTextView
+                    android:id="@+id/autoLoc"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/tvLocality"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/edit_text_design"
+                    android:hint="Enter your location"
+                    android:paddingLeft="10dp"
+                    android:visibility="invisible"
+                    />
+                <TextView
+                    android:id="@+id/currentLocTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/tvShopName"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/edit_text_design"
+                    android:paddingLeft="10dp"
+                    />
+            </FrameLayout>
+            <TextView
+                android:id="@+id/HiddenTv"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                />
-
+                android:layout_height="wrap_content"
+                android:text="Reset current Location"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp"
+                android:visibility="invisible"/>
 
             <TextView
                 android:id="@+id/tvHouse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/etLocality"
+                android:layout_below="@id/tvLocality"
                 android:text="House"
                 android:textSize="25dp"
                 android:fontFamily="@font/antic"
@@ -200,7 +221,6 @@
                 android:layout_marginBottom="20dp"
                 android:textColor="#ffffff"
                 android:background="@drawable/btn_design2"
-
                 />
         </LinearLayout>
     </ScrollView>
