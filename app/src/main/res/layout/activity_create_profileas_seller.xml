@@ -44,6 +44,7 @@
         android:layout_height="match_parent"
         android:background="#FFF">
         <LinearLayout
+            android:padding="10dp"
             android:background="#FFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -132,6 +133,9 @@
                 android:layout_marginTop="10dp"
                 android:textColor="@android:color/black"
                 />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <AutoCompleteTextView
                 android:id="@+id/autoLoc"
                 android:layout_width="match_parent"
@@ -141,8 +145,29 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:paddingLeft="10dp"
-                android:layout_below="@id/tvLocality"/>
-
+                android:layout_below="@id/tvLocality"
+                android:visibility="invisible"/>
+            <TextView
+                android:id="@+id/currentLocEt"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/tvShopName"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/edit_text_design"
+                android:paddingLeft="10dp"
+                />
+            </FrameLayout>
+            <TextView
+                android:id="@+id/change_locationTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="Choose another Location?"
+                android:textColorHighlight="@color/amber_900"
+                android:textSize="20dp"/>
             <Button
                 android:id="@+id/btnRegisterSeller"
                 android:layout_width="match_parent"

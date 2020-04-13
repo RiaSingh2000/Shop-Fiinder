@@ -211,7 +211,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
 
     private void addRegLocationMarker() {
         googleMap.clear();
-         markerOptions3=new MarkerOptions().position(latLng).title("My Registered location"); //icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_24dp));
+         markerOptions3=new MarkerOptions().position(latLng).title("My Registered location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
         googleMap.addMarker(markerOptions3);
