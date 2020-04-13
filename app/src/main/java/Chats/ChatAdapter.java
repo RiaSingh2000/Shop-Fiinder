@@ -54,12 +54,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
     @Override
     public void onBindViewHolder(@NonNull ChatViewHolder holder, int position) {
-        Messages obj=messages.get(position);
+        final Messages obj=messages.get(position);
         holder.msg.setText(obj.getMsg());
         if(!obj.getImg().equals("")) {
             Glide.with(context).load(obj.getImg()).into(holder.img);
             holder.img.setVisibility(View.VISIBLE);
         }
+        holder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(context,Zoom.class);
+                intent.putExtra("img",obj.getImg());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -76,15 +84,15 @@ import androidx.recyclerview.widget.RecyclerView;
             msg=itemView.findViewById(R.id.msg);
             img=itemView.findViewById(R.id.img);
 
-            img.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v)
-                {
-                    Intent intent=new Intent(v.getContext(),Zoom.class);
-                    intent.putExtra("resId", (Parcelable) img);
-                    context.startActivity(intent);
-                }
-            });
+//            img.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v)
+//                {
+//                    Intent intent=new Intent(v.getContext(),Zoom.class);
+//                    intent.putExtra("resId", (Parcelable) img);
+//                    context.startActivity(intent);
+//                }
+//            });
         }
     }
 

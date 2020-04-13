@@ -398,7 +398,9 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 break;
             }
             case R.id.aboutUsDrawableList :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                //Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                openDialog();
+                
                 break;
             }
             case R.id.rateUsDrawableList :{
@@ -431,6 +433,13 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private void openDialog()
+    {
+     AboutUsDialog aboutUsDialog=new AboutUsDialog();
+     aboutUsDialog.show(getSupportFragmentManager(),"About Us Dialog");
+    }
+
     private void revokeAccess() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
