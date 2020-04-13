@@ -27,6 +27,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepth.maps.R;
@@ -54,13 +55,15 @@ public class SellerProfileCreation extends AppCompatActivity {
     FusedLocationProviderClient fusedLocationProviderClient;
     private static final int REQUEST_CODE=101;
     Location userLoc;
-    double lat,lng;
+    private static String type = "Curr";
+    double lat,lng ;
     private Models.mSellerProfile mSellerProfile=null;
     AutoCompleteTextView autoCompleteTextView;
     private ProgressDialog progressDialog;
     private Boolean existence=false;
-//    AutocompleteSupportFragment autocompleteFragment;
-//    private  static String TAG="PlacesActivity";
+    String curLat , curLng;
+    private TextView currentLocTv,hiddenTv;
+
 
 
     @Override
@@ -68,39 +71,55 @@ public class SellerProfileCreation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profileas_seller);
         progressDialog=new ProgressDialog(this);
-//Places
-//        if (!Places.isInitialized()) {
-//            Places.initialize(getApplicationContext(), "AIzaSyC4oSY9sO_ta8qGwLO1oVj-0q6D3vZXMhE");
-//        }
-//        PlacesClient placesClient = Places.createClient(this);
-//
-//        autocompleteFragment = (AutocompleteSupportFragment)
-//                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-//
-//        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-//
-//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//
-//            @Override
-//            public void onPlaceSelected(@NonNull com.google.android.libraries.places.api.model.Place place) {
-//                Toast.makeText(SellerProfileCreation.this, place.getLatLng()+"", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onError(Status status) {
-//                // TODO: Handle the error.
-//                Log.i(TAG, "An error occurred: " + status);
-//            }
-//        });
-
         autoCompleteTextView=findViewById(R.id.autoLoc);
         autoCompleteTextView.setAdapter(new PlacesAutoCompleteAdapter(SellerProfileCreation.this,android.R.layout.simple_list_item_1));
         etSellerName=findViewById(R.id.etSellerName);
         etShopName=findViewById(R.id.etShopName);
-       // etSellerLocality=findViewById(R.id.etSellerLocality);
+        currentLocTv = findViewById(R.id.currentLocTvs);
+        hiddenTv=findViewById(R.id.hiddenTv);
         etSellerPhone=findViewById(R.id.etSellerPhone);
         btnRegisterSeller=findViewById(R.id.btnRegisterSeller);
         userLoc = new Location(LocationManager.GPS_PROVIDER);
+        fauth=FirebaseAuth.getInstance();
+        fstore=FirebaseFirestore.getInstance();
+        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(SellerProfileCreation.this);
+
+        //BACK TO CURRENT LOCATION
+        hiddenTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //fetchLastLoc();
+                autoCompleteTextView.setVisibility(View.INVISIBLE);
+                currentLocTv.setVisibility(View.VISIBLE);
+                hiddenTv.setVisibility(View.INVISIBLE);
+                SellerProfileCreation.type="Curr";
+            }
+        });
+
+        currentLocTv.setOnClickListener(new View.OnClickListener() {
+            //CHOOSING OTHER LOCATION THAN CURRENT
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(SellerProfileCreation.this);
+                builder.setMessage(R.string.ask_for_autocomplete)
+                        .setPositiveButton("Yes,change!", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                autoCompleteTextView.setVisibility(View.VISIBLE);
+                                currentLocTv.setVisibility(View.INVISIBLE);
+                                hiddenTv.setVisibility(View.VISIBLE);
+                                SellerProfileCreation.type="Reg";
+                            }
+                        })
+                        .setNegativeButton("No!", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                SellerProfileCreation.type="Curr";
+                                // User cancelled the dialog
+                            }
+                        });
+                // Create the AlertDialog object and return it
+                builder.show();
+            }
+        });
 
         fauth=FirebaseAuth.getInstance();
         fstore=FirebaseFirestore.getInstance();
@@ -132,16 +151,27 @@ public class SellerProfileCreation extends AppCompatActivity {
                     etSellerPhone.setError("Phone number is required");
                     return;
                 }
-                mSellerProfile.setLoc(autoCompleteTextView.getText().toString());
-                if(mSellerProfile.getLoc().isEmpty())
-                {
-                    autoCompleteTextView.setError("Locality is required");
-                    return;
+                if(type.equals("Curr")){
+                    mSellerProfile.setLoc(currentLocTv.getText().toString());
+                    if(mSellerProfile.getLoc().isEmpty())
+                    {
+                        currentLocTv.setError("Locality is required");
+                        return;
+                    }
+                }
+                if(type.equals("Reg")) {
+                    mSellerProfile.setLoc(autoCompleteTextView.getText().toString());
+                    if(mSellerProfile.getLoc().isEmpty())
+                    {
+                        autoCompleteTextView.setError("Locality is required");
+                        return;
+                    }
                 }
                 try {
                     geoLocate(view);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    if(currentLocTv.getVisibility()==View.INVISIBLE)
                     Toast.makeText(SellerProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show();
                 }
 
@@ -155,13 +185,19 @@ public class SellerProfileCreation extends AppCompatActivity {
                 profilemap.put("loc",mSellerProfile.getLoc());
 //                mSellerProfile.setLat(Double.toString(userLoc.getLatitude()));
 //                mSellerProfile.setLng(Double.toString(userLoc.getLongitude()));
-                profilemap.put("lat",Double.toString(lat));
-                profilemap.put("lng",Double.toString(lng));
+                if(type.equals("Reg")){
+                    profilemap.put("lat",String.valueOf(lat));
+                    profilemap.put("lng",String.valueOf(lng));
+                }
+                else{
+                    profilemap.put("lat",curLat);
+                    profilemap.put("lng",curLng);
+                }
                 profilemap.put("uid",mSellerProfile.getUid());
                 profilemap.put("token", SplashActivity.token);
 
-                //TODO: description of shop when added should be in a document inside a new collection pointed by each seller's document
-                //TODO: The custcare and seller name can also be moved to this new document
+                //TODO: description of shop when added should be in a document inside a new collection pointed by each seller's document version2
+                //TODO: The custcare and seller name can also be moved to this new document version2
                 documentReference.set(profilemap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -190,7 +226,17 @@ public class SellerProfileCreation extends AppCompatActivity {
             public void onSuccess(Location location) {
                 if(location!=null){
                     userLoc=location;
+                    curLat=String.valueOf(userLoc.getLatitude());
+                    curLng = String.valueOf(userLoc.getLongitude());
                     Toast.makeText(getApplicationContext(),userLoc.getLatitude()+"\n"+userLoc.getLongitude(),Toast.LENGTH_LONG).show();
+                    Geocoder geocoder = new Geocoder(SellerProfileCreation.this);
+                    try {
+                        List<Address> list =geocoder.getFromLocation(userLoc.getLatitude(),userLoc.getLongitude(),1);
+                        Address add=list.get(0);
+                        currentLocTv.setText(add.getAddressLine(0));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -261,7 +307,6 @@ public class SellerProfileCreation extends AppCompatActivity {
                         btnRegisterSeller.setText("Update Profile");
                         mSellerProfile = document.toObject(Models.mSellerProfile.class);
                         setExistingData(mSellerProfile);
-                        //setLayoutWidgets(mBuyerPrsetExistingData(mBuyerProfile);
                     } else {
                         progressDialog.dismiss();
                         Toast.makeText(SellerProfileCreation.this,"No data history found",Toast.LENGTH_LONG).show();
@@ -282,6 +327,9 @@ public class SellerProfileCreation extends AppCompatActivity {
         etSellerPhone.setText(mSellerProfile.getCustcare());
         etShopName.setText(mSellerProfile.getShopname());
         autoCompleteTextView.setText(mSellerProfile.getLoc());
+        currentLocTv.setVisibility(View.INVISIBLE);
+        autoCompleteTextView.setVisibility(View.VISIBLE);
+        hiddenTv.setVisibility(View.VISIBLE);
         progressDialog.dismiss();
 
 

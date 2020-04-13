@@ -148,7 +148,7 @@
                 android:layout_below="@id/tvLocality"
                 android:visibility="invisible"/>
             <TextView
-                android:id="@+id/currentLocEt"
+                android:id="@+id/currentLocTvs"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_below="@id/tvShopName"
@@ -161,13 +161,13 @@
                 />
             </FrameLayout>
             <TextView
-                android:id="@+id/change_locationTv"
-                android:layout_width="wrap_content"
+                android:id="@+id/hiddenTv"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:text="Choose another Location?"
-                android:textColorHighlight="@color/amber_900"
-                android:textSize="20dp"/>
+                android:text="Reset current Location"
+                android:textAlignment="viewEnd"
+                android:textSize="15dp"
+                android:visibility="invisible"/>
             <Button
                 android:id="@+id/btnRegisterSeller"
                 android:layout_width="match_parent"

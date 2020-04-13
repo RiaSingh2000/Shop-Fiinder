@@ -65,11 +65,6 @@ public class BuyeProfileCreation extends AppCompatActivity  {
     private TextView currentLocTv,hiddenTv;
     private mBuyerProfile mBuyerProfile = null;
 
-    private static void setType(String string){
-        BuyeProfileCreation.type= string;
-    }
-
-
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -160,7 +155,7 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                     loc=currentLocTv.getText().toString();
                     if(loc.isEmpty())
                     {
-                        locality.setError("Locality is required");
+                        currentLocTv.setError("Locality is required");
                         return;
                     }
                 }
@@ -359,7 +354,7 @@ public class BuyeProfileCreation extends AppCompatActivity  {
             name.setText(mBuyerProfile.getName());
             phn.setText(mBuyerProfile.getphone());
             street.setText(mBuyerProfile.getStreet());
-            Toast.makeText(BuyeProfileCreation.this,mBuyerProfile.getStreet(),Toast.LENGTH_LONG).show();
+            //Toast.makeText(BuyeProfileCreation.this,mBuyerProfile.getStreet(),Toast.LENGTH_LONG).show();
             locality.setText(mBuyerProfile.getLocality());
             currentLocTv.setVisibility(View.INVISIBLE);
             locality.setVisibility(View.VISIBLE);
