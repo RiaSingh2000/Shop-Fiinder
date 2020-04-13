@@ -21,6 +21,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
@@ -33,11 +34,20 @@ import com.codepth.maps.SplashActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -45,6 +55,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,6 +73,7 @@ public class BuyeProfileCreation extends AppCompatActivity {
     private mBuyerProfile mBuyerProfile=null;
     private ProgressDialog progressDialog;
     Boolean existence=false;
+    public static String TAG = "autoComplete=>>>";
 
 
     @SuppressLint("WrongViewCast")
@@ -70,6 +82,10 @@ public class BuyeProfileCreation extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
         DrawerController.setIdentity("SettingsActivity");
+
+        Places.initialize(BuyeProfileCreation.this,"AIzaSyBe1tmgpLujgxK64FfL7n0eNJaWIijdy58");
+        PlacesClient placesClient = Places.createClient(BuyeProfileCreation.this);
+
         progressDialog=new ProgressDialog(this);
         name = findViewById(R.id.etName);
         phn = findViewById(R.id.etPhone);
@@ -81,6 +97,26 @@ public class BuyeProfileCreation extends AppCompatActivity {
         userLoc = new Location(LocationManager.GPS_PROVIDER);
         userid = fauth.getCurrentUser().getUid();
         fstore = FirebaseFirestore.getInstance();
+
+        AutocompleteSupportFragment autocompleteSupportFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+        autocompleteSupportFragment.setTypeFilter(TypeFilter.ADDRESS);
+        autocompleteSupportFragment.setLocationBias(RectangularBounds.newInstance(new LatLng(7.798000, 68.14712),
+               new LatLng(37.090000, 97.34466)));
+        autocompleteSupportFragment.setCountry("IN");
+        autocompleteSupportFragment.setPlaceFields(Arrays.asList(Place.Field.LAT_LNG,Place.Field.NAME));
+        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                Log.w(TAG,place.getName()+"  "+place.getLatLng());
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+                Log.w(TAG,"ERROR AUTOCOMPLETE ON CLICK");
+            }
+        });
+
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(BuyeProfileCreation.this);
         fetchLastLoc();
         locality.setAdapter(new PlacesAutoCompleteAdapter(BuyeProfileCreation.this, android.R.layout.simple_list_item_1));
