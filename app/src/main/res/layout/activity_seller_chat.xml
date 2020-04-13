@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/Seller_toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:title="Buyers List"
