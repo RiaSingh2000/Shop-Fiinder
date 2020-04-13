@@ -118,6 +118,7 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
                 }
             }
         });
+        listOfSellers.setAdapter(new ShopListAdapter(BuyerChatActivity.this,list));
 
     }
 

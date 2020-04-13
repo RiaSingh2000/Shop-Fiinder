@@ -120,6 +120,8 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
                         }
                     }
                 });
+
+        listOFShops.setAdapter(new ShopListAdapter(SellerListActivity.this, mSellerProfileArrayList));
     }
 
     public static void setMenuCounter(@IdRes int itemId, int count) {

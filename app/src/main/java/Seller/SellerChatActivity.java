@@ -53,7 +53,6 @@ public class SellerChatActivity extends AppCompatActivity {
         setSupportActionBar(mtoolbar);
 
 
-
         db=FirebaseFirestore.getInstance();
         db.collection("Chats").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -89,6 +88,7 @@ public class SellerChatActivity extends AppCompatActivity {
                 }
             }
         });
+        listOfBuyers.setAdapter(new BuyerListAdapter(SellerChatActivity.this,list));
 
 
     }
