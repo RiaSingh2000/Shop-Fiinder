@@ -67,27 +67,28 @@ public class SellerChatActivity extends AppCompatActivity {
                         )
                             buyerUid.add(snapshot.getData().get("sender").toString());
                         Toast.makeText(SellerChatActivity.this, ""+buyerUid, Toast.LENGTH_SHORT).show();
+                        db.collection("Buyer").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                list.clear();
+                                if(task.isSuccessful()){
+                                    list.clear();
+                                    for(QueryDocumentSnapshot snapshot:task.getResult()){
+                                        if(buyerUid.contains(snapshot.getData().get("uid").toString())){
+                                            list.add(new BuyerList(snapshot.getData().get("name").toString(),snapshot.getData().get("uid").toString()));
+                                            Toast.makeText(SellerChatActivity.this, ""+list, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    listOfBuyers.setAdapter(new BuyerListAdapter(SellerChatActivity.this,list));
+                                }
+                            }
+                        });
                          }
                 }
             }
         });
 
-        db.collection("Buyer").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                list.clear();
-                if(task.isSuccessful()){
-                    list.clear();
-                    for(QueryDocumentSnapshot snapshot:task.getResult()){
-                       if(buyerUid.contains(snapshot.getData().get("uid").toString())){
-                           list.add(new BuyerList(snapshot.getData().get("name").toString(),snapshot.getData().get("uid").toString()));
-                           Toast.makeText(SellerChatActivity.this, ""+list, Toast.LENGTH_SHORT).show();
-                    }
-                    }
-                    listOfBuyers.setAdapter(new BuyerListAdapter(SellerChatActivity.this,list));
-                }
-            }
-        });
+
         listOfBuyers.setAdapter(new BuyerListAdapter(SellerChatActivity.this,list));
 
 
