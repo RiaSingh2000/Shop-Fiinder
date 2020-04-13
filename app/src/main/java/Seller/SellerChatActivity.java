@@ -5,11 +5,14 @@ import Common.VerticalSpacingItemDecoration;
 import Models.BuyerList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.codepth.maps.R;
@@ -31,6 +34,7 @@ public class SellerChatActivity extends AppCompatActivity {
     ArrayList<BuyerList> list;
     FirebaseFirestore db;
     FirebaseAuth auth;
+    private Toolbar mtoolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,9 @@ public class SellerChatActivity extends AppCompatActivity {
         list=new ArrayList<>();
         buyerUid=new ArrayList<>();
         auth=FirebaseAuth.getInstance();
+        mtoolbar = (Toolbar) findViewById(R.id.Seller_toolbar);
+        setSupportActionBar(mtoolbar);
+
 
 
         db=FirebaseFirestore.getInstance();
@@ -83,6 +90,47 @@ public class SellerChatActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.mebubar,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        if(item.getItemId()==R.id.main_logout)
+        {
+            FirebaseAuth.getInstance().signOut();
+            sendUsertologinactivity();
+            finish();
+        }
+        if(item.getItemId()==R.id.main_settings)
+        {
+            sendUsertosettings();
+
+
+        }
+        if(item.getItemId()==R.id.about_us)
+        {
+            //TODO:
+
+        }
+
+        return true;
+    }
+
+    private void sendUsertosettings() {
+        startActivity(new Intent(this,SellerProfileCreation.class));
+
+    }
+
+    private void sendUsertologinactivity() {
+        startActivity(new Intent(this, Welcomepage.class));
+        finish();
 
     }
 
