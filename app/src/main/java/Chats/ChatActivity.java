@@ -71,6 +71,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -87,14 +88,15 @@ public class ChatActivity extends AppCompatActivity {
     ImageView cam, send;
     EditText msg;
     ArrayList<Messages> messages;
-    Uri imageUri, fileUri;
+    Uri imageUri;
+    Uri fileUri;
     FirebaseFirestore firestore;
     FirebaseAuth auth;
     Bitmap image;
     private RequestQueue requestQueue;
     String tok;
     private boolean hasDataEdited = false;
-    private String filePath;
+    private File filePath;
     StorageReference storageReference;
 
     @Override
@@ -105,6 +107,7 @@ public class ChatActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(ChatActivity.this);
         messages = new ArrayList<>();
         uid = getIntent().getStringExtra("uid");
+        storageReference= FirebaseStorage.getInstance().getReference();
         cam = findViewById(R.id.cam);
         send = findViewById(R.id.send);
         chatsRv = findViewById(R.id.chatsRv);
@@ -169,10 +172,12 @@ public class ChatActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            filePath = ImagePicker.Companion.getFilePath(data);
-            imageUri=Uri.parse(new File(filePath).toString());
+            filePath = new File(ImagePicker.Companion.getFilePath(data));
+           // imageUri=Uri.parse(new File(filePath).toString());
+            Toast.makeText(ChatActivity.this,""+imageUri,Toast.LENGTH_LONG).show();
+            imageUri=Uri.fromFile(filePath);
            uploadImage();
-            //Toast.makeText(ChatActivity.this,""+imageUri,Toast.LENGTH_LONG).show();
+
 
                 }
         else if (resultCode == ImagePicker.RESULT_ERROR) {
@@ -196,7 +201,6 @@ public class ChatActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot snapshot : task.getResult()) {
                                 if (snapshot.getData().get("uid").toString().equals(uid))
                                     tok = snapshot.getData().get("token").toString();
-                                Toast.makeText(ChatActivity.this, "Token:"+tok, Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
@@ -210,8 +214,7 @@ public class ChatActivity extends AppCompatActivity {
                                 for (QueryDocumentSnapshot snapshot : task.getResult()) {
                                     if (snapshot.getData().get("uid").toString().equals(uid))
                                         tok = snapshot.getData().get("token").toString();
-                                    Toast.makeText(ChatActivity.this, ""+tok, Toast.LENGTH_SHORT).show();
-                                }
+                                    }
                             }
                         }
                     });
@@ -256,7 +259,6 @@ public class ChatActivity extends AppCompatActivity {
                 }
             }
         });
-        Toast.makeText(this, "Received",Toast.LENGTH_SHORT).show();
     }
 
     public void uploadImage(){
@@ -272,13 +274,13 @@ public class ChatActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Toast.makeText(ChatActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                             reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
                                     String downUri=uri.toString();
-                                    Toast.makeText(ChatActivity.this, ""+downUri, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ChatActivity.this, "DownUri:"+downUri, Toast.LENGTH_SHORT).show();
                                     sendMessage(downUri);
+                                    receiveMessage();
                                     imageUri=null;
                                     msg.setText("");
                                 }
@@ -289,7 +291,7 @@ public class ChatActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(ChatActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChatActivity.this, "Error"+e, Toast.LENGTH_SHORT).show();
 
                         }
                     })
