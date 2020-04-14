@@ -91,33 +91,35 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
                         )
                             sellerUid.add(snapshot.getData().get("receiver").toString());
                         //Toast.makeText(SellerChatActivity.this, ""+buyerUid, Toast.LENGTH_SHORT).show();
+                        db.collection("Seller").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                list.clear();
+                                if(task.isSuccessful()){
+                                    list.clear();
+                                    for(QueryDocumentSnapshot snapshot:task.getResult()){
+                                        if(sellerUid.contains(snapshot.getData().get("uid").toString())){
+                                            mSellerProfile mSellerProfile = snapshot.toObject(Models.mSellerProfile.class);
+                                            // list.add(new SellerList(snapshot.getData().get("shopname").toString(),snapshot.getData().get("custcare").toString(),snapshot.getData().get("shopname").toString(),snapshot.getData().get("uid").toString()));
+                                            list.add(mSellerProfile);
+                                            Toast.makeText(BuyerChatActivity.this, ""+list, Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    listOfSellers.setAdapter(new ShopListAdapter(BuyerChatActivity.this,list));
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                }
+                                else {
+                                    Toast.makeText(BuyerChatActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                        listOfSellers.setAdapter(new ShopListAdapter(BuyerChatActivity.this,list));
+
                     }
                 }
             }
         });
 
-        db.collection("Seller").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                list.clear();
-                if(task.isSuccessful()){
-                    list.clear();
-                    for(QueryDocumentSnapshot snapshot:task.getResult()){
-                        if(sellerUid.contains(snapshot.getData().get("uid").toString())){
-                            mSellerProfile mSellerProfile = snapshot.toObject(Models.mSellerProfile.class);
-                           // list.add(new SellerList(snapshot.getData().get("shopname").toString(),snapshot.getData().get("custcare").toString(),snapshot.getData().get("shopname").toString(),snapshot.getData().get("uid").toString()));
-                            list.add(mSellerProfile);
-                            Toast.makeText(BuyerChatActivity.this, ""+list, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    listOfSellers.setAdapter(new ShopListAdapter(BuyerChatActivity.this,list));
-                    progressBar.setVisibility(View.INVISIBLE);
-                }
-                else {
-                    Toast.makeText(BuyerChatActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
     }
 
