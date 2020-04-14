@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.codepth.maps.R;
 import com.codepth.maps.SplashActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -52,7 +53,7 @@ public class BuyeProfileCreation extends AppCompatActivity  {
     AutoCompleteTextView locality;
     private Button Create_pofile;
     private static String type = "Curr";
-    String userid, nm, pn, Street, loc, phone, House;
+    String userid, nm, pn, Street, loc, phone, House,personName;
     private FirebaseFirestore fstore;
     private FirebaseAuth fauth;
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -77,7 +78,12 @@ public class BuyeProfileCreation extends AppCompatActivity  {
         //  PlacesClient placesClient = Places.createClient(BuyeProfileCreation.this);
 
         progressDialog = new ProgressDialog(this);
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(BuyeProfileCreation.this);
+        if (acct != null) {
+             personName = acct.getDisplayName();
+        }
         name = findViewById(R.id.etName);
+        name.setText(personName);
         phn = findViewById(R.id.etPhone);
         street = findViewById(R.id.etStreet);
         locality = (AutoCompleteTextView) findViewById(R.id.autoLoc);
