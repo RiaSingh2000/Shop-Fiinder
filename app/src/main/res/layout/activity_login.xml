@@ -5,7 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="Buyer.BuyerLogin"
-    android:background="#fece2f">
+    android:background="@drawable/signin"
+    android:paddingHorizontal="32dp">
+
+    <Button
+        android:id="@+id/btn_google_sigin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt"
+        android:layout_marginTop="24dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/signinbutton1"
+
+     />
 
     <ImageView
         android:id="@+id/icon"
@@ -13,22 +25,8 @@
         android:layout_height="150dp"
         android:src="@drawable/shoppingbag"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="80dp"/>
+        android:layout_below="@id/sigInIV"/>
 
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome"
-        app:fontFamily="@font/bungee"
-        android:fontFamily="@font/bungee"
-        android:layout_below="@id/icon"
-        android:layout_centerInParent="true"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
-        />
 
     <TextView
         android:id="@+id/txt"
@@ -46,17 +44,29 @@
         android:padding="5sp"
         android:layout_centerInParent="true"/>
 
-    <Button
-        android:id="@+id/btn_google_sigin"
-        android:layout_width="200dp"
+    <ImageView
+        android:id="@+id/sigInIV"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txt"
-        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginVertical="70dp"
+        android:background="@drawable/signin1"/>
+
+    <TextView
+        android:id="@+id/notExistingTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_google_sigin"
         android:layout_centerInParent="true"
-        android:background="@drawable/btn_design1"
-        android:drawableLeft="@drawable/ic_google_square_foreground"
-        android:text="GOOGLE"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="105dp"
+        android:fontFamily="@font/antic"
+        android:padding="5sp"
+        android:text="Not an existing user?"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/antic"/>
+
 
 </RelativeLayout>

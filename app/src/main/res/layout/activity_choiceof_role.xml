@@ -4,13 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/mapd"
     tools:context=".ChoiceofRegRole"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_marginTop="-70dp">
+
+        <ImageButton
+            android:id="@+id/buyer_template"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/buyercard"
+            android:layout_margin="10dp"
+            >
+        </ImageButton>
+
+        <ImageButton
+            android:id="@+id/seller_template"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/sellercard"
+            android:layout_margin="10dp"
+            >
+        </ImageButton>
+
+
+    </LinearLayout>
+
+
     <RelativeLayout
+        android:background="@drawable/signin"
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:background="#fece2f"
         android:padding="20dp">
 
         <ImageView
@@ -30,7 +61,7 @@
             android:fontFamily="@font/bungee"
             android:includeFontPadding="false"
             android:text="WHO ARE YOU?"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textSize="25sp" />
 
         <TextView
@@ -41,113 +72,9 @@
             android:layout_toRightOf="@id/profile_image"
             android:includeFontPadding="false"
             android:text="Are you a Buyer/Seller?"
+            android:textColor="@android:color/white"
             android:textSize="14sp" />
 
     </RelativeLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp"
-        android:layout_marginTop="-70dp">
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="125dp"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            app:cardBackgroundColor="#fece2f"
-            app:cardElevation="10dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFF700"
-                android:padding="5dp">
-
-                <Button
-                    android:id="@+id/Buyer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent" />
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/buyer" />
-
-                <TextView
-                    android:id="@+id/buyer_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:fontFamily="@font/bungee"
-                    android:includeFontPadding="false"
-                    android:text="I am a Buyer"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp" />
-
-            </RelativeLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="0dp"
-            android:layout_height="125dp"
-            android:layout_weight="1"
-            android:layout_margin="10dp"
-            app:cardBackgroundColor="#fece2f"
-            app:cardElevation="10dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#FFF700"
-                android:padding="5dp">
-
-                <Button
-                    android:id="@+id/Seller"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/transparent" />
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/seller" />
-
-                <TextView
-                    android:id="@+id/seller_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:fontFamily="@font/bungee"
-                    android:includeFontPadding="false"
-                    android:text="I am a Seller"
-                    android:textColor="@android:color/black"
-                    android:textSize="15sp" />
-
-            </RelativeLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:gravity="center"
-        android:text="Powered by CODEPTH"
-        android:layout_marginTop="50dp"
-        android:fontFamily="@font/antic"
-        android:textSize="15sp"
-        android:textColor="@android:color/black"/>
 
 </LinearLayout>

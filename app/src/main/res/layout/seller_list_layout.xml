@@ -3,9 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="10dp">
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="5dp"
+    android:padding="5dp"
+    app:cardCornerRadius="5dp">
 
     <LinearLayout
+        android:outlineAmbientShadowColor="@color/blue_A200"
         android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,7 +55,10 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:src="@drawable/chat"
-            android:layout_marginRight="3dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/circle"
+
+            android:padding="18dp"
             />
 
         <ImageView
@@ -59,6 +66,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/circle"
+            android:padding="18dp"
             android:src="@drawable/call"/>
     </LinearLayout>
 

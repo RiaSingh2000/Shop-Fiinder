@@ -8,16 +8,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class ChoiceofLoginRole extends AppCompatActivity {
-    private Button seller,buyer;
+    private ImageButton seller,buyer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choiceof_login_role);
-        seller=findViewById(R.id.Seller);
-        buyer=findViewById(R.id.Buyer);
+        seller=findViewById(R.id.seller_template);
+        buyer=findViewById(R.id.buyer_template);
         seller.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

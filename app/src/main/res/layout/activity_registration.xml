@@ -5,7 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="Buyer.BuyerRegistartion"
-    android:background="#fece2f">
+    android:background="@drawable/signin"
+    android:paddingRight="12dp">
+
+    <Button
+        android:id="@+id/btn_google_sigin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="56dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/registerbtnggl"
+        android:drawableLeft="@drawable/ic_google_square_foreground"
+        />
 
     <ImageView
         android:id="@+id/icon"
@@ -16,47 +28,113 @@
         android:layout_marginTop="80dp"/>
 
 
-
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/streetet"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Welcome"
-        app:fontFamily="@font/bungee"
-        android:fontFamily="@font/bungee"
-        android:layout_below="@id/icon"
-        android:layout_centerInParent="true"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black"
+        android:layout_below="@id/streettv"
+        android:layout_marginLeft="18dp"
+        android:backgroundTint="@color/blue_A200"
         />
 
-    <TextView
-        android:id="@+id/txt"
+    <EditText
+        android:id="@+id/houseet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/housetv"
+        android:layout_marginLeft="18dp"
+        android:backgroundTint="@color/blue_A200"
+        />
+
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loctv">
+        <AutoCompleteTextView
+            android:id="@+id/autoLoc"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/tvLocality"
+            android:backgroundTint="@color/blue_200"
+            android:hint="Enter your location"
+            android:paddingLeft="10dp"
+            android:visibility="invisible"/>
+        <TextView
+            android:id="@+id/currentLocTvs"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/tvShopName"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="@color/blue_200"
+            android:paddingLeft="10dp"
+            />
+    </FrameLayout>
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/icon"
-        android:layout_marginTop="50dp"
-        android:text="Please register with us using your Google account"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:background="@drawable/registertxt"/>
+    <TextView
+        android:id="@+id/loctv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/streetet"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="18dp"
+        android:padding="5sp"
         android:fontFamily="@font/antic"
         app:fontFamily="@font/antic"
         android:textColor="@android:color/white"
-        android:layout_centerHorizontal="true"
         android:textStyle="bold"
         android:textSize="15sp"
-        android:padding="5sp"
-        android:layout_centerInParent="true"/>
-
-    <Button
-        android:id="@+id/btn_google_sigin"
-        android:layout_width="200dp"
+        android:text="Address/Locality" />
+    <TextView
+        android:id="@+id/streettv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txt"
-        android:layout_marginTop="24dp"
-        android:layout_centerInParent="true"
-        android:background="@drawable/btn_design1"
-        android:drawableLeft="@drawable/ic_google_square_foreground"
-        android:text="GOOGLE"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white" />
+        android:layout_below="@id/houseet"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="18dp"
+        android:fontFamily="@font/antic"
+        android:padding="5sp"
+        android:text="Street"
+        android:textColor="@android:color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:fontFamily="@font/antic" />
+    <TextView
+        android:id="@+id/hiddenTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/frame"
+        android:fontFamily="@font/antic"
+        android:text="Set current Location"
+        android:textAlignment="viewEnd"
+        android:textSize="15dp"
+        android:visibility="invisible"/>
+
+
+    <TextView
+        android:id="@+id/housetv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/icon"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/antic"
+        android:padding="5sp"
+        android:text="House"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        app:fontFamily="@font/antic" />
 
 </RelativeLayout>
