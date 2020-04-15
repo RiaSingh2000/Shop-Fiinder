@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +22,7 @@ public class Welcomepage extends AppCompatActivity {
     private Button Signup;
     private FirebaseAuth mauth;
     private FirebaseUser currentuser;
+    private TextView CustomerRegisterLink;
 
 
     @Override
@@ -30,8 +32,28 @@ public class Welcomepage extends AppCompatActivity {
         setContentView(R.layout.activity_welcomepage);
         Login=findViewById(R.id.loginbtn);
         Signup=findViewById(R.id.signupbtn);
+        CustomerRegisterLink=findViewById(R.id.register_customer_link);
         mauth = FirebaseAuth.getInstance();
         currentuser = mauth.getCurrentUser();
+
+        Signup.setVisibility(View.INVISIBLE);
+        Signup.setEnabled(false);
+
+
+        CustomerRegisterLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Login.setVisibility(View.INVISIBLE);
+                CustomerRegisterLink.setVisibility(View.INVISIBLE);
+
+                Signup.setVisibility(View.VISIBLE);
+                Signup.setEnabled(true);
+            }
+        });
+
+
+
         Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +75,13 @@ public class Welcomepage extends AppCompatActivity {
                 finish();
             }
         });
+
+
+
+
+
+
+
     }
 
     @Override

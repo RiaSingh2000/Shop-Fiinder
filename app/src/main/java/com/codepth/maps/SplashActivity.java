@@ -38,11 +38,13 @@ public class SplashActivity extends AppCompatActivity {
     ImageView imageView;
     TextView textView, textView1;
 
+    SharedPreferences onBoardingScreen;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        final SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.apply();
         FirebaseMessaging.getInstance().subscribeToTopic("news");
         FirebaseInstanceId.getInstance().getInstanceId()
@@ -80,16 +82,37 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                Intent intent = new Intent(SplashActivity.this, Welcomepage.class);
-                Pair[] pairs = new Pair[2];
-                pairs[0] = new Pair<View, String>(imageView, "logo_image");
-                pairs[1] = new Pair<View, String>(textView, "logo_text");
+                onBoardingScreen=getSharedPreferences("onBoardingScreen",MODE_PRIVATE);
 
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SplashActivity.this, pairs);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent, options.toBundle());
+                boolean isFirstTime=onBoardingScreen.getBoolean("firstTime",true);
+
+                if (isFirstTime){
+
+                    SharedPreferences.Editor editor1=onBoardingScreen.edit();
+                    editor1.putBoolean("firstTime",false);
+                    editor1.commit();
+
+                    Intent intent = new Intent(SplashActivity.this, OnBoarding.class);
+                    startActivity(intent);
                     finish();
+                }else{
+                    Intent intent = new Intent(SplashActivity.this, Welcomepage.class);
+                    Pair[] pairs = new Pair[2];
+                    pairs[0] = new Pair<View, String>(imageView, "logo_image");
+                    pairs[1] = new Pair<View, String>(textView, "logo_text");
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(SplashActivity.this, pairs);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent, options.toBundle());
+                        finish();
+
+                }
+
+
+
+
+
                 }
             }
         }, SPLASH_SCREEN);

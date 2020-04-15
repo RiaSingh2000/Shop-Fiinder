@@ -14,4 +14,18 @@
     <string name="default_notification_channel_id">Notification</string>
     <string name="fcm_message">Notification</string>
     <string name="ask_for_autocomplete">Do you want to select a different location than your current location ?</string>
+    
+    <string name="first_slide_title">Welcome Aboard</string>
+    <string name="second_slide_title">Buyer and Seller</string>
+    <string name="third_slide_title">Locate Yourself</string>
+    <string name="fourth_slide_title">Chatting</string>
+    <string name="fifth_slide_title">Enjoy Using</string>
+
+    <string name="first_slide_desc">Hello there ! You are going to witness a great online platform where seller and buyer interact with each other for selling and buying purpose.</string>
+    <string name="second_slide_desc">As a Buyer you can have a direct interaction with seller by just sitting and typing at your home.And as a Seller you can make your market online to gain more profit!</string>
+    <string name="third_slide_desc">You can find shops nearby your location and explore the online-offline market around you!</string>
+    <string name="fourth_slide_desc">Have a chat with seller about goods and services his/her market offers.</string>
+    <string name="fifth_slide_desc">Have fun using this App as it gives services to you to direct interact in the market place without even visiting any market!</string>
+
+    
 </resources>
