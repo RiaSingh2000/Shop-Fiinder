@@ -38,7 +38,7 @@ public class BuyerListAdapter extends RecyclerView.Adapter<BuyerListAdapter.Buye
     public void onBindViewHolder(@NonNull BuyerListAdapter.BuyerListViewHolder holder, int position) {
         final BuyerList obj=list.get(position);
         holder.buyerName.setText(obj.getName());
-        
+
 
         holder.chat.setOnClickListener(new View.OnClickListener() {
             @Override
