@@ -47,22 +47,21 @@
         android:weightSum="2"
         android:layout_gravity="center_vertical">
 
-        <ImageView
+        <Button
             android:id="@+id/chat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
             android:layout_marginRight="10dp"
-            android:src="@drawable/chat"
-            android:background="@drawable/circle"
+            android:background="@drawable/chat"
             android:padding="7dp"
             />
 
-        <ImageView
+        <Button
             android:id="@+id/call"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/circle"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/call"
             android:padding="7dp"
             android:layout_weight="1"
             android:src="@drawable/call"/>

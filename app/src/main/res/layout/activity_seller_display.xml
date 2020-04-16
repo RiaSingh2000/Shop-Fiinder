@@ -8,6 +8,7 @@
     tools:context="Seller.SellerDisplayActivity"
     android:id="@+id/lL_SellerDisplay"
     android:background="@drawable/mapd"
+
    >
 
     <RelativeLayout
@@ -46,17 +47,25 @@
             android:layout_marginLeft="5dp"/>
 
     </RelativeLayout>
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:src="@drawable/seller"/>
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
-    android:layout_margin="32dp"
-    android:background="@drawable/edit_text_design"
-    android:orientation="vertical">
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="32dp"
+        android:orientation="vertical">
 <TextView
     android:id="@+id/tvShopname"
     android:text="Shopname"
     android:textSize="50dp"
+    android:background="@drawable/edit_text_design"
+    android:maxLines="1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="32dp"
@@ -64,6 +73,8 @@
     android:fontFamily="@font/antic"
     android:textColor="@android:color/black"
     android:gravity="center_horizontal"
+    android:padding="10dp"
+    android:paddingHorizontal="18dp"
     android:layout_marginVertical="20dp"
     />
     <TextView
@@ -74,24 +85,34 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:gravity="center_horizontal"
+        android:maxLines="1"
         android:fontFamily="@font/antic"
+        android:paddingHorizontal="18dp"
         app:fontFamily="@font/antic"/>
     <TextView
         android:id="@+id/tvShopLocation"
         android:textSize="30dp"
         android:text="Shop Location"
         android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:gravity="center_horizontal"
         android:fontFamily="@font/antic"
         app:fontFamily="@font/antic"
-        android:layout_marginTop="10dp"/>
+        android:maxLines="1"
+        android:paddingHorizontal="18dp"/>
 </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background=""
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:weightSum="3"
         >
 
@@ -138,6 +159,7 @@
             app:fontFamily="@font/antic" />
 
 
+    </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
