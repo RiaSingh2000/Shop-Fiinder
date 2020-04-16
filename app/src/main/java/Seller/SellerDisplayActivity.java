@@ -29,8 +29,9 @@ public class SellerDisplayActivity extends AppCompatActivity {
 
     //ACTIVITY WIDGETS
     TextView tvShopName , tvSellerName , tvLocation;
-    Button btnChat ,tvCall,nav;
+    ImageView btnChat ,tvCall,nav;
     private ProgressDialog progressDialog;
+
 
     //FIREBASE
     FirebaseFirestore fstore;
