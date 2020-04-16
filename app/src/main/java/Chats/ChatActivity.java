@@ -93,6 +93,7 @@ public class ChatActivity extends AppCompatActivity {
     FirebaseFirestore firestore;
     FirebaseAuth auth;
     Bitmap image;
+    private String downUri;
     private RequestQueue requestQueue;
     String tok;
     private boolean hasDataEdited = false;
@@ -256,6 +257,7 @@ public class ChatActivity extends AppCompatActivity {
                         }
                     }
                     chatsRv.setAdapter(new ChatAdapter(ChatActivity.this, messages, auth.getUid()));
+
                 }
             }
         });
@@ -277,7 +279,7 @@ public class ChatActivity extends AppCompatActivity {
                             reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-                                    String downUri=uri.toString();
+                                     downUri=uri.toString();
                                     Toast.makeText(ChatActivity.this, "DownUri:"+downUri, Toast.LENGTH_SHORT).show();
                                     sendMessage(downUri);
                                     receiveMessage();

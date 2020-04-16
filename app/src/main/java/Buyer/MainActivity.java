@@ -428,9 +428,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
             case R.id.logoutDrawableItem :{
                 DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
                 documentReference.update("token","");
-
-                FirebaseAuth.getInstance().signOut();
-              revokeAccess();
+                signout();
                 if(DrawerController.sendUsertologinactivity(getApplicationContext())) {
                     this.overridePendingTransition(0,0);
                     finish();
@@ -444,18 +442,12 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         return true;
     }
 
-    private void openDialog()
-    {
-     AboutUsDialog aboutUsDialog=new AboutUsDialog();
-     aboutUsDialog.show(getSupportFragmentManager(),"About Us Dialog");
-    }
-
-    private void revokeAccess() {
+    private void signout() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-       GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         // Firebase sign out
         FirebaseAuth.getInstance().signOut();
 
@@ -468,4 +460,10 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 });
     }
 
+
+    private void openDialog()
+    {
+     AboutUsDialog aboutUsDialog=new AboutUsDialog();
+     aboutUsDialog.show(getSupportFragmentManager(),"About Us Dialog");
+    }
 }
