@@ -12,96 +12,75 @@
     <ImageView
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:src="@drawable/shoppingbag"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:src="@drawable/shoppingbag" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Customers information"
-        android:textAllCaps="true"
-        android:textSize="20sp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"
-        android:fontFamily="@font/bungee"
-        android:textColor="@android:color/white"
-        android:includeFontPadding="false"/>
+        />
 
     <ScrollView
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20sp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FFF">
         <LinearLayout
+            android:layout_marginTop="10dp"
+            android:background="#FFF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFF"
             android:orientation="vertical"
             android:padding="10dp">
 
             <Button
-                android:id="@+id/btRegister"
+                android:id="@+id/btnRegisterSeller"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_below="@id/etHouse"
-                android:layout_marginTop="40dp"
+                android:layout_height="50dp"
+                android:layout_below="@id/tvLocality"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/btn_design2"
+                android:fontFamily="@font/bungee"
                 android:text="CREATE PROFILE"
                 android:textColor="#ffffff"
-                android:textSize="20dp"
+                android:textSize="15sp"
                 />
             <EditText
-                android:id="@+id/etPhone"
+                android:id="@+id/etSellerName"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/tvName"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="10dp"
+                android:background="@drawable/edit_text_design"
+                />
+            <EditText
+                android:id="@+id/etShopName"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@id/tvShopName"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:paddingLeft="10dp"
+                android:background="@drawable/edit_text_design"
+                />
+            <EditText
+                android:id="@+id/etSellerPhone"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_below="@id/tvPhone"
                 android:layout_centerHorizontal="true"
-                android:backgroundTint="@color/appThemeYellow"
-                android:pointerIcon="arrow"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
-                android:paddingLeft="10dp"
-                android:inputType="number"
-                />
-
-
-
-
-            <EditText
-                android:id="@+id/etStreet"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_below="@id/tvSteet"
-                android:layout_centerHorizontal="true"
-                android:backgroundTint="@color/appThemeYellow"
-                android:pointerIcon="arrow"
-                android:layout_marginTop="5dp"
+                android:background="@drawable/edit_text_design"
                 android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"
                 android:inputType="number"
                 android:paddingLeft="10dp"
                 />
-            <EditText
-                android:id="@+id/etHouse"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_below="@id/tvHouse"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"
-                android:backgroundTint="@color/appThemeYellow"
-                android:paddingLeft="10dp"
-                android:pointerIcon="arrow"
-                />
-
-
-
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -110,16 +89,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_below="@id/tvLocality"
+                    android:background="@drawable/edit_text_design"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/appThemeYellow"
-                    android:hint="Enter your location"
-                    android:pointerIcon="arrow"
                     android:paddingLeft="10dp"
-                    android:visibility="invisible"
-                    />
+                    android:hint="Enter your location"
+                    android:visibility="invisible"/>
                 <TextView
-                    android:id="@+id/currentLocTv"
+                    android:id="@+id/currentLocTvs"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_below="@id/tvShopName"
@@ -127,71 +104,65 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="5dp"
-                    android:backgroundTint="@color/appThemeYellow"
-                    android:pointerIcon="arrow"
+                    android:background="@drawable/edit_text_design"
                     android:paddingLeft="10dp"
                     />
             </FrameLayout>
             <TextView
-                android:id="@+id/tvSteet"
+                android:id="@+id/tvName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/etPhone"
-                android:text="Street No."
-                android:textSize="25dp"
-                android:fontFamily="@font/antic"
-                android:layout_marginTop="10dp"
-                android:textColor="@android:color/black"
                 android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/antic"
+                android:text="Name"
+                android:textColor="@android:color/black"
+                android:textSize="20dp" />
+            <TextView
+                android:id="@+id/tvShopName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etSellerName"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/antic"
+                android:text="Shop Name"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"/>
+            <TextView
+                android:id="@+id/tvPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etShopName"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/antic"
+                android:text="CustomerCare Number"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"
                 />
-
-
             <TextView
                 android:id="@+id/tvLocality"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/etStreet"
+                android:layout_below="@id/etSellerPhone"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="10dp"
                 android:fontFamily="@font/antic"
                 android:text="Locality"
                 android:textColor="@android:color/black"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 />
             <TextView
-                android:id="@+id/tvHouse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tvLocality"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/antic"
-                android:text="House"
-                android:textColor="@android:color/black"
-                android:textSize="25dp"
-                />
-            <TextView
-                android:id="@+id/HiddenTv"
+                android:id="@+id/hiddenTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/below_autofill"
+                android:text="Reset current Location"
                 android:textAlignment="viewEnd"
                 android:textSize="15dp"
                 android:visibility="invisible"/>
 
 
-            <TextView
-                android:id="@+id/tvPhone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/etHouse"
-                android:text="Phone No."
-                android:textColor="@android:color/black"
-                android:textSize="25dp"
-                android:fontFamily="@font/antic"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                />
         </LinearLayout>
     </ScrollView>
 
@@ -200,9 +171,20 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:includeFontPadding="false"
-        android:text="Create your profile here!"
+        android:text="Create your market here!"
         android:textColor="@android:color/white"
         android:textSize="15sp"
         />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/bungee"
+        android:text="Seller information"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:textSize="25sp"/>
 
 </LinearLayout>
