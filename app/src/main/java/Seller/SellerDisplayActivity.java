@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,6 +48,14 @@ public class SellerDisplayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_seller_display);
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+        }else{
+            showGPSDisabledAlertToUser();
+        }
+
         uid = receiveUid();
         initializeWidgets();
         fetchSellerInfoFromFirebase();
@@ -131,6 +141,28 @@ public class SellerDisplayActivity extends AppCompatActivity {
 
     public void call(View view) {
        startActivity( new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + mSellerProfile.getCustcare())));
+    }
+
+    private void showGPSDisabledAlertToUser(){
+        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("GPS is disabled in your device. Would you like to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Goto Settings Page To Enable GPS",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(callGPSSettingIntent);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                    }
+                });
+        androidx.appcompat.app.AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
 }
