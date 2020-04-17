@@ -50,7 +50,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginTop="10dp">
-
+            <TextView
+                android:id="@+id/tvNames"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/antic"
+                android:text="Name"
+                android:textColor="@android:color/black"
+                android:textSize="20dp" />
             <EditText
                 android:id="@+id/etNames"
                 android:layout_width="match_parent"
@@ -63,6 +72,17 @@
                 android:paddingLeft="10dp"
                 android:background="@drawable/edit_text_design"
                 />
+            <TextView
+                android:id="@+id/tvShopName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etNames"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/antic"
+                android:text="Shop Name"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"/>
             <EditText
                 android:id="@+id/etShopname"
                 android:layout_width="match_parent"
@@ -74,6 +94,19 @@
                 android:layout_marginTop="5dp"
                 android:paddingLeft="10dp"
                 android:background="@drawable/edit_text_design"
+                />
+
+            <TextView
+                android:id="@+id/tvCustomercarenumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etShopname"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/antic"
+                android:text="CustomerCare Number"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"
                 />
             <EditText
                 android:id="@+id/etcc"
@@ -88,45 +121,15 @@
                 android:inputType="number"
                 android:background="@drawable/edit_text_design"
                 />
-            <TextView
-                android:id="@+id/tvNames"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/antic"
-                android:text="Name"
-                android:textColor="@android:color/black"
-                android:textSize="20dp" />
-            <TextView
-                android:id="@+id/tvCustomercarenumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/etShopname"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/antic"
-                android:text="CustomerCare Number"
-                android:textColor="@android:color/black"
-                android:textSize="20dp"
-                />
-            <TextView
-                android:id="@+id/tvShopName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/etNames"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:fontFamily="@font/antic"
-                android:text="Shop Name"
-                android:textColor="@android:color/black"
-                android:textSize="20dp"/>
+
+
+
 
             <TextView
                 android:id="@+id/tvLocality"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/etBuyerHouse"
+                android:layout_below="@id/etcc"
                 android:text="Locality"
                 android:textSize="20dp"
                 android:layout_marginLeft="10dp"

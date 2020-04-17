@@ -115,7 +115,8 @@ public class OnBoarding extends AppCompatActivity {
                 letsGetStarted.setAnimation(animation);
                 letsGetStarted.setVisibility(View.VISIBLE);
 
-                letsGetStarted.setOnClickListener(new View.OnClickListener() {
+                letsGetStarted.setOnClickListener(new View.OnClickListener()
+                {
                     @Override
                     public void onClick(View v)
                     {
