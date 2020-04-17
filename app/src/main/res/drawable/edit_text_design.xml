@@ -9,7 +9,7 @@
         />
 
     <corners
-        android:radius="8dp"
+        android:radius="20dp"
         />
 
 

@@ -12,30 +12,30 @@
         android:orientation="vertical"
         android:background="@drawable/chat_border_left">
 
-        <TextView
-            android:id="@+id/msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Hello!!"
-            android:textSize="30dp"
-            android:textStyle="bold"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:textColor="@color/overlay_dark_90"
-
-            />
-
         <ImageView
             android:id="@+id/img"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_below="@id/msg"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="0dp"
             android:visibility="gone"
-            android:layout_marginBottom="10dp"/>
+            />
 
+
+        <TextView
+            android:id="@+id/msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hello!!"
+            android:fontFamily="@font/quicksand_regular"
+            android:textStyle="bold"
+            android:textSize="20dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/overlay_dark_90"/>
 
     </LinearLayout>
 
