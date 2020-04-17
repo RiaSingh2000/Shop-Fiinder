@@ -14,7 +14,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -152,11 +155,18 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
                 break;
             }
             case R.id.aboutUsDrawableList :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                //Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                openDialog();
                 break;
             }
             case R.id.rateUsDrawableList :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                //Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +getPackageName())));
+                }catch (ActivityNotFoundException e)
+                {
+                    startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://play.google.com/store/apps/details?id="+getPackageName())));
+                }
                 break;
             }
             case R.id.settingsDrawableItem :{
@@ -180,6 +190,11 @@ public class BuyerChatActivity extends AppCompatActivity implements NavigationVi
         item.setChecked(true);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private void openDialog()
+    {
+        AboutUsDialog aboutUsDialog=new AboutUsDialog();
+        aboutUsDialog.show(getSupportFragmentManager(),"About Us Dialog");
     }
 
 }
