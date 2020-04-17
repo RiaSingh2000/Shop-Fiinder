@@ -7,6 +7,7 @@ import  Seller.SellerChatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -86,6 +87,8 @@ public class Welcomepage extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        Intent setting_intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(setting_intent);
         super.onStart();
         if (currentuser != null) {
             SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
