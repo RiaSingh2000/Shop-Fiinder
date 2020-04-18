@@ -24,6 +24,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,6 +37,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -87,9 +91,14 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     private GoogleMap googleMap;
     MarkerOptions markerOptions = null;
     private MarkerOptions markerOptions3= null;
+    private LocationCallback locationCallback;
 
     public  static  LatLng getLatLng(){
         return latLng;
+    }
+
+    private void stopLocationUpdates(){
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
 
     @Override
@@ -103,9 +112,30 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         Toolbar toolbar=findViewById(R.id.toolbar);
         progressDialog=new ProgressDialog(this);
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(MainActivity.this);
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        locationCallback= new LocationCallback(){
+
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if(locationResult==null){
+                    Toast.makeText(MainActivity.this,"We are unable to get your current location kindly open Google maps and " +
+                            "revisit the app then",Toast.LENGTH_LONG).show();
+                }
+                else{
+                    userLoc = locationResult.getLocations().get(0);
+                }
+                stopLocationUpdates();
+            }
+        };
+
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.getMainLooper());
+
         }else{
             showGPSDisabledAlertToUser();
         }
@@ -132,8 +162,6 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
 
         fstore=FirebaseFirestore.getInstance();
         fauth=FirebaseAuth.getInstance();
-        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(MainActivity.this);
-        fetchLastLoc();
 
         DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -142,9 +170,14 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 if(task.isSuccessful()){
                     double lat,lon;
                     DocumentSnapshot doc = task.getResult();
-                    lat=Double.parseDouble(doc.get("lat").toString());
-                    lon=Double.parseDouble(doc.get("lng").toString());
-                    latLng = new LatLng(lat,lon);
+                    if(doc.exists()) {
+                        lat = Double.parseDouble(doc.get("lat").toString());
+                        lon = Double.parseDouble(doc.get("lng").toString());
+                        latLng = new LatLng(lat, lon);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(),"Registration Document latlng doesnt exist.Kindly register your info in settings",Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });

@@ -252,6 +252,9 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                         e.printStackTrace();
                     }
                 }
+                else{
+                    Toast.makeText(getApplicationContext(),"null location",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
