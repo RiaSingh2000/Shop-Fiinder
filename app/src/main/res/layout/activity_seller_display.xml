@@ -117,9 +117,9 @@
 
         <ImageView
             android:id="@+id/tvCall"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_margin="48dp"
+            android:layout_margin="35dp"
             android:layout_weight="1"
             android:onClick="call"
             android:background="@drawable/circle"
@@ -129,9 +129,9 @@
 
         <ImageView
             android:id="@+id/btnChat"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_margin="48dp"
+            android:layout_margin="35dp"
             android:layout_weight="1"
             android:background="@drawable/circle"
             android:padding="7dp"
@@ -144,9 +144,9 @@
 
         <ImageView
             android:id="@+id/nav"
-            android:layout_width="wrap_content"
+            android:layout_width="70dp"
             android:layout_height="wrap_content"
-            android:layout_margin="48dp"
+            android:layout_margin="35dp"
             android:layout_weight="1"
             android:background="@drawable/circle"
             android:padding="7dp"
