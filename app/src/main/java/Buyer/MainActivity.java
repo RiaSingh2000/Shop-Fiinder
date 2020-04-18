@@ -12,7 +12,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -22,7 +21,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,8 +41,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -68,39 +64,41 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
-
-public class MainActivity extends FragmentActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MainActivity  extends FragmentActivity  implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     //FIREBASE
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference sellerRef = db.collection("Seller");
+     private FirebaseFirestore db=FirebaseFirestore.getInstance();
+     private CollectionReference sellerRef = db.collection("Seller");
     FusedLocationProviderClient fusedLocationProviderClient;
-    LocationManager locationManager;
 
     //WIDGETS AND LAYOUTS
     private ProgressDialog progressDialog;
     private DrawerLayout drawerLayout;
     private static NavigationView navView;
 
-    Location userLoc = null;
-    int sel = 0, findShop = 0; //flag variables
-    FirebaseFirestore fstore;
-    FirebaseAuth fauth;
-    private static LatLng latLng = null;
-    ArrayList<mShops> mShopsArrayList = new ArrayList<>();
+     Location userLoc = null;
+     int sel=0,findShop=0; //flag variables
+     FirebaseFirestore fstore;
+     FirebaseAuth fauth;
+     private static LatLng latLng = null;
+     ArrayList<mShops> mShopsArrayList = new ArrayList<>();
 
-    private static final int REQUEST_CODE = 101;
-    private static final String[] options = new String[]{
-            "Near Current Location", "Near Registered Location"
+    private static final int REQUEST_CODE=101;
+    private static final String[] options=new String[]{
+            "Near Current Location","Near Registered Location"
     };
     private static final String TAG = "MainActivity";
     private GoogleMap googleMap;
     MarkerOptions markerOptions = null;
-    private MarkerOptions markerOptions3 = null;
+    private MarkerOptions markerOptions3= null;
+    private LocationCallback locationCallback;
 
-    public static LatLng getLatLng() {
+    public  static  LatLng getLatLng(){
         return latLng;
+    }
+
+    private void stopLocationUpdates(){
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
     }
 
     @Override
@@ -111,49 +109,75 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
         navView = findViewById(R.id.nv);
         navView.setNavigationItemSelectedListener(this);
         drawerLayout = findViewById(R.id.activity_main_drawerlayout);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        progressDialog = new ProgressDialog(this);
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        progressDialog=new ProgressDialog(this);
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(MainActivity.this);
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        fusedLocationProviderClient = getFusedLocationProviderClient(MainActivity.this);
-        fetchLastLoc();
+        locationCallback= new LocationCallback(){
+
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if(locationResult==null){
+                    Toast.makeText(MainActivity.this,"We are unable to get your current location kindly open Google maps and " +
+                            "revisit the app then",Toast.LENGTH_LONG).show();
+                }
+                else{
+                    userLoc = locationResult.getLocations().get(0);
+                }
+                stopLocationUpdates();
+            }
+        };
 
 
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
-        } else {
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.getMainLooper());
+
+        }else{
             showGPSDisabledAlertToUser();
         }
 
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        int count = sharedPreferences.getInt("count", 0);
+        int count=sharedPreferences.getInt("count",0);
 //        SharedPreferences.Editor editor = sharedPreferences.edit();
 //        editor.putInt("count",count+1);
 //        editor.apply();
 //        Toast.makeText(this, ""+count, Toast.LENGTH_SHORT).show();
 //        MainActivity.setMenuCounter(R.id.chatListDrawableItem,count+1);
 
-        MainActivity.setMenuCounter(R.id.chatListDrawableItem, count);
+        MainActivity.setMenuCounter(R.id.chatListDrawableItem,count);
 
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
+
+
+        ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
 
-        fstore = FirebaseFirestore.getInstance();
-        fauth = FirebaseAuth.getInstance();
 
-        DocumentReference documentReference = fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
+        fstore=FirebaseFirestore.getInstance();
+        fauth=FirebaseAuth.getInstance();
+
+        DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    double lat, lon;
+                if(task.isSuccessful()){
+                    double lat,lon;
                     DocumentSnapshot doc = task.getResult();
-                    lat = Double.parseDouble(doc.get("lat").toString());
-                    lon = Double.parseDouble(doc.get("lng").toString());
-                    latLng = new LatLng(lat, lon);
+                    if(doc.exists()) {
+                        lat = Double.parseDouble(doc.get("lat").toString());
+                        lon = Double.parseDouble(doc.get("lng").toString());
+                        latLng = new LatLng(lat, lon);
+                    }
+                    else{
+                        Toast.makeText(getApplicationContext(),"Registration Document latlng doesnt exist.Kindly register your info in settings",Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
@@ -161,9 +185,12 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
 
     @Override
     public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START))
+        {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
+        }
+        else
+        {
             super.onBackPressed();
         }
 
@@ -173,46 +200,48 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
 
-        while (userLoc == null) ;
-        LatLng shopLatLng = null;
-        if (sel == 0 && findShop == 0) //initial case
+        while(userLoc==null);
+        LatLng shopLatLng =null;
+        if(sel ==0 && findShop==0 ) //initial case
         {
 
             latLng = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
-            markerOptions = new MarkerOptions().position(latLng).title("I am here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            markerOptions=new MarkerOptions().position(latLng).title("I am here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
             googleMap.addMarker(markerOptions);
             markerOptions.visible(true);
-        } else if (sel == 0 && findShop == 1) { //select shops nearby current location
-            // if(latLng==null){
-            googleMap.clear();
-            double lat, lon;
-            lat = userLoc.getLatitude();
-            lon = userLoc.getLongitude();
-            latLng = new LatLng(lat, lon);
-            markerOptions = new MarkerOptions().position(latLng).title("I am here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
-            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-            googleMap.addMarker(markerOptions);
-            markerOptions.visible(true);
-            fetchShopsMapDetails();
-            Log.w(TAG, "In main" + "\n");
+        }
+        else if( sel ==0 && findShop==1 ){ //select shops nearby current location
+           // if(latLng==null){
+                googleMap.clear();
+                double lat,lon;
+                lat=userLoc.getLatitude();
+                lon=userLoc.getLongitude();
+                latLng = new LatLng(lat,lon);
+                markerOptions=new MarkerOptions().position(latLng).title("I am here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
+                googleMap.addMarker(markerOptions);
+                markerOptions.visible(true);
+                fetchShopsMapDetails();
+                    Log.w(TAG, "In main" + "\n");
 
-            //  }
+          //  }
 
-        } else { //select shops nearby registered location
-            DocumentReference documentReference = fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
+        }
+        else { //select shops nearby registered location
+            DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
             documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        double lat, lon;
+                    if(task.isSuccessful()){
+                        double lat,lon;
                         DocumentSnapshot doc = task.getResult();
-                        lat = Double.parseDouble(doc.get("lat").toString());
-                        lon = Double.parseDouble(doc.get("lng").toString());
-                        latLng = new LatLng(lat, lon);
-                        while (latLng == null) ;
+                        lat=Double.parseDouble(doc.get("lat").toString());
+                        lon=Double.parseDouble(doc.get("lng").toString());
+                        latLng = new LatLng(lat,lon);
+                        while (latLng==null);
                         addRegLocationMarker();
                         fetchShopsMapDetails();
                     }
@@ -225,24 +254,24 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
 
     private void addRegLocationMarker() {
         googleMap.clear();
-        markerOptions3 = new MarkerOptions().position(latLng).title("My Registered location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+         markerOptions3=new MarkerOptions().position(latLng).title("My Registered location").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
         googleMap.addMarker(markerOptions3);
         markerOptions3.visible(true);
     }
 
-    private void calculateAndPlotNearbyShops(@NonNull LatLng ll, ArrayList<mShops> mShopsArrayList) {
-        int avail = 0;
-        for (int i = 0; i < mShopsArrayList.size(); i++) {
-            // Log.w(TAG,"Inside calculate" +mShopsArrayList.get(i).getLatitude()+"\n");
+    private void calculateAndPlotNearbyShops(@NonNull LatLng ll , ArrayList<mShops> mShopsArrayList) {
+       int avail =0;
+        for(int i=0; i< mShopsArrayList.size() ; i++ ){
+           // Log.w(TAG,"Inside calculate" +mShopsArrayList.get(i).getLatitude()+"\n");
             float[] result = new float[3];
-            Location.distanceBetween((float) ll.latitude, (float) ll.longitude, Float.parseFloat(mShopsArrayList.get(i).getLatitude()),
-                    Float.parseFloat(mShopsArrayList.get(i).getLongitude()), result);
-            if (result != null && result[0] >= 0) {
-                avail = 1;
+            Location.distanceBetween((float)ll.latitude,(float)ll.longitude, Float.parseFloat( mShopsArrayList.get(i).getLatitude()),
+                    Float.parseFloat( mShopsArrayList.get(i).getLongitude()), result);
+            if(result!=null && result[0]>=0 ){
+                avail=1;
                 Marker marker = googleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(Float.parseFloat(mShopsArrayList.get(i).getLatitude()), Float.parseFloat(mShopsArrayList.get(i).getLongitude())))
+                        .position(new LatLng(Float.parseFloat( mShopsArrayList.get(i).getLatitude()), Float.parseFloat( mShopsArrayList.get(i).getLongitude())))
                         .title(mShopsArrayList.get(i).getName()).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)).
                                 snippet("A NEARBY SHOP"));
                 marker.setTag(mShopsArrayList.get(i).getuId());
@@ -252,26 +281,26 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
             }
         }
 
-        if (avail == 0)
-            Toast.makeText(this, "You have no nearby shops.Invite shops to register with us!", Toast.LENGTH_LONG).show();
-        else
-            Toast.makeText(this, "We have found nearby shops for you!", Toast.LENGTH_LONG).show();
-        progressDialog.dismiss();
+    if(avail==0)
+        Toast.makeText(this,"You have no nearby shops.Invite shops to register with us!",Toast.LENGTH_LONG).show();
+    else
+        Toast.makeText(this,"We have found nearby shops for you!",Toast.LENGTH_LONG).show();
+    progressDialog.dismiss();
     }
 
-    public void fetchLastLoc() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(MainActivity.this, new String[]
-                    {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+    public void fetchLastLoc(){
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]
+                    {Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_CODE);
             return;
         }
-        Task<Location> task = fusedLocationProviderClient.getLastLocation();
+        Task<Location> task=fusedLocationProviderClient.getLastLocation();
         task.addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
-                if (location != null) {
-                    userLoc = location;
-                    SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                if(location!=null){
+                    userLoc=location;
+                    SupportMapFragment supportMapFragment=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
                     supportMapFragment.getMapAsync(MainActivity.this);
                 }
             }
@@ -280,42 +309,45 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode) {
+        switch (requestCode){
             case REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    ;
+                if(grantResults.length>0&&grantResults[0] ==PackageManager.PERMISSION_GRANTED);
                 fetchLastLoc();
                 break;
         }
     }
 
-    int pos = 0;
+    int pos=0;
 
-    public void openDialog(View view) {
-        int id = view.getId();
-        if (id == R.id.find_shop) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    public void openDialog(View view)
+    {
+        int id=view.getId();
+        if (id==R.id.find_shop)
+        {
+            AlertDialog.Builder builder=new AlertDialog.Builder(this);
             builder.setTitle("How Do You Want to Find Shops");
             builder.setSingleChoiceItems(options, pos, new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int index) {
-                    sel = index;
-                    pos = index;
-                    findShop = 1;
+                public void onClick(DialogInterface dialog, int index)
+                {
+                    sel=index;
+                    pos=index;
+                    findShop=1;
                 }
             });
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialog, int index) {
+                public void onClick(DialogInterface dialog, int index)
+                {
                     fetchLastLoc();
                 }
             });
-            builder.setNegativeButton("CANCEL", null);
+            builder.setNegativeButton("CANCEL",null);
             builder.show();
         }
     }
 
-    void fetchShopsMapDetails() { //gets the name of shops and its longitude and latitude values from firestore
+    void fetchShopsMapDetails(){ //gets the name of shops and its longitude and latitude values from firestore
         progressDialog.setTitle("Please Wait");
         progressDialog.setMessage("We Are Fetching Nearby Shops...");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -328,24 +360,23 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-
+                                
                                 mSellerProfile mSellerProfile = document.toObject(Models.mSellerProfile.class);
                                 mShops mShop = slice(mSellerProfile);
                                 Log.d(TAG, String.valueOf(mShopsArrayList));
                                 mShopsArrayList.add(mShop);
                             }
 
-                            calculateAndPlotNearbyShops(latLng, mShopsArrayList);
+                            calculateAndPlotNearbyShops(latLng,mShopsArrayList);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
                             progressDialog.dismiss();
-                            Toast.makeText(MainActivity.this, "Error Getting Shops", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,"Error Getting Shops",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
 
-        return;
-    }
+    return ; }
 
     private mShops slice(mSellerProfile mSellerProfile) {
         mShops mShop = new mShops();
@@ -353,23 +384,25 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
         mShop.setLongitude(mSellerProfile.getLng());
         mShop.setName(mSellerProfile.getShopname());
         mShop.setuId(mSellerProfile.getUid());
-        return mShop;
+     return mShop;
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        // if(marker.equals(markerOptions) || marker.equals(markerOptions3)){
-        if (marker.getTitle().equals("My Registered location") || marker.getTitle().equals("I am here")) {
-            marker.showInfoWindow();
-            return true;
-        } else {
-            if (marker.isVisible()) {
+       // if(marker.equals(markerOptions) || marker.equals(markerOptions3)){
+         if (marker.getTitle().equals("My Registered location") || marker.getTitle().equals("I am here")){
+             marker.showInfoWindow();
+            return  true;
+        }
+        else {
+            if(marker.isVisible()) {
                 //Log.w(TAG, "..........................................................................." + marker.getTag().toString());
                 Intent intent = new Intent(this, SellerDisplayActivity.class);
                 intent.putExtra("SellerUid", marker.getTag().toString());
                 startActivity(intent);
                 return false;
-            } else
+            }
+            else
                 return true;
         }
 
@@ -382,64 +415,65 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.mapDrawableItem: {
-                if (DrawerController.toMainActivity(getApplicationContext())) {
-                    this.overridePendingTransition(0, 0);
+        switch (item.getItemId()){
+            case R.id.mapDrawableItem :{
+                if(DrawerController.toMainActivity(getApplicationContext())){
+                    this.overridePendingTransition(0,0);
                     finish();
-                    this.overridePendingTransition(0, 0);
+                    this.overridePendingTransition(0,0);
                 }
                 break;
             }
-            case R.id.shopListDrawableItem: {
-                if (DrawerController.toShopList(getApplicationContext())) {
-                    this.overridePendingTransition(0, 0);
+            case R.id.shopListDrawableItem :{
+                if(DrawerController.toShopList(getApplicationContext())){
+                    this.overridePendingTransition(0,0);
                     finish();
-                    this.overridePendingTransition(0, 0);
+                    this.overridePendingTransition(0,0);
                 }
                 break;
             }
-            case R.id.chatListDrawableItem: {
-                if (DrawerController.toChatList(getApplicationContext())) {
-                    this.overridePendingTransition(0, 0);
+            case R.id.chatListDrawableItem :{
+                if(DrawerController.toChatList(getApplicationContext())) {
+                    this.overridePendingTransition(0,0);
                     finish();
-                    this.overridePendingTransition(0, 0);
+                    this.overridePendingTransition(0,0);
                 }
                 break;
             }
-            case R.id.aboutUsDrawableList: {
+            case R.id.aboutUsDrawableList :{
                 //Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
                 openDialog();
-
+                
                 break;
             }
-            case R.id.rateUsDrawableList: {
-                // Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+            case R.id.rateUsDrawableList :{
+               // Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
 
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
-                } catch (ActivityNotFoundException e) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + getPackageName())));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +getPackageName())));
+                }catch (ActivityNotFoundException e)
+                {
+                    startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://play.google.com/store/apps/details?id="+getPackageName())));
                 }
 
                 break;
             }
-            case R.id.settingsDrawableItem: {
-                if (DrawerController.sendUserToSettingActivity(getApplicationContext())) {
-                    this.overridePendingTransition(0, 0);
+            case R.id.settingsDrawableItem :{
+                if(DrawerController.sendUserToSettingActivity(getApplicationContext())) {
+                    this.overridePendingTransition(0,0);
                     finish();
-                    this.overridePendingTransition(0, 0);
+                    this.overridePendingTransition(0,0);
                 }
                 break;
             }
-            case R.id.logoutDrawableItem: {
-                DocumentReference documentReference = fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
-                documentReference.update("token", "");
+            case R.id.logoutDrawableItem :{
+                DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
+                documentReference.update("token","");
                 signout();
-                if (DrawerController.sendUsertologinactivity(getApplicationContext())) {
-                    this.overridePendingTransition(0, 0);
+                if(DrawerController.sendUsertologinactivity(getApplicationContext())) {
+                    this.overridePendingTransition(0,0);
                     finish();
-                    this.overridePendingTransition(0, 0);
+                    this.overridePendingTransition(0,0);
                 }
                 break;
             }
@@ -468,34 +502,32 @@ public class MainActivity extends FragmentActivity implements NavigationView.OnN
     }
 
 
-    private void openDialog() {
-        AboutUsDialog aboutUsDialog = new AboutUsDialog();
-        aboutUsDialog.show(getSupportFragmentManager(), "About Us Dialog");
+    private void openDialog()
+    {
+     AboutUsDialog aboutUsDialog=new AboutUsDialog();
+     aboutUsDialog.show(getSupportFragmentManager(),"About Us Dialog");
     }
 
-    private void showGPSDisabledAlertToUser() {
+    private void showGPSDisabledAlertToUser(){
         androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("GPS is disabled in your device. Would you like to enable it?")
                 .setCancelable(false)
                 .setPositiveButton("Goto Settings Page To Enable GPS",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
                                 Intent callGPSSettingIntent = new Intent(
                                         android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                 startActivity(callGPSSettingIntent);
                             }
                         });
         alertDialogBuilder.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
                         dialog.cancel();
                     }
                 });
         androidx.appcompat.app.AlertDialog alert = alertDialogBuilder.create();
         alert.show();
     }
-
-
-
 
 }

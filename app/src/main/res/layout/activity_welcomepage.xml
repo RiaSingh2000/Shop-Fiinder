@@ -31,7 +31,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
@@ -46,21 +46,7 @@
             android:textColor="@android:color/holo_red_light"
             android:textSize="20dp"></Button>
 
-        <TextView
-            android:id="@+id/register_customer_link"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Don't have an Account?"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:fontFamily="@font/antic"
-            app:fontFamily="@font/antic"
-            android:includeFontPadding="false"
-            android:layout_below="@id/loginbtn"
-            android:layout_gravity="center"
-            android:padding="5dp"
-          />
+
 
         <Button
             android:id="@+id/signupbtn"
