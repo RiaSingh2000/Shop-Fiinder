@@ -49,6 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
+                android:maxLines="1"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
@@ -58,6 +59,7 @@
 
             <EditText
                 android:id="@+id/b_phone"
+                android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
@@ -68,6 +70,7 @@
                 android:paddingLeft="10dp" />
 
             <EditText
+                android:maxLines="1"
                 android:id="@+id/etBuyerHouse"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
@@ -90,6 +93,7 @@
                 android:background="@drawable/edit_text_design"
                 android:layout_marginRight="5dp"
                 android:inputType="number"
+                android:maxLines="1"
                 android:paddingLeft="10dp"
                 />
 
@@ -141,6 +145,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <AutoCompleteTextView
+                    android:maxLines="1"
                     android:id="@+id/autoLoc"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -152,6 +157,7 @@
                     android:hint="Enter your location"
                     android:visibility="invisible"/>
                 <TextView
+                    android:maxLines="1"
                     android:id="@+id/currentLocTvs"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"

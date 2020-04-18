@@ -54,6 +54,7 @@
             <EditText
                 android:id="@+id/etNames"
                 android:layout_width="match_parent"
+                android:maxLines="1"
                 android:layout_height="40dp"
                 android:layout_below="@id/tvNames"
                 android:layout_centerHorizontal="true"
@@ -73,6 +74,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:paddingLeft="10dp"
+                android:maxLines="1"
                 android:background="@drawable/edit_text_design"
                 />
             <EditText
@@ -86,6 +88,7 @@
                 android:paddingLeft="10dp"
                 android:layout_marginRight="5dp"
                 android:inputType="number"
+                android:maxLines="1"
                 android:background="@drawable/edit_text_design"
                 />
             <TextView
@@ -146,6 +149,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:paddingLeft="10dp"
+                android:maxLines="1"
                 android:layout_below="@id/tvLocality"
                 android:visibility="invisible"/>
             <TextView
@@ -159,6 +163,7 @@
                 android:layout_marginRight="5dp"
                 android:background="@drawable/edit_text_design"
                 android:paddingLeft="10dp"
+                android:maxLines="1"
                 />
             </FrameLayout>
             <TextView
