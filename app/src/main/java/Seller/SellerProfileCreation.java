@@ -70,11 +70,11 @@ public class SellerProfileCreation extends AppCompatActivity {
         progressDialog=new ProgressDialog(this);
         autoCompleteTextView=findViewById(R.id.autoLoc);
         autoCompleteTextView.setAdapter(new PlacesAutoCompleteAdapter(SellerProfileCreation.this,android.R.layout.simple_list_item_1));
-        etSellerName=findViewById(R.id.etSellerName);
+        etSellerName=findViewById(R.id.etNames);
         etShopName=findViewById(R.id.etShopname);
         currentLocTv = findViewById(R.id.currentLocTvs);
         hiddenTv=findViewById(R.id.hiddenTv);
-        etSellerPhone=findViewById(R.id.etBuyerHouse);
+        etSellerPhone=findViewById(R.id.etcc);
         btnRegisterSeller=findViewById(R.id.btnRegisterSeller);
         userLoc = new Location(LocationManager.GPS_PROVIDER);
         fauth=FirebaseAuth.getInstance();
