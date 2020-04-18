@@ -30,7 +30,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static int SPLASH_SCREEN = 5000;
+    private static int SPLASH_SCREEN = 3000;
     public static String token;
     String TAG="Notify";
 
