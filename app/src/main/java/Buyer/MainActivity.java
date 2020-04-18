@@ -21,6 +21,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -101,6 +102,15 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         drawerLayout = findViewById(R.id.activity_main_drawerlayout);
         Toolbar toolbar=findViewById(R.id.toolbar);
         progressDialog=new ProgressDialog(this);
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, ""+userLoc, Toast.LENGTH_SHORT).show();
+
+        }else{
+            showGPSDisabledAlertToUser();
+        }
 
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
         int count=sharedPreferences.getInt("count",0);
@@ -165,6 +175,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         {
 
             latLng = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
+            Toast.makeText(this, ""+userLoc, Toast.LENGTH_SHORT).show();
             markerOptions=new MarkerOptions().position(latLng).title("I am here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
@@ -258,6 +269,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
             @Override
             public void onSuccess(Location location) {
                 if(location!=null){
+                    Toast.makeText(MainActivity.this, "location"+location, Toast.LENGTH_SHORT).show();
                     userLoc=location;
                     SupportMapFragment supportMapFragment=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
                     supportMapFragment.getMapAsync(MainActivity.this);
@@ -428,9 +440,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
             case R.id.logoutDrawableItem :{
                 DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
                 documentReference.update("token","");
-
-                FirebaseAuth.getInstance().signOut();
-              revokeAccess();
+                signout();
                 if(DrawerController.sendUsertologinactivity(getApplicationContext())) {
                     this.overridePendingTransition(0,0);
                     finish();
@@ -444,18 +454,12 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         return true;
     }
 
-    private void openDialog()
-    {
-     AboutUsDialog aboutUsDialog=new AboutUsDialog();
-     aboutUsDialog.show(getSupportFragmentManager(),"About Us Dialog");
-    }
-
-    private void revokeAccess() {
+    private void signout() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-       GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         // Firebase sign out
         FirebaseAuth.getInstance().signOut();
 
@@ -466,6 +470,35 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                     public void onComplete(@NonNull Task<Void> task) {
                     }
                 });
+    }
+
+
+    private void openDialog()
+    {
+     AboutUsDialog aboutUsDialog=new AboutUsDialog();
+     aboutUsDialog.show(getSupportFragmentManager(),"About Us Dialog");
+    }
+
+    private void showGPSDisabledAlertToUser(){
+        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("GPS is disabled in your device. Would you like to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Goto Settings Page To Enable GPS",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(callGPSSettingIntent);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                    }
+                });
+        androidx.appcompat.app.AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
 }

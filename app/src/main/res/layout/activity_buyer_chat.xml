@@ -41,6 +41,21 @@
                 app:SpinKit_Style="FoldingCube"
                 app:SpinKit_Color="@color/appThemeYellow"
                 />
+
+            <TextView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/noChats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+               android:text="No chats to display!!"
+                android:textColor="@color/grey_40"
+                android:textStyle="bold"
+                android:textSize="40dp"
+                android:visibility="visible"
+                />
+
+
         </RelativeLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listOfShops"
