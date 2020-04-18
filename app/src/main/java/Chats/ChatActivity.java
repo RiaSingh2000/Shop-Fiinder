@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.util.Base64;
 
 import android.Manifest;
@@ -120,7 +121,15 @@ public class ChatActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         VerticalSpacingItemDecoration itemDecoration = new VerticalSpacingItemDecoration(20);
         chatsRv.addItemDecoration(itemDecoration);
+        Handler handler = new Handler();
+        int delay = 1000; //milliseconds
         receiveMessage();
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                receiveMessage();
+            }
+        }, delay);
+
         getToken();
         //Toast.makeText(this, "Uid"+uid, //Toast.LENGTH_SHORT).show();
 
