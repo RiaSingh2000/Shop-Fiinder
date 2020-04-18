@@ -49,8 +49,8 @@
 
         <ImageView
             android:id="@+id/chat"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_weight="1"
             android:layout_marginRight="10dp"
             android:background="@drawable/chat"
@@ -59,8 +59,8 @@
 
         <ImageView
             android:id="@+id/call"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_weight="1"
             android:background="@drawable/call"
             android:padding="7dp"
