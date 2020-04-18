@@ -7,7 +7,8 @@
     android:orientation="vertical"
     tools:context="Seller.SellerDisplayActivity"
     android:id="@+id/lL_SellerDisplay"
-    android:background="#fff"
+    android:background="@drawable/mapd"
+
    >
 
     <RelativeLayout
@@ -46,21 +47,34 @@
             android:layout_marginLeft="5dp"/>
 
     </RelativeLayout>
-
-
-
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:src="@drawable/seller"/>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="32dp"
+        android:orientation="vertical">
 <TextView
     android:id="@+id/tvShopname"
     android:text="Shopname"
     android:textSize="50dp"
+    android:background="@drawable/edit_text_design"
+    android:maxLines="1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="32dp"
     android:textAlignment="center"
-    android:fontFamily="@font/bungee"
-    app:fontFamily="@font/bungee"
+    android:fontFamily="@font/antic"
     android:textColor="@android:color/black"
     android:gravity="center_horizontal"
+    android:padding="10dp"
+    android:paddingHorizontal="18dp"
     android:layout_marginVertical="20dp"
     />
     <TextView
@@ -71,55 +85,72 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:gravity="center_horizontal"
+        android:maxLines="1"
         android:fontFamily="@font/antic"
+        android:paddingHorizontal="18dp"
         app:fontFamily="@font/antic"/>
     <TextView
         android:id="@+id/tvShopLocation"
         android:textSize="30dp"
         android:text="Shop Location"
         android:layout_width="match_parent"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:gravity="center_horizontal"
         android:fontFamily="@font/antic"
         app:fontFamily="@font/antic"
-        android:layout_marginTop="10dp"/>
+        android:maxLines="1"
+        android:paddingHorizontal="18dp"/>
+</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="3">
+        android:orientation="horizontal"
+        android:weightSum="3"
+        >
 
-        <Button
+        <ImageView
             android:id="@+id/tvCall"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="48dp"
             android:layout_weight="1"
             android:onClick="call"
-            android:background="@drawable/call"
+            android:background="@drawable/circle"
+            android:padding="7dp"
+            android:src="@drawable/call"
             android:linksClickable="true" />
 
-        <Button
+        <ImageView
             android:id="@+id/btnChat"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="48dp"
             android:layout_weight="1"
-            android:background="@drawable/chat"
+            android:background="@drawable/circle"
+            android:padding="7dp"
             android:fontFamily="@font/antic"
+            android:src="@drawable/chat"
             android:onClick="goToChatActivity"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             app:fontFamily="@font/antic" />
 
-        <Button
+        <ImageView
             android:id="@+id/nav"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_margin="48dp"
             android:layout_weight="1"
-            android:background="@drawable/navigation"
+            android:background="@drawable/circle"
+            android:padding="7dp"
+            android:src="@drawable/navigation"
             android:fontFamily="@font/antic"
             android:onClick="goToChatActivity"
             android:textColor="@android:color/white"
@@ -128,6 +159,6 @@
 
 
     </LinearLayout>
-
+    </LinearLayout>
 
 </LinearLayout>

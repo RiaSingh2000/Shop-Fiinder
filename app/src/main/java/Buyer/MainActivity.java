@@ -106,8 +106,6 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
 
         if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
             Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
-            Toast.makeText(this, ""+userLoc, Toast.LENGTH_SHORT).show();
-
         }else{
             showGPSDisabledAlertToUser();
         }
@@ -175,7 +173,6 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         {
 
             latLng = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
-            Toast.makeText(this, ""+userLoc, Toast.LENGTH_SHORT).show();
             markerOptions=new MarkerOptions().position(latLng).title("I am here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,15));
@@ -269,7 +266,6 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
             @Override
             public void onSuccess(Location location) {
                 if(location!=null){
-                    Toast.makeText(MainActivity.this, "location"+location, Toast.LENGTH_SHORT).show();
                     userLoc=location;
                     SupportMapFragment supportMapFragment=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
                     supportMapFragment.getMapAsync(MainActivity.this);

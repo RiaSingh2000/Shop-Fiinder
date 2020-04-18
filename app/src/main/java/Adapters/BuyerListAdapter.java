@@ -38,12 +38,21 @@ public class BuyerListAdapter extends RecyclerView.Adapter<BuyerListAdapter.Buye
     public void onBindViewHolder(@NonNull BuyerListAdapter.BuyerListViewHolder holder, int position) {
         final BuyerList obj=list.get(position);
         holder.buyerName.setText(obj.getName());
-        holder.buyerName.setOnClickListener(new View.OnClickListener() {
+
+
+        holder.chat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i=new Intent(context,ChatActivity.class);
                 i.putExtra("uid",obj.getBuid());
                 context.startActivity(i);
+            }
+        });
+
+        holder.call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.startActivity( new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + obj.getPhone())));
             }
         });
     }
@@ -55,10 +64,14 @@ public class BuyerListAdapter extends RecyclerView.Adapter<BuyerListAdapter.Buye
 
     public class BuyerListViewHolder extends RecyclerView.ViewHolder{
         TextView buyerName;
+        ImageView call;
+        ImageView chat;
 
         public BuyerListViewHolder(@NonNull View itemView) {
             super(itemView);
            buyerName=itemView.findViewById(R.id.name);
+           call=itemView.findViewById(R.id.call);
+           chat=itemView.findViewById(R.id.chat);
         }
     }
 }
