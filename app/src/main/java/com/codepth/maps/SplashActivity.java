@@ -30,7 +30,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static int SPLASH_SCREEN = 5000;
+    private static int SPLASH_SCREEN = 3000;
     public static String token;
     String TAG="Notify";
 
@@ -53,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
                         if(task.isSuccessful()){
                             token=task.getResult().getToken();
-                            Toast.makeText(SplashActivity.this, ""+token, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(SplashActivity.this, ""+token, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

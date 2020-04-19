@@ -47,24 +47,24 @@
         android:weightSum="2"
         android:layout_gravity="center_vertical">
 
-        <Button
+        <ImageView
             android:id="@+id/chat"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_weight="1"
             android:layout_marginRight="10dp"
             android:background="@drawable/chat"
             android:padding="7dp"
             />
 
-        <Button
+        <ImageView
             android:id="@+id/call"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
             android:background="@drawable/call"
             android:padding="7dp"
-            android:layout_weight="1"
-            android:src="@drawable/call"/>
+            android:src="@drawable/call" />
     </LinearLayout>
 
     </LinearLayout>

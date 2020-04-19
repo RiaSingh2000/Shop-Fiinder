@@ -50,7 +50,6 @@ public class SellerPhoneAuth extends AppCompatActivity {
         signup=findViewById(R.id.btn_singup);
         num=findViewById(R.id.et_phone_num);
         etotp=findViewById(R.id.et_otp);
-
         mAuth = FirebaseAuth.getInstance();
         loadingbar = new ProgressDialog(this);
         getotp.setOnClickListener(new View.OnClickListener() {

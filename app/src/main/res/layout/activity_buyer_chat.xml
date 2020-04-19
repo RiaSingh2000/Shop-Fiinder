@@ -41,6 +41,8 @@
                 app:SpinKit_Style="FoldingCube"
                 app:SpinKit_Color="@color/appThemeYellow"
                 />
+
+
         </RelativeLayout>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/listOfShops"

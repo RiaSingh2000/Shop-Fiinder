@@ -16,9 +16,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -107,9 +109,9 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
                                 float[] result = new float[3];
                                 Location.distanceBetween((float) myLatLng.latitude, (float) myLatLng.longitude, Float.parseFloat(mSellerProfile.getLat()),
                                         Float.parseFloat(mSellerProfile.getLng()), result);
-                                if (result != null && result[0] <= 5000) {
+                               // if (result != null && result[0] <= 5000) {
                                     mSellerProfileArrayList.add(mSellerProfile);
-                                }
+                               // }
                                 listOFShops.setAdapter(new ShopListAdapter(SellerListActivity.this, mSellerProfileArrayList));
                                 progressBar.setVisibility(View.INVISIBLE);
                             }
@@ -157,11 +159,16 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
                 break;
             }
             case R.id.aboutUsDrawableList :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                openDialog();
                 break;
             }
             case R.id.rateUsDrawableList :{
-                Toast.makeText(this,"TO BE DONE",Toast.LENGTH_LONG).show();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" +getPackageName())));
+                }catch (ActivityNotFoundException e)
+                {
+                    startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse("http://play.google.com/store/apps/details?id="+getPackageName())));
+                }
                 break;
             }
             case R.id.settingsDrawableItem :{
@@ -185,5 +192,10 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
         item.setChecked(true);
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+    private void openDialog()
+    {
+        AboutUsDialog aboutUsDialog=new AboutUsDialog();
+        aboutUsDialog.show(getSupportFragmentManager(),"About Us Dialog");
     }
 }
