@@ -183,7 +183,6 @@
                     android:background="@drawable/edit_text_design"
                     android:hint="Enter your location"
                     android:paddingLeft="10dp"
-                    android:visibility="invisible"
                     />
                 <TextView
                     android:id="@+id/currentLocTv"
@@ -196,7 +195,7 @@
                     android:layout_marginRight="5dp"
                     android:background="@drawable/edit_text_design"
                     android:paddingLeft="10dp"
-
+                    android:visibility="invisible"
                     />
             </FrameLayout>
             <TextView

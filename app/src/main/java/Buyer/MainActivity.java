@@ -130,7 +130,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 else{
                     userLoc = new Location(locationResult.getLocations().get(0));
                     Log.w(TAG1,"onLocationResult=="+locationResult.getLocations().get(0).getLatitude()+locationResult.getLocations().get(0).getLongitude());
-                    Toast.makeText(MainActivity.this,"onLocationResult=="+locationResult.getLocations().get(0).toString(),Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this,"onLocationResult=="+userLoc,Toast.LENGTH_LONG).show();
                 }
                 //stopLocationUpdates();
             }

@@ -19,6 +19,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -63,16 +65,17 @@ public class BuyeProfileCreation extends AppCompatActivity  {
     private FirebaseAuth fauth;
     FusedLocationProviderClient fusedLocationProviderClient;
     Location userLoc = MainActivity.returnUserLoc();
-    Boolean existence = false, flag_alert= false;
+    Boolean existence = false;
+    private Boolean flag_alert= false;
     double lat, lng;
-    String curLat , curLng;
     private LocationCallback locationCallback;
     private EditText name, phn, street, house;
-    private ProgressDialog progressDialog;
-   // private TextView currentLocTv,hiddenTv;
-   private TextView currentLocTv;
+    private ProgressDialog progressDialog , progressDialog1;
     private mBuyerProfile mBuyerProfile = null;
 
+    private void stopLocationUpdates(){
+        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
+    }
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -80,10 +83,7 @@ public class BuyeProfileCreation extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_profile);
         DrawerController.setIdentity("SettingsActivity");
-
-        //    Places.initialize(BuyeProfileCreation.this,"AIzaSyBe1tmgpLujgxK64FfL7n0eNJaWIijdy58");
-        //  PlacesClient placesClient = Places.createClient(BuyeProfileCreation.this);
-
+        Log.w(type,"userloc ........................................="+userLoc);
         progressDialog = new ProgressDialog(this);
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(BuyeProfileCreation.this);
         if (acct != null) {
@@ -96,53 +96,17 @@ public class BuyeProfileCreation extends AppCompatActivity  {
         locality = (AutoCompleteTextView) findViewById(R.id.autoLoc);
         house = findViewById(R.id.etHouse);
         Create_pofile = findViewById(R.id.btRegister);
-       // currentLocTv = findViewById(R.id.currentLocTv);
-        //hiddenTv= findViewById(R.id.HiddenTv);
         fauth = FirebaseAuth.getInstance();
-        userLoc = MainActivity.returnUserLoc();
         userid = fauth.getCurrentUser().getUid();
         fstore = FirebaseFirestore.getInstance();
 
-        //BACK TO CURRENT LOCATION
-       /* hiddenTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                locality.setVisibility(View.INVISIBLE);
-                currentLocTv.setVisibility(View.VISIBLE);
-                hiddenTv.setVisibility(View.INVISIBLE);
-                BuyeProfileCreation.type="Curr";
-            }
-        });
-
-
-        currentLocTv.setOnClickListener(new View.OnClickListener() {
-            //CHOOSING OTHER LOCATION THAN CURRENT
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(BuyeProfileCreation.this);
-                builder.setMessage(R.string.ask_for_autocomplete)
-                        .setPositiveButton("Yes,change!", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                locality.setVisibility(View.VISIBLE);
-                                currentLocTv.setVisibility(View.INVISIBLE);
-                                hiddenTv.setVisibility(View.VISIBLE);
-                                BuyeProfileCreation.type="Reg";
-                            }
-                        })
-                        .setNegativeButton("No!", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                BuyeProfileCreation.type="Curr";
-                                // User cancelled the dialog
-                            }
-                        });
-                // Create the AlertDialog object and return it
-                builder.show();
-            }
-        });
-
-        */
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(BuyeProfileCreation.this);
-        fetchLastLoc();
+        if(userLoc==null){
+            fetchLastLoc();
+        }
+        while (userLoc==null);
+        if(userLoc.getLatitude()==0 && userLoc.getLongitude() == 0)
+            fetchLastLoc();
         locality.setAdapter(new PlacesAutoCompleteAdapter(BuyeProfileCreation.this, android.R.layout.simple_list_item_1));
         Retriveinfo();
         Create_pofile.setOnClickListener(new View.OnClickListener() {
@@ -163,29 +127,17 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                     street.setError("Street number is required");
                     return;
                 }
-               /* if(type=="Curr"){
-                    loc=currentLocTv.getText().toString();
-                    if(loc.isEmpty())
-                    {
-                        currentLocTv.setError("Locality is required");
-                        return;
-                    }
+
+                loc = locality.getText().toString();
+                if (loc.isEmpty() && flag_alert == false) {
+                    locality.setError("Locality is required");
+                    return;
                 }
-                if(type =="Reg") {
-                    loc = locality.getText().toString();
-                    if(loc.isEmpty())
-                    {
-                        locality.setError("Locality is required");
-                        return;
-                    }
-                }*/
-                if (flag_alert == false) {
-                    loc = locality.getText().toString();
-                    if (loc.isEmpty()) {
-                        locality.setError("Locality is required");
-                        return;
-                    }
+                else{
+                    if(flag_alert == true)
+                        loc = "Last Current Location";
                 }
+
                 House = house.getText().toString();
                 if (House.isEmpty()) {
                     house.setError("House detail is required");
@@ -194,47 +146,60 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                 try {
                     if (flag_alert == false)
                         geoLocate(view);
+
                 } catch (IOException e) {
                     e.printStackTrace();
+                    progressDialog.dismiss();
                     useCurrentLocationAlert();
-                    //Toast.makeText(BuyeProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show(); //TODO DONE
+                    Toast.makeText(BuyeProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show();
+                }catch (IllegalAccessException e){
+                    e.printStackTrace();
+                    useCurrentLocationAlert();
+                    Toast.makeText(BuyeProfileCreation.this, "Geocoder list size 0", Toast.LENGTH_SHORT).show();
                 }
-
-                DocumentReference documentReference = fstore.collection("Buyer").document(userid);
-                HashMap<String, String> profilemap = new HashMap<>();
-                profilemap.put("uid", userid);
-                profilemap.put("name", nm);
-                profilemap.put("phone", phone);
-                profilemap.put("Street", Street);
-                profilemap.put("Locality", loc);
-                profilemap.put("House", House);
-                profilemap.put("token", SplashActivity.token);
-                while (userLoc == null) ;
-                if (flag_alert == true) {
-                    profilemap.put("lat", String.valueOf(userLoc.getLatitude()));
-                    profilemap.put("lng", String.valueOf(userLoc.getLongitude()));
-                } else {
-                    profilemap.put("lat", String.valueOf(lat));
-                    profilemap.put("lng", String.valueOf(lng));
-                }
-
-                documentReference.set(profilemap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(BuyeProfileCreation.this, "Profile set up Successfully", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(BuyeProfileCreation.this, MainActivity.class);
-                        intent.putExtra("lat", userLoc.getLatitude());
-                        intent.putExtra("lng", userLoc.getLongitude());
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        finish();
-
-                    }
-                });
-
 
             }
         });
+    }
+
+    private void uploadOnCloud() {
+        DocumentReference documentReference = fstore.collection("Buyer").document(userid);
+        HashMap<String, String> profilemap = new HashMap<>();
+        profilemap.put("uid", userid);
+        profilemap.put("name", nm);
+        profilemap.put("phone", phone);
+        profilemap.put("Street", Street);
+        profilemap.put("House", House);
+        profilemap.put("token", SplashActivity.token);
+        while (userLoc == null) ;
+        if (flag_alert == true ) {
+            Toast.makeText(BuyeProfileCreation.this,"USERLOCCCC"+userLoc.getLatitude() +"\n"+ userLoc.getLongitude(),Toast.LENGTH_LONG).show();
+            profilemap.put("lat", String.valueOf(userLoc.getLatitude()));
+            profilemap.put("lng", String.valueOf(userLoc.getLongitude()));
+            profilemap.put("Locality", "Last Current Location");
+        } else {
+            Toast.makeText(BuyeProfileCreation.this,"AUTOCOMPLETE"+String.valueOf(lat) +"\n"+ String.valueOf(lng),Toast.LENGTH_LONG).show();
+
+            profilemap.put("lat", String.valueOf(lat));
+            profilemap.put("lng", String.valueOf(lng));
+            profilemap.put("Locality", loc);
+        }
+
+        documentReference.set(profilemap).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(BuyeProfileCreation.this, "Profile set up Successfully", Toast.LENGTH_LONG).show();
+                progressDialog.dismiss();
+                Intent intent = new Intent(BuyeProfileCreation.this, MainActivity.class);
+                intent.putExtra("lat", userLoc.getLatitude());
+                intent.putExtra("lng", userLoc.getLongitude());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
     }
 
     private void Retriveinfo() {
@@ -273,6 +238,9 @@ public class BuyeProfileCreation extends AppCompatActivity  {
 
 
     public void fetchLastLoc() {
+        if(progressDialog.isShowing()==false){
+            progressDialog.show();
+        }
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(BuyeProfileCreation.this, new String[]
                     {Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
@@ -284,18 +252,8 @@ public class BuyeProfileCreation extends AppCompatActivity  {
             public void onSuccess(Location location) {
                 if (location != null) {
                     userLoc = location;
-                    Toast.makeText(getApplicationContext(), userLoc.getLatitude() + "\n" + userLoc.getLongitude(), Toast.LENGTH_LONG).show();
-                    /*curLat=String.valueOf(userLoc.getLatitude());
-                    curLng = String.valueOf(userLoc.getLongitude());
-                    Geocoder geocoder = new Geocoder(BuyeProfileCreation.this);
-                    try {
-                       List<Address> list =geocoder.getFromLocation(userLoc.getLatitude(),userLoc.getLongitude(),1);
-                       Address add=list.get(0);
-                       //currentLocTv.setText(add.getAddressLine(0).toString());
-                        locality.setVisibility(View.INVISIBLE);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
+                    Toast.makeText(getApplicationContext(), "AFTER FETCH LAST LOCATION"+userLoc.getLatitude() + "\n" + userLoc.getLongitude(), Toast.LENGTH_LONG).show();
+                    if(progressDialog.isShowing()) progressDialog.dismiss();
                 } else {
                     //USING UPDATE LOCATION
                     LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -313,10 +271,15 @@ public class BuyeProfileCreation extends AppCompatActivity  {
 
                             } else {
                                 userLoc = new Location(locationResult.getLocations().get(0));
+                                Toast.makeText(getApplicationContext(), "AFTER UPDATE LOCATION"+userLoc.getLatitude() + "\n" + userLoc.getLongitude(), Toast.LENGTH_LONG).show();
+
+
                                 // Log.w(TAG1,"onLocationResult=="+locationResult.getLocations().get(0).getLatitude()+locationResult.getLocations().get(0).getLongitude());
                                 // Toast.makeText(MainActivity.this,"onLocationResult=="+locationResult.getLocations().get(0).toString(),Toast.LENGTH_LONG).show();
                             }
                             //stopLocationUpdates();
+                            if (progressDialog.isShowing())
+                            progressDialog.dismiss();
                         }
                     };
 
@@ -358,11 +321,13 @@ public class BuyeProfileCreation extends AppCompatActivity  {
     }
 
 
-    public void geoLocate(View v) throws IOException { //SETS LAT LNG FROM VALUE IN AUTOCOMPLETETEXTVIEW ONSELECTED
+    public void geoLocate(View v) throws IOException, IllegalAccessException { //SETS LAT LNG FROM VALUE IN AUTOCOMPLETETEXTVIEW ONSELECTED
         hideSoftKeyboard(v);
         String location=locality.getText().toString();
         Geocoder gc=new Geocoder(BuyeProfileCreation.this);
         List<Address> list=gc.getFromLocationName(location,1);
+        if(list.isEmpty())
+            throw new IllegalAccessException("List size 0");
         Address address=list.get(0);
         String locality=address.getLocality();
         lat=address.getLatitude();
@@ -432,7 +397,7 @@ public class BuyeProfileCreation extends AppCompatActivity  {
             street.setText(mBuyerProfile.getStreet());
             //Toast.makeText(BuyeProfileCreation.this,mBuyerProfile.getStreet(),Toast.LENGTH_LONG).show();
             locality.setText(mBuyerProfile.getLocality());
-            currentLocTv.setVisibility(View.INVISIBLE);
+            //currentLocTv.setVisibility(View.INVISIBLE);
             locality.setVisibility(View.VISIBLE);
             //hiddenTv.setVisibility(View.VISIBLE);
             house.setText(mBuyerProfile.getHouse());
@@ -443,13 +408,19 @@ public class BuyeProfileCreation extends AppCompatActivity  {
 
     private void useCurrentLocationAlert(){
         androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(BuyeProfileCreation.this);
-        alertDialogBuilder.setMessage("We cannot identify you locality . Use your current location as locality ?")
+        alertDialogBuilder.setMessage("We cannot identify your locality . Use your current location as locality ?")
                 .setCancelable(false)
                 .setPositiveButton("Yes",
                         new DialogInterface.OnClickListener(){
                             public void onClick(DialogInterface dialog, int id){
                                 flag_alert = true;
                                 calculatingCurrentLocation();
+                                progressDialog.setTitle("Please Wait");
+                                progressDialog.setMessage("We Are Registering you...");
+                                progressDialog.setCanceledOnTouchOutside(false);
+                                progressDialog.show();
+                                uploadOnCloud();
+
                             }
                         });
         alertDialogBuilder.setNegativeButton("No",
@@ -465,10 +436,54 @@ public class BuyeProfileCreation extends AppCompatActivity  {
     
     private void calculatingCurrentLocation(){
                 if(userLoc.getLongitude()!=0 || userLoc.getLatitude()!=0){ //VALUE RECEIVED FROM MAIN_ACT IS VALID
+                    Geocoder gc=new Geocoder(BuyeProfileCreation.this);
+                    List<Address> list= null;
+                    try {
+                        list = gc.getFromLocation(userLoc.getLatitude(),userLoc.getLongitude(),1);
+                        //Address address=list.get(0);
+                        //locality.setText(address.getLocality());
+                        locality.setText(" ");
+                        locality.setHint("Successfully Received your location");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            locality.setHintTextColor(getColor(R.color.green_600));
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        locality.setText(" ");
+                        locality.setHint("Successfully Received your location");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            locality.setHintTextColor(getColor(R.color.green_600));
+                        }
+                    }
+
                 }
                 else{
                     fetchLastLoc(); //puts correct value in userLoc
+                    Geocoder gc=new Geocoder(BuyeProfileCreation.this);
+                    List<Address> list= null;
+                    try {
+                        list = gc.getFromLocation(userLoc.getLatitude(),userLoc.getLongitude(),1);
+                       // Address address=list.get(0);
+                        //locality.setText(address.getLocality());
+                        locality.setText("");
+                        //progressDialog.dismiss();
+                        locality.setHint("Successfully Received your location");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            locality.setHintTextColor(getColor(R.color.green_600));
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        locality.setText("");
+                        //progressDialog.dismiss();
+                        locality.setHint("Successfully Received your location");
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            locality.setHintTextColor(getColor(R.color.green_600));
+                        }
+                    }
+
                 }
+
+                progressDialog.dismiss();
     }
 
 }
