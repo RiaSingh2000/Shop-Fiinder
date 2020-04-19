@@ -1,6 +1,7 @@
 package Seller;
 
 import Adapters.BuyerListAdapter;
+import Buyer.AboutUsDialog;
 import Common.VerticalSpacingItemDecoration;
 import Models.BuyerList;
 import androidx.annotation.NonNull;
@@ -124,13 +125,17 @@ public class SellerChatActivity extends AppCompatActivity {
         }
         if(item.getItemId()==R.id.about_us)
         {
-            //TODO:
 
+            openDialog();
         }
 
         return true;
     }
-
+    private void openDialog()
+    {
+        AboutUsDialog aboutUsDialog=new AboutUsDialog();
+        aboutUsDialog.show(getSupportFragmentManager(),"About Us Dialog");
+    }
     private void sendUsertosettings() {
         startActivity(new Intent(this,SellerProfileCreation.class));
 

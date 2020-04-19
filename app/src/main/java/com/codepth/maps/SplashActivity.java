@@ -53,7 +53,7 @@ public class SplashActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<InstanceIdResult> task) {
                         if(task.isSuccessful()){
                             token=task.getResult().getToken();
-                            Toast.makeText(SplashActivity.this, ""+token, Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(SplashActivity.this, ""+token, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
