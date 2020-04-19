@@ -4,6 +4,7 @@ import Common.VerticalSpacingItemDecoration;
 import Models.Messages;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -17,6 +18,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Base64;
 
@@ -33,6 +35,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -96,10 +99,11 @@ public class ChatActivity extends AppCompatActivity {
     Bitmap image;
     private String downUri;
     private RequestQueue requestQueue;
-    String tok;
+    String tok,name;
     private boolean hasDataEdited = false;
     private File filePath;
     StorageReference storageReference;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,11 +113,14 @@ public class ChatActivity extends AppCompatActivity {
         requestQueue = Volley.newRequestQueue(ChatActivity.this);
         messages = new ArrayList<>();
         uid = getIntent().getStringExtra("uid");
+        name= getIntent().getStringExtra("name");
         storageReference= FirebaseStorage.getInstance().getReference();
         cam = findViewById(R.id.cam);
         send = findViewById(R.id.send);
         chatsRv = findViewById(R.id.chatsRv);
         msg = findViewById(R.id.msg);
+        toolbar=findViewById(R.id.toolbar);
+        toolbar.setTitle(name);
         LinearLayoutManager manager=new LinearLayoutManager(ChatActivity.this, LinearLayoutManager.VERTICAL, false);
         manager.setStackFromEnd(true);
         chatsRv.setLayoutManager(manager);
@@ -250,6 +257,7 @@ public class ChatActivity extends AppCompatActivity {
         firestore.collection("Chats")
                 .orderBy("timestamp")
                 .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 messages.clear();

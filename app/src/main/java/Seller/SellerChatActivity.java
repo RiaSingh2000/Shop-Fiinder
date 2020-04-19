@@ -109,6 +109,9 @@ public class SellerChatActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
         if(item.getItemId()==R.id.main_logout)
         {
+            String currentuserid = auth.getCurrentUser().getUid();
+            DocumentReference documentReference=fstore.collection("Seller").document(currentuserid);
+            documentReference.update("token", "");
             FirebaseAuth.getInstance().signOut();
             sendUsertologinactivity();
             finish();
@@ -134,9 +137,6 @@ public class SellerChatActivity extends AppCompatActivity {
     }
 
     private void sendUsertologinactivity() {
-        String currentuserid = auth.getCurrentUser().getUid();
-        DocumentReference documentReference=fstore.collection("Seller").document(currentuserid);
-        documentReference.update("token", "");
         startActivity(new Intent(this, Welcomepage.class));
         finish();
     }

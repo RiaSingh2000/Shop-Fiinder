@@ -53,6 +53,7 @@ public class ShopListAdapter extends RecyclerView.Adapter<ShopListAdapter.ShopLi
             public void onClick(View view) {
                 Intent i=new Intent(context, ChatActivity.class);
                 i.putExtra("uid", obj.getUid());
+                i.putExtra("name",obj.getSelname());
                 context.startActivity(i);
             }
         });

@@ -45,6 +45,7 @@ public class BuyerListAdapter extends RecyclerView.Adapter<BuyerListAdapter.Buye
             public void onClick(View view) {
                 Intent i=new Intent(context,ChatActivity.class);
                 i.putExtra("uid",obj.getBuid());
+                i.putExtra("name",obj.getName());
                 context.startActivity(i);
             }
         });
