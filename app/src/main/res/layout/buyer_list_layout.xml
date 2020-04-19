@@ -23,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Buyer's Name"
-                android:fontFamily="@font/century_gothic_400"
+                android:fontFamily="@font/antic"
                 android:textStyle="bold"
                 android:textAllCaps="true"
                 android:textSize="23dp"

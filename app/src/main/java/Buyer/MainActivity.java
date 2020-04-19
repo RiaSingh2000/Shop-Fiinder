@@ -76,7 +76,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     private DrawerLayout drawerLayout;
     private static NavigationView navView;
 
-     Location userLoc = null;
+      static Location userLoc = null;
      int sel=0,findShop=0; //flag variables
      FirebaseFirestore fstore;
      FirebaseAuth fauth;
@@ -92,10 +92,12 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     MarkerOptions markerOptions = null;
     private MarkerOptions markerOptions3= null;
     private LocationCallback locationCallback;
+    private static String TAG1 = "ON_LOCATION_UPDATE";
 
     public  static  LatLng getLatLng(){
         return latLng;
     }
+    public static Location returnUserLoc(){return userLoc;}
 
     private void stopLocationUpdates(){
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
@@ -123,11 +125,14 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 if(locationResult==null){
                     Toast.makeText(MainActivity.this,"We are unable to get your current location kindly open Google maps and " +
                             "revisit the app then",Toast.LENGTH_LONG).show();
+
                 }
                 else{
-                    userLoc = locationResult.getLocations().get(0);
+                    userLoc = new Location(locationResult.getLocations().get(0));
+                    Log.w(TAG1,"onLocationResult=="+locationResult.getLocations().get(0).getLatitude()+locationResult.getLocations().get(0).getLongitude());
+                    Toast.makeText(MainActivity.this,"onLocationResult=="+locationResult.getLocations().get(0).toString(),Toast.LENGTH_LONG).show();
                 }
-                stopLocationUpdates();
+                //stopLocationUpdates();
             }
         };
 
@@ -138,6 +143,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
 
         }else{
             showGPSDisabledAlertToUser();
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.getMainLooper());
         }
 
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
@@ -184,6 +190,49 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(MainActivity.this);
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        locationCallback= new LocationCallback(){
+
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if(locationResult==null){
+                    Toast.makeText(MainActivity.this,"We are unable to get your current location kindly open Google maps and " +
+                            "revisit the app then",Toast.LENGTH_LONG).show();
+
+                }
+                else{
+                    userLoc = new Location(locationResult.getLocations().get(0));
+                    Log.w(TAG1,"onLocationResult=="+locationResult.getLocations().get(0).getLatitude()+locationResult.getLocations().get(0).getLongitude());
+                    Toast.makeText(MainActivity.this,"onLocationResult=="+locationResult.getLocations().get(0).toString(),Toast.LENGTH_LONG).show();
+                }
+                //stopLocationUpdates();
+            }
+        };
+
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Toast.makeText(this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.getMainLooper());
+
+        }else{
+            showGPSDisabledAlertToUser();
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.getMainLooper());
+        }
+    }
+
+    @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START))
         {
@@ -204,7 +253,6 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         LatLng shopLatLng =null;
         if(sel ==0 && findShop==0 ) //initial case
         {
-
             latLng = new LatLng(userLoc.getLatitude(), userLoc.getLongitude());
             markerOptions=new MarkerOptions().position(latLng).title("I am here").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -238,12 +286,21 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                     if(task.isSuccessful()){
                         double lat,lon;
                         DocumentSnapshot doc = task.getResult();
-                        lat=Double.parseDouble(doc.get("lat").toString());
-                        lon=Double.parseDouble(doc.get("lng").toString());
-                        latLng = new LatLng(lat,lon);
-                        while (latLng==null);
-                        addRegLocationMarker();
-                        fetchShopsMapDetails();
+                        if(doc.exists()) {
+
+                            lat = Double.parseDouble(doc.get("lat").toString());
+                            lon = Double.parseDouble(doc.get("lng").toString());
+                            if(lat!=0 && lon!=0){
+                            latLng = new LatLng(lat, lon);
+                            while (latLng == null) ;
+                            addRegLocationMarker();
+                            fetchShopsMapDetails();}
+                            else
+                                Toast.makeText(MainActivity.this,"Kindly register your correct location in settings",Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(MainActivity.this,"Kindly register your location in settings",Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
             });
@@ -303,6 +360,42 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                     SupportMapFragment supportMapFragment=(SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
                     supportMapFragment.getMapAsync(MainActivity.this);
                 }
+                else {
+                    LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                    fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(MainActivity.this);
+                    LocationRequest locationRequest = LocationRequest.create();
+                    locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+                    locationCallback= new LocationCallback(){
+
+                        @Override
+                        public void onLocationResult(LocationResult locationResult) {
+                            if(locationResult==null){
+                                Toast.makeText(MainActivity.this,"We are unable to get your current location kindly open Google maps and " +
+                                        "revisit the app then",Toast.LENGTH_LONG).show();
+
+                            }
+                            else{
+                                userLoc = new Location(locationResult.getLocations().get(0));
+                                Log.w(TAG1,"onLocationResult=="+locationResult.getLocations().get(0).getLatitude()+locationResult.getLocations().get(0).getLongitude());
+                                Toast.makeText(MainActivity.this,"onLocationResult=="+locationResult.getLocations().get(0).toString(),Toast.LENGTH_LONG).show();
+                            }
+                            //stopLocationUpdates();
+                        }
+                    };
+
+
+                    if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                        Toast.makeText(MainActivity.this, "GPS is Enabled in your devide", Toast.LENGTH_SHORT).show();
+                        fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.getMainLooper());
+
+                    }else{
+                        showGPSDisabledAlertToUser();
+                        fusedLocationProviderClient.requestLocationUpdates(locationRequest,locationCallback, Looper.getMainLooper());
+                    }
+
+
+                }
             }
         });
     }
@@ -340,6 +433,10 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 public void onClick(DialogInterface dialog, int index)
                 {
                     fetchLastLoc();
+                    progressDialog.setTitle("Please Wait");
+                    progressDialog.setMessage("We Are Fetching Nearby Shops...");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
                 }
             });
             builder.setNegativeButton("CANCEL",null);
@@ -348,11 +445,6 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     }
 
     void fetchShopsMapDetails(){ //gets the name of shops and its longitude and latitude values from firestore
-        progressDialog.setTitle("Please Wait");
-        progressDialog.setMessage("We Are Fetching Nearby Shops...");
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.show();
-
         db.collection("Seller")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -360,7 +452,6 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                
                                 mSellerProfile mSellerProfile = document.toObject(Models.mSellerProfile.class);
                                 mShops mShop = slice(mSellerProfile);
                                 Log.d(TAG, String.valueOf(mShopsArrayList));
@@ -509,7 +600,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     }
 
     private void showGPSDisabledAlertToUser(){
-        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        final androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
         alertDialogBuilder.setMessage("GPS is disabled in your device. Would you like to enable it?")
                 .setCancelable(false)
                 .setPositiveButton("Goto Settings Page To Enable GPS",

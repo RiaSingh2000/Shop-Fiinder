@@ -196,6 +196,7 @@
                     android:layout_marginRight="5dp"
                     android:background="@drawable/edit_text_design"
                     android:paddingLeft="10dp"
+
                     />
             </FrameLayout>
             <TextView
