@@ -197,9 +197,7 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                 } catch (IOException e) {
                     e.printStackTrace();
                     useCurrentLocationAlert();
-                    calculatingCurrentLocation();
-                    locality.setText();
-                    //Toast.makeText(BuyeProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show(); //TODO
+                    //Toast.makeText(BuyeProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show(); //TODO DONE
                 }
 
                 DocumentReference documentReference = fstore.collection("Buyer").document(userid);
@@ -212,12 +210,12 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                 profilemap.put("House", House);
                 profilemap.put("token", SplashActivity.token);
                 while (userLoc == null) ;
-                if (type == "Reg") {
+                if (flag_alert == true) {
+                    profilemap.put("lat", String.valueOf(userLoc.getLatitude()));
+                    profilemap.put("lng", String.valueOf(userLoc.getLongitude()));
+                } else {
                     profilemap.put("lat", String.valueOf(lat));
                     profilemap.put("lng", String.valueOf(lng));
-                } else {
-                    profilemap.put("lat", curLat);
-                    profilemap.put("lng", curLng);
                 }
 
                 documentReference.set(profilemap).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -338,10 +336,29 @@ public class BuyeProfileCreation extends AppCompatActivity  {
     }
 
     private void showGPSDisabledAlertToUser() {
+        final androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("GPS is disabled in your device. Would you like to enable it?")
+                .setCancelable(false)
+                .setPositiveButton("Goto Settings Page To Enable GPS",
+                        new DialogInterface.OnClickListener(){
+                            public void onClick(DialogInterface dialog, int id){
+                                Intent callGPSSettingIntent = new Intent(
+                                        android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                startActivity(callGPSSettingIntent);
+                            }
+                        });
+        alertDialogBuilder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.cancel();
+                    }
+                });
+        androidx.appcompat.app.AlertDialog alert = alertDialogBuilder.create();
+        alert.show();
     }
 
 
-    public void geoLocate(View v) throws IOException {
+    public void geoLocate(View v) throws IOException { //SETS LAT LNG FROM VALUE IN AUTOCOMPLETETEXTVIEW ONSELECTED
         hideSoftKeyboard(v);
         String location=locality.getText().toString();
         Geocoder gc=new Geocoder(BuyeProfileCreation.this);
@@ -432,7 +449,7 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                         new DialogInterface.OnClickListener(){
                             public void onClick(DialogInterface dialog, int id){
                                 flag_alert = true;
-
+                                calculatingCurrentLocation();
                             }
                         });
         alertDialogBuilder.setNegativeButton("No",
@@ -447,7 +464,11 @@ public class BuyeProfileCreation extends AppCompatActivity  {
     }
     
     private void calculatingCurrentLocation(){
-        
+                if(userLoc.getLongitude()!=0 || userLoc.getLatitude()!=0){ //VALUE RECEIVED FROM MAIN_ACT IS VALID
+                }
+                else{
+                    fetchLastLoc(); //puts correct value in userLoc
+                }
     }
 
 }
