@@ -3,6 +3,7 @@ package Buyer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ public class BuyerRegistartion extends AppCompatActivity {
     private Button Fb;
     private Button phn;
     private FirebaseAuth.AuthStateListener mauthlistner;
+    private ProgressDialog progressDialog;
    /* @Override
     protected void onStart() {
         super.onStart();
@@ -55,8 +57,10 @@ public class BuyerRegistartion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         //FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_registration);
+        progressDialog=new ProgressDialog(this);
 
-      googlereg=findViewById(R.id.btn_google_sigin);
+
+        googlereg=findViewById(R.id.btn_google_sigin);
         mauth = FirebaseAuth.getInstance();
 
      /*   mauthlistner=new FirebaseAuth.AuthStateListener() {
@@ -133,6 +137,10 @@ public class BuyerRegistartion extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setMessage("This will only take few seconds !!");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
         String currentuserid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         //Toast.makeText(getContext(), "No such user exists", Toast.LENGTH_LONG).show();
         FirebaseFirestore.getInstance().collection("Buyer").document(currentuserid).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -140,6 +148,7 @@ public class BuyerRegistartion extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if (documentSnapshot.exists()) {
                     signOut();
+                    progressDialog.dismiss();
                     Toast.makeText(BuyerRegistartion.this, "User  already exists..Login instead", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(BuyerRegistartion.this, Welcomepage.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -147,6 +156,7 @@ public class BuyerRegistartion extends AppCompatActivity {
                     finish();
 
                 } else {
+                    progressDialog.dismiss();
                     SharedPreferences sharedPreferences = getSharedPreferences(Shared_pref, MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("role", "1");
@@ -161,6 +171,7 @@ public class BuyerRegistartion extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
                 Toast.makeText(BuyerRegistartion.this, "Failed with:", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(BuyerRegistartion.this, Welcomepage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -3,6 +3,7 @@ package Buyer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ public class BuyerLogin extends AppCompatActivity {
     private Button googleSignInBtn;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private FirebaseFirestore fstore;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onStart() {
@@ -72,6 +74,7 @@ public class BuyerLogin extends AppCompatActivity {
         googleSignInBtn = (Button) findViewById(R.id.btn_google_sigin);
         firebaseAuth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
+        progressDialog=new ProgressDialog(this);
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -150,6 +153,10 @@ public class BuyerLogin extends AppCompatActivity {
     }
 
     private void verifyexistence() {
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setMessage("We are Fetching your Information !!");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
         String currentuserid = firebaseAuth.getCurrentUser().getUid();
         DocumentReference documentReference=fstore.collection("Buyer").document(currentuserid);
         documentReference.update("token",SplashActivity.token);
@@ -159,6 +166,7 @@ public class BuyerLogin extends AppCompatActivity {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 if(documentSnapshot.exists())
                 {
+                    progressDialog.dismiss();
                     SharedPreferences sharedPreferences = getSharedPreferences(Shared_pref, MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString("role", "1");
@@ -171,6 +179,7 @@ public class BuyerLogin extends AppCompatActivity {
                 }
                 else
                 {
+                    progressDialog.dismiss();
                     signOut();
                     Toast.makeText(BuyerLogin.this, "No such user exists", Toast.LENGTH_LONG).show();
                     Intent intent=new Intent(BuyerLogin.this, Welcomepage.class);
@@ -182,6 +191,7 @@ public class BuyerLogin extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
+                progressDialog.dismiss();
                 Toast.makeText(BuyerLogin.this, "On Failure No such user exists", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(BuyerLogin.this, Welcomepage.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
