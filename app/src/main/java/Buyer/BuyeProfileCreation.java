@@ -101,12 +101,12 @@ public class BuyeProfileCreation extends AppCompatActivity  {
         fstore = FirebaseFirestore.getInstance();
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(BuyeProfileCreation.this);
-        if(userLoc==null){
+       /* if(userLoc==null){
             fetchLastLoc();
         }
         while (userLoc==null);
         if(userLoc.getLatitude()==0 && userLoc.getLongitude() == 0)
-            fetchLastLoc();
+            fetchLastLoc();*/
         locality.setAdapter(new PlacesAutoCompleteAdapter(BuyeProfileCreation.this, android.R.layout.simple_list_item_1));
         Retriveinfo();
         Create_pofile.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +136,7 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                 else{
                     if(flag_alert == true)
                         loc = "Last Current Location";
+                    uploadOnCloud();
                 }
 
                 House = house.getText().toString();
@@ -144,12 +145,10 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                     return;
                 }
                 try {
-                    if (flag_alert == false)
+                    if (flag_alert == false) //using autocomplete
                         geoLocate(view);
-
                 } catch (IOException e) {
                     e.printStackTrace();
-                    progressDialog.dismiss();
                     useCurrentLocationAlert();
                     Toast.makeText(BuyeProfileCreation.this, "No such location found", Toast.LENGTH_SHORT).show();
                 }catch (IllegalAccessException e){
@@ -163,6 +162,10 @@ public class BuyeProfileCreation extends AppCompatActivity  {
     }
 
     private void uploadOnCloud() {
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setMessage("We Are Registering you...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
         DocumentReference documentReference = fstore.collection("Buyer").document(userid);
         HashMap<String, String> profilemap = new HashMap<>();
         profilemap.put("uid", userid);
@@ -226,7 +229,7 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                     }
                 } else {
                     progressDialog.dismiss();
-                    Toast.makeText(BuyeProfileCreation.this,"No data history found task failed",Toast.LENGTH_LONG).show();
+                    Toast.makeText(BuyeProfileCreation.this,"No data history",Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -395,11 +398,8 @@ public class BuyeProfileCreation extends AppCompatActivity  {
             name.setText(mBuyerProfile.getName());
             phn.setText(mBuyerProfile.getphone());
             street.setText(mBuyerProfile.getStreet());
-            //Toast.makeText(BuyeProfileCreation.this,mBuyerProfile.getStreet(),Toast.LENGTH_LONG).show();
             locality.setText(mBuyerProfile.getLocality());
-            //currentLocTv.setVisibility(View.INVISIBLE);
             locality.setVisibility(View.VISIBLE);
-            //hiddenTv.setVisibility(View.VISIBLE);
             house.setText(mBuyerProfile.getHouse());
             progressDialog.dismiss();
 
@@ -414,12 +414,8 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                         new DialogInterface.OnClickListener(){
                             public void onClick(DialogInterface dialog, int id){
                                 flag_alert = true;
+                                dialog.dismiss();
                                 calculatingCurrentLocation();
-                                progressDialog.setTitle("Please Wait");
-                                progressDialog.setMessage("We Are Registering you...");
-                                progressDialog.setCanceledOnTouchOutside(false);
-                                progressDialog.show();
-                                uploadOnCloud();
 
                             }
                         });
@@ -435,6 +431,15 @@ public class BuyeProfileCreation extends AppCompatActivity  {
     }
     
     private void calculatingCurrentLocation(){
+
+        progressDialog.setTitle("Please Wait");
+        progressDialog.setMessage("We Are getting your current location...");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+                if(userLoc==null){
+                    fetchLastLoc();
+                }
+                while (userLoc==null);
                 if(userLoc.getLongitude()!=0 || userLoc.getLatitude()!=0){ //VALUE RECEIVED FROM MAIN_ACT IS VALID
                     Geocoder gc=new Geocoder(BuyeProfileCreation.this);
                     List<Address> list= null;
@@ -442,14 +447,14 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                         list = gc.getFromLocation(userLoc.getLatitude(),userLoc.getLongitude(),1);
                         //Address address=list.get(0);
                         //locality.setText(address.getLocality());
-                        locality.setText(" ");
+                        //locality.setText(" ");
                         locality.setHint("Successfully Received your location");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             locality.setHintTextColor(getColor(R.color.green_600));
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
-                        locality.setText(" ");
+                        //locality.setText(" ");
                         locality.setHint("Successfully Received your location");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             locality.setHintTextColor(getColor(R.color.green_600));
@@ -465,7 +470,7 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                         list = gc.getFromLocation(userLoc.getLatitude(),userLoc.getLongitude(),1);
                        // Address address=list.get(0);
                         //locality.setText(address.getLocality());
-                        locality.setText("");
+                        //locality.setText("");
                         //progressDialog.dismiss();
                         locality.setHint("Successfully Received your location");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -473,7 +478,7 @@ public class BuyeProfileCreation extends AppCompatActivity  {
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
-                        locality.setText("");
+                        //locality.setText("");
                         //progressDialog.dismiss();
                         locality.setHint("Successfully Received your location");
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
