@@ -13,7 +13,7 @@
         android:layout_height="50dp"
         app:title="Buyers List"
         app:titleTextColor="@android:color/white"
-        android:background="#fece2f">
+        android:background="@color/blue_200">
 
         <ImageView
             android:layout_width="30dp"
@@ -23,6 +23,31 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/spinKit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        app:SpinKit_Style="FoldingCube"
+        app:SpinKit_Color="@color/blue_200"
+        android:layout_gravity="center"
+        />
+
+        <TextView
+            android:id="@+id/msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="No messages received"
+            android:gravity="center"
+            android:textSize="20dp"
+            android:visibility="gone"
+            />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listOfBuyers"
         android:layout_width="match_parent"
@@ -30,9 +55,8 @@
         android:layout_margin="5dp"
         />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="No messages received"/>
+    </RelativeLayout>
+
+
 
 </LinearLayout>

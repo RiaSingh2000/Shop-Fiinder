@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="400dp"
-        android:background="#fece2f"
+        android:background="@color/blue_50"
         android:padding="20dp">
 
         <ImageView
@@ -63,7 +63,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#FFF700"
+                android:background="@color/blue_100"
                 android:padding="5dp">
 
                 <Button
@@ -106,7 +106,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#FFF700"
+                android:background="@color/blue_100"
                 android:padding="5dp">
 
                 <Button

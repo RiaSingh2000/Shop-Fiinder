@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Welcomepage"
-    android:background="#fece2f"
+    android:background="@color/blue_50"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="30dp">
 
     <ImageView
         android:id="@+id/logo_image"
@@ -26,12 +26,13 @@
         android:text="Hello there,\nWelcome Back"
         android:textColor="@android:color/black"
         android:textSize="35sp"
-        app:fontFamily="@font/bungee" />
+        app:fontFamily="@font/bungee"
+        android:layout_marginTop="20dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical">
 
@@ -47,16 +48,24 @@
             android:textSize="20dp"></Button>
 
 
-
-        <Button
-            android:id="@+id/signupbtn"
-            android:layout_below="@+id/register_customer_link"
-            android:layout_marginTop="15dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20dp"
-            android:text="SIGN UP"
-            android:textColor="@android:color/white"
-            android:background="@drawable/btn_design1"></Button>
     </LinearLayout>
+
+    <Button
+        android:id="@+id/signupbtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/btn_design1"
+        android:text="SIGN UP"
+        android:textColor="@android:color/white"
+        android:textSize="20dp"></Button>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Powered by CODEPTH"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:textSize="17dp"/>
+
 </LinearLayout>

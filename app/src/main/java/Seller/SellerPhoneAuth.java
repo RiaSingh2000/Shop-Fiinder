@@ -55,24 +55,28 @@ public class SellerPhoneAuth extends AppCompatActivity {
         getotp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(num.getText().toString()!=null) {
+                    String phnno = num.getText().toString();
+                    StringBuilder s = new StringBuilder("+91");
+                    s.append(phnno);
+                    Toast.makeText(SellerPhoneAuth.this, String.valueOf(s), Toast.LENGTH_LONG).show();
+                    loadingbar.setTitle("Phone Verification");
+                    loadingbar.setMessage("Please wait,while we authenticate your phone");
+                    loadingbar.setCanceledOnTouchOutside(false);
+                    loadingbar.show();
 
-                String phnno=num.getText().toString();
-                StringBuilder s=new StringBuilder("+91");
-                s.append(phnno);
-                Toast.makeText(SellerPhoneAuth.this,String.valueOf(s),Toast.LENGTH_LONG).show();
-                loadingbar.setTitle("Phone Verification");
-                loadingbar.setMessage("Please wait,while we authenticate your phone");
-                loadingbar.setCanceledOnTouchOutside(false);
-                loadingbar.show();
+                    PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                            String.valueOf(s),        // Phone number to verify
+                            60,                 // Timeout duration
+                            TimeUnit.SECONDS,   // Unit of timeout
+                            SellerPhoneAuth.this,               // Activity (for callback binding)
+                            callbacks);        // OnVerificationStateChangedCallbacks
 
-                PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                        String.valueOf(s),        // Phone number to verify
-                        60,                 // Timeout duration
-                        TimeUnit.SECONDS,   // Unit of timeout
-                        SellerPhoneAuth.this,               // Activity (for callback binding)
-                        callbacks);        // OnVerificationStateChangedCallbacks
-
-
+                    etotp.setVisibility(View.VISIBLE);
+                    getotp.setVisibility(View.INVISIBLE);
+                    num.setVisibility(View.INVISIBLE);
+                    signup.setVisibility(View.VISIBLE);
+                }
             }
         });
 

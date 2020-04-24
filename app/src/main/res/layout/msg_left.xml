@@ -11,7 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/chat_border_left">
+        android:background="@drawable/chat_border_left"
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/img"

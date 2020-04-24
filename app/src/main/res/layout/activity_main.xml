@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appThemeYellow"
-    tools:openDrawer="start">
+   >
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,7 +16,8 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/blue_200">
 
         <ImageView
             android:id="@+id/shoppingBag"
@@ -64,7 +65,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentBottom="true"
             android:text="Find Shops"
-            android:background="@color/appThemeYellow"
+            android:background="@color/blue_200"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textSize="18sp"
