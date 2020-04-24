@@ -14,6 +14,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepth.maps.R;
@@ -39,6 +42,8 @@ public class SellerChatActivity extends AppCompatActivity {
     FirebaseAuth auth;
     private Toolbar mtoolbar;
     FirebaseFirestore fstore;
+    private ProgressBar progressBar;
+    TextView msg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,7 @@ public class SellerChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_seller_chat);
         sAuth=FirebaseAuth.getInstance();
         uid=sAuth.getUid();
+        progressBar = findViewById(R.id.spinKit);
         listOfBuyers=findViewById(R.id.listOfBuyers);
         listOfBuyers.setLayoutManager(new LinearLayoutManager(SellerChatActivity.this));
         VerticalSpacingItemDecoration itemDecoration=new VerticalSpacingItemDecoration(20);
@@ -56,6 +62,7 @@ public class SellerChatActivity extends AppCompatActivity {
         mtoolbar = (Toolbar) findViewById(R.id.Seller_toolbar);
         setSupportActionBar(mtoolbar);
         fstore = FirebaseFirestore.getInstance();
+        msg=findViewById(R.id.msg);
 
 
         db=FirebaseFirestore.getInstance();
@@ -85,6 +92,9 @@ public class SellerChatActivity extends AppCompatActivity {
                                         }
                                     }
                                     listOfBuyers.setAdapter(new BuyerListAdapter(SellerChatActivity.this,list));
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    if(list.size()==0)
+                                        msg.setVisibility(View.VISIBLE);
                                 }
                             }
                         });
@@ -146,11 +156,11 @@ public class SellerChatActivity extends AppCompatActivity {
         finish();
     }
 
-
-    @Override
-    public void onBackPressed() {
-        startActivity(new Intent(this, Welcomepage.class));
-    }
+//
+//    @Override
+//    public void onBackPressed() {
+//        startActivity(new Intent(this, Welcomepage.class));
+//    }
 
     private String receiveUid() { //gets uid of the clicked marker shop from intentExtra
         Intent intentRecv = getIntent();

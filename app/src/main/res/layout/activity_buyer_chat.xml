@@ -6,7 +6,8 @@
     android:id="@+id/activity_main_drawerlayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start">
+    tools:openDrawer="start"
+    >
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -17,7 +18,7 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
-        android:background="@color/appThemeYellow"
+        android:background="@color/blue_200"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -35,11 +36,11 @@
             <com.github.ybq.android.spinkit.SpinKitView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/spinKit"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 app:SpinKit_Style="FoldingCube"
-                app:SpinKit_Color="@color/appThemeYellow"
+                app:SpinKit_Color="@color/blue_200"
                 />
 
 

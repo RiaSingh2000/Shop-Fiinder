@@ -14,7 +14,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fece2f"
+        android:background="@color/blue_200"
         >
 
         <ImageView
@@ -118,11 +118,10 @@
         <ImageView
             android:id="@+id/tvCall"
             android:layout_width="70dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_margin="35dp"
             android:layout_weight="1"
             android:onClick="call"
-            android:background="@drawable/circle"
             android:padding="7dp"
             android:src="@drawable/call"
             android:linksClickable="true" />
@@ -130,10 +129,9 @@
         <ImageView
             android:id="@+id/btnChat"
             android:layout_width="70dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_margin="35dp"
             android:layout_weight="1"
-            android:background="@drawable/circle"
             android:padding="7dp"
             android:fontFamily="@font/antic"
             android:src="@drawable/chat"
@@ -145,10 +143,9 @@
         <ImageView
             android:id="@+id/nav"
             android:layout_width="70dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:layout_margin="35dp"
             android:layout_weight="1"
-            android:background="@drawable/circle"
             android:padding="7dp"
             android:src="@drawable/navigation"
             android:fontFamily="@font/antic"

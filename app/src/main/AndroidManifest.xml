@@ -19,15 +19,20 @@
         <activity android:name="Chats.ChatActivity" />
         <activity android:name="Seller.SellerDisplayActivity" />
         <activity android:name="Seller.SellerChatActivity" />
-        <activity android:name=".Welcomepage" />
-        <activity android:name="Seller.SellerLogin" />
-        <activity android:name=".ChoiceofLoginRole" />
+        <activity android:name=".Welcomepage"
+            android:screenOrientation="locked"/>
+        <activity android:name="Seller.SellerLogin"
+            android:screenOrientation="locked"/>
+        <activity android:name=".ChoiceofLoginRole"
+            android:screenOrientation="locked"/>
         <activity android:name="Seller.SellerProfileCreation" />
         <activity android:name="Seller.SellerPhoneAuth" />
-        <activity android:name=".ChoiceofRegRole" />
+        <activity android:name=".ChoiceofRegRole"
+            android:screenOrientation="locked"/>
         <activity android:name="Buyer.MainActivity" />
         <activity android:name="Buyer.BuyeProfileCreation" />
-        <activity android:name="Buyer.BuyerLogin" />
+        <activity android:name="Buyer.BuyerLogin"
+            android:screenOrientation="locked"/>
         <activity android:name="Buyer.BuyerRegistartion" />
         <activity android:name=".SplashActivity">
             <intent-filter>

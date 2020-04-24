@@ -1,113 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="Seller.SellerPhoneAuth"
-    android:background="#fece2f"
+    tools:context="Seller.SellerLogin"
     android:orientation="vertical">
 
-
-    <ImageView
-        android:id="@+id/image_bag"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/shoppingbag"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints"
-        android:layout_gravity="center"
-        tools:layout_editor_absoluteY="40dp" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bungee"
-        android:text="Verify Phone no"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:textSize="30sp"
-        />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/antic"
-        android:text="Enter Your Phone no. To get Authenticated"
-        android:layout_gravity="center"
-
-        />
-
-
-
-    <EditText
-        android:id="@+id/et_phone_num"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/edit_text_design1"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:hint="Phone number in format +91XXXXXXXXXX"
-        android:fontFamily="@font/antic"
-        android:inputType="textPersonName"
-        android:layout_marginTop="100dp"
-        android:padding="10dp"
-        />
-
-    <EditText
-        android:id="@+id/et_otp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/edit_text_design1"
-        android:hint="Enter OTP"
-        android:inputType="number"
-        android:paddingLeft="20dp"
-        android:fontFamily="@font/antic"
-        />
-
-    <Button
-        android:id="@+id/btn_get_otp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/btn_design"
-        android:text="GET OTP"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"
-        android:fontFamily="@font/antic"
-        android:textColor="@android:color/holo_red_light"
-        />
-
-    <Button
-        android:id="@+id/btn_singup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="SignUp"
-        android:layout_gravity="center"
-        android:textColor="#fff"
-        android:fontFamily="@font/antic"
-        android:background="@drawable/btn_design1"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/hor_guide_30_percent_2"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3"/>
+        android:orientation="vertical"
+        android:weightSum="2">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.2"
+            android:background="@drawable/curve"
+            >
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/hor_guide_60_percent_2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.6"/>
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:src="@drawable/call"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.7"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_get_otp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="20dp"
+                android:layout_marginBottom="52dp"
+                android:background="@drawable/rounded_corners"
+                android:text="Get OTP"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.666"
+                tools:layout_editor_absoluteX="40dp" />
+
+            <Button
+                android:id="@+id/btn_singup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="20dp"
+                android:layout_marginBottom="52dp"
+                android:background="@drawable/rounded_corners"
+                android:text="Sign Up"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.666"
+                tools:layout_editor_absoluteX="40dp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/textMsg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:text="An OTP would be send to your phone number"
+                android:textAlignment="center"
+                android:textColor="@color/grey_40"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/send"
+                app:layout_constraintVertical_bias="0.129"
+                tools:layout_editor_absoluteX="-4dp" />
+
+
+            <EditText
+                android:id="@+id/et_phone_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your phone number"
+                android:maxLength="50"
+                android:maxLines="1"
+                android:singleLine="true"
+                app:layout_constraintBottom_toTopOf="@+id/btn_get_otp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:inputType="number"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                />
+
+            <EditText
+                android:id="@+id/et_otp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter the OTP"
+                android:maxLength="50"
+                android:maxLines="1"
+                android:singleLine="true"
+                app:layout_constraintBottom_toTopOf="@+id/btn_get_otp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:inputType="number"
+                android:visibility="gone"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </LinearLayout>
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context="Seller.SellerPhoneAuth"-->
+<!--    android:background="#fece2f"-->
+<!--    android:orientation="vertical">-->
+
+
+<!--    <ImageView-->
+<!--        android:id="@+id/image_bag"-->
+<!--        android:layout_width="150dp"-->
+<!--        android:layout_height="150dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:background="@drawable/shoppingbag"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        tools:ignore="MissingConstraints"-->
+<!--        android:layout_gravity="center"-->
+<!--        tools:layout_editor_absoluteY="40dp" />-->
+
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/bungee"-->
+<!--        android:text="Verify Phone no"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:textSize="30sp"-->
+<!--        />-->
+
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/antic"-->
+<!--        android:text="Enter Your Phone no. To get Authenticated"-->
+<!--        android:layout_gravity="center"-->
+
+<!--        />-->
+
+
+
+<!--    <EditText-->
+<!--        android:id="@+id/et_phone_num"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:background="@drawable/edit_text_design1"-->
+<!--        android:layout_marginLeft="10dp"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        android:hint="Phone number in format +91XXXXXXXXXX"-->
+<!--        android:fontFamily="@font/antic"-->
+<!--        android:inputType="textPersonName"-->
+<!--        android:layout_marginTop="100dp"-->
+<!--        android:padding="10dp"-->
+<!--        />-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/et_otp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:layout_marginLeft="10dp"-->
+<!--        android:layout_marginRight="10dp"-->
+<!--        android:background="@drawable/edit_text_design1"-->
+<!--        android:hint="Enter OTP"-->
+<!--        android:inputType="number"-->
+<!--        android:paddingLeft="20dp"-->
+<!--        android:fontFamily="@font/antic"-->
+<!--        />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btn_get_otp"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:background="@drawable/btn_design"-->
+<!--        android:text="GET OTP"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:fontFamily="@font/antic"-->
+<!--        android:textColor="@android:color/holo_red_light"-->
+<!--        />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btn_singup"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        android:text="SignUp"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:textColor="#fff"-->
+<!--        android:fontFamily="@font/antic"-->
+<!--        android:background="@drawable/btn_design1"/>-->
+
+<!--    <androidx.constraintlayout.widget.Guideline-->
+<!--        android:id="@+id/hor_guide_30_percent_2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintGuide_percent="0.3"/>-->
+
+<!--    <androidx.constraintlayout.widget.Guideline-->
+<!--        android:id="@+id/hor_guide_60_percent_2"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintGuide_percent="0.6"/>-->
+<!--</LinearLayout>-->
