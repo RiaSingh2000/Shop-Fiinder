@@ -52,12 +52,14 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
     private static NavigationView navView;
     private ProgressBar progressBar;
     private static LatLng myLatLng = MainActivity.getLatLng();
+    public  static String tag="tag";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        Log.w(tag,myLatLng+":==myLatlng start");
         DrawerController.setIdentity("SellerListActivity");
         navView = findViewById(R.id.nv);
         navView.setNavigationItemSelectedListener(this);
@@ -107,6 +109,7 @@ public class SellerListActivity extends AppCompatActivity implements NavigationV
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 mSellerProfile mSellerProfile = document.toObject(Models.mSellerProfile.class);
                                 float[] result = new float[3];
+                                Log.w(tag,myLatLng+":==myLatlng");
                                 Location.distanceBetween((float) myLatLng.latitude, (float) myLatLng.longitude, Float.parseFloat(mSellerProfile.getLat()),
                                         Float.parseFloat(mSellerProfile.getLng()), result);
                                // if (result != null && result[0] <= 5000) {

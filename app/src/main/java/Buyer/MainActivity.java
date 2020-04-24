@@ -80,7 +80,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
      int sel=0,findShop=0; //flag variables
      FirebaseFirestore fstore;
      FirebaseAuth fauth;
-     private static LatLng latLng = null;
+    private static LatLng latLng = null;
      ArrayList<mShops> mShopsArrayList = new ArrayList<>();
 
     private static final int REQUEST_CODE=101;
@@ -94,8 +94,9 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
     private LocationCallback locationCallback;
     private static String TAG1 = "ON_LOCATION_UPDATE";
 
-    public  static  LatLng getLatLng(){
-        return latLng;
+    public  static  LatLng getLatLng()
+    {
+    return latLng;
     }
     public static Location returnUserLoc(){return userLoc;}
 
@@ -111,18 +112,17 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
         navView = findViewById(R.id.nv);
         navView.setNavigationItemSelectedListener(this);
         drawerLayout = findViewById(R.id.activity_main_drawerlayout);
-        Toolbar toolbar=findViewById(R.id.toolbar);
-        progressDialog=new ProgressDialog(this);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        progressDialog = new ProgressDialog(this);
 
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPrefs", MODE_PRIVATE);
-        int count=sharedPreferences.getInt("count",0);
-        MainActivity.setMenuCounter(R.id.chatListDrawableItem,count);
-        ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.navigation_drawer_open,R.string.navigation_drawer_close);
+        int count = sharedPreferences.getInt("count", 0);
+        MainActivity.setMenuCounter(R.id.chatListDrawableItem, count);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-        fstore=FirebaseFirestore.getInstance();
-        fauth=FirebaseAuth.getInstance();
-        fetchLastLoc();
+        fstore = FirebaseFirestore.getInstance();
+        fauth = FirebaseAuth.getInstance();
         DocumentReference documentReference=fstore.collection("Buyer").document(fauth.getCurrentUser().getUid());
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -134,6 +134,7 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                         lat = Double.parseDouble(doc.get("lat").toString());
                         lon = Double.parseDouble(doc.get("lng").toString());
                         latLng = new LatLng(lat, lon);
+                        Log.w(TAG,latLng+"latlng in onCreate");
                     }
                     else{
                         Toast.makeText(getApplicationContext(),"Registration Document latlng doesnt exist.Kindly register your info in settings",Toast.LENGTH_LONG).show();
@@ -141,14 +142,14 @@ public class MainActivity  extends FragmentActivity  implements NavigationView.O
                 }
             }
         });
+    fetchLastLoc();
     }
-
-    @Override
+   /* @Override
     protected void onPause() {
         super.onPause();
         if(fusedLocationProviderClient!=null)
             stopLocationUpdates();
-    }
+    }*/
 
 
     @Override
