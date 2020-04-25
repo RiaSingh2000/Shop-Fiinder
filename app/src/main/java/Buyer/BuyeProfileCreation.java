@@ -19,7 +19,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -29,7 +28,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepth.maps.R;
@@ -436,59 +434,59 @@ public class BuyeProfileCreation extends AppCompatActivity  {
         progressDialog.setMessage("We Are getting your current location...");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
-                if(userLoc==null){
-                    fetchLastLoc();
-                }
-                while (userLoc==null);
-                if(userLoc.getLongitude()!=0 || userLoc.getLatitude()!=0){ //VALUE RECEIVED FROM MAIN_ACT IS VALID
-                    Geocoder gc=new Geocoder(BuyeProfileCreation.this);
-                    List<Address> list= null;
-                    try {
-                        list = gc.getFromLocation(userLoc.getLatitude(),userLoc.getLongitude(),1);
-                        //Address address=list.get(0);
-                        //locality.setText(address.getLocality());
-                        //locality.setText(" ");
-                        locality.setHint("Successfully Received your location");
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            locality.setHintTextColor(getColor(R.color.green_600));
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        //locality.setText(" ");
-                        locality.setHint("Successfully Received your location");
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            locality.setHintTextColor(getColor(R.color.green_600));
-                        }
+        if(userLoc!=null) {
+            if (userLoc.getLongitude() != 0 || userLoc.getLatitude() != 0) { //VALUE RECEIVED FROM MAIN_ACT IS VALID
+                Geocoder gc = new Geocoder(BuyeProfileCreation.this);
+                List<Address> list = null;
+                try {
+                    list = gc.getFromLocation(userLoc.getLatitude(), userLoc.getLongitude(), 1);
+                    //Address address=list.get(0);
+                    //locality.setText(address.getLocality());
+                    //locality.setText(" ");
+                    locality.setHint("Successfully Received your location");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        locality.setHintTextColor(getColor(R.color.green_600));
                     }
-
-                }
-                else{
-                    fetchLastLoc(); //puts correct value in userLoc
-                    Geocoder gc=new Geocoder(BuyeProfileCreation.this);
-                    List<Address> list= null;
-                    try {
-                        list = gc.getFromLocation(userLoc.getLatitude(),userLoc.getLongitude(),1);
-                       // Address address=list.get(0);
-                        //locality.setText(address.getLocality());
-                        //locality.setText("");
-                        //progressDialog.dismiss();
-                        locality.setHint("Successfully Received your location");
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            locality.setHintTextColor(getColor(R.color.green_600));
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        //locality.setText("");
-                        //progressDialog.dismiss();
-                        locality.setHint("Successfully Received your location");
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            locality.setHintTextColor(getColor(R.color.green_600));
-                        }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    //locality.setText(" ");
+                    locality.setHint("Successfully Received your location");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        locality.setHintTextColor(getColor(R.color.green_600));
                     }
-
                 }
 
-                progressDialog.dismiss();
+            }
+        }
+
+        else{
+            fetchLastLoc(); //puts correct value in userLoc
+            Geocoder gc=new Geocoder(BuyeProfileCreation.this);
+            List<Address> list= null;
+            while (userLoc==null);
+            try {
+                list = gc.getFromLocation(userLoc.getLatitude(),userLoc.getLongitude(),1);
+               // Address address=list.get(0);
+                //locality.setText(address.getLocality());
+                //locality.setText("");
+                //progressDialog.dismiss();
+                locality.setHint("Successfully Received your current location");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    locality.setHintTextColor(getColor(R.color.green_600));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                //locality.setText("");
+                //progressDialog.dismiss();
+                locality.setHint("Successfully Received your location");
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    locality.setHintTextColor(getColor(R.color.green_600));
+                }
+            }
+
+        }
+
+        progressDialog.dismiss();
     }
 
 }
