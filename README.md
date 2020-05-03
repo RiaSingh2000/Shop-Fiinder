@@ -34,7 +34,7 @@ This sample uses the Gradle build system.
 * Gps or location access
 * Read and write access to external storage.
 
-##Screenshots
+## Screenshots
 
 ![WhatsApp Image 2020-05-04 at 12 05 29 AM](https://user-images.githubusercontent.com/55248714/80922566-a079b700-8d9b-11ea-86be-b553f5ca5cb0.jpeg)
 ![WhatsApp Image 2020-05-04 at 12 05 28 AM (2)](https://user-images.githubusercontent.com/55248714/80922571-a53e6b00-8d9b-11ea-8250-0874e7ca2375.jpeg)
