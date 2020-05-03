@@ -16,10 +16,10 @@ This sample uses the Gradle build system.
 ## Features
 ### This android application app lets you:
 * Connects you to nearby shops as a buyer.
-* Connects you to the aspiring buyer who has requested for some products from your shop
+* Connects you to the interested buyer who has requested for some products from your shop
 * Completely ad-free.
 * Easy to use User Interface 
-* Easily click the image of your list and send it to the shopkeeper
+* Easy select/click an image of your list and send it to the shopkeeper
 * Possibility to cache images locally for offline reading.
 
 ## Prerequisites
