@@ -1,5 +1,5 @@
 # Shop Finder
-This Android Application aims to bring the users closer to the shops located near them enabling them to be on a single platform for easier access. It facilitates users to get in touch with the registered shopkeeper and pre-book the available products. Users can connect to the shopkeeper via phone call or through the chat application provided by our application.
+This Android Application aims to bring the users closer to the shops located near them enabling them to be on a single platform for easier access. It facilitates users to get in touch with the registered shopkeeper and pre-book the available products. Users can connect to them via phone call or through the chat application provided by our application.
 It works on GPS hence the entire system is designed with the help of Google Maps. The application has got two sides that are buyer login, and seller login to register oneself.
 The buyer side is provided with google sign up to register into the app.
 After a successful login, the user can locate himself at the nearby shops. A click on the marker opens up the details of that particular shop which allows the user to chat locate and call the shopkeeper.
@@ -14,7 +14,7 @@ This sample uses the Gradle build system.
 * Add your API key to your app's gradle.properties file
 
 ## Features
-* The android app lets you:
+### This android application app lets you:
 * Connects you to nearby shops as a buyer.
 * Connects you to the aspiring buyer who has requested for some products from your shop
 * Completely ad-free.
