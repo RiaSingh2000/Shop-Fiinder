@@ -34,6 +34,16 @@ This sample uses the Gradle build system.
 * Gps or location access
 * Read and write access to external storage.
 
+##Screenshots
+
+![WhatsApp Image 2020-05-04 at 12 05 29 AM](https://user-images.githubusercontent.com/55248714/80922566-a079b700-8d9b-11ea-86be-b553f5ca5cb0.jpeg)
+![WhatsApp Image 2020-05-04 at 12 05 28 AM (2)](https://user-images.githubusercontent.com/55248714/80922571-a53e6b00-8d9b-11ea-8250-0874e7ca2375.jpeg)
+![WhatsApp Image 2020-05-04 at 12 05 28 AM (1)](https://user-images.githubusercontent.com/55248714/80922575-ab344c00-8d9b-11ea-8a5e-ce634860e363.jpeg)
+![WhatsApp Image 2020-05-04 at 12 05 28 AM](https://user-images.githubusercontent.com/55248714/80922580-b5564a80-8d9b-11ea-99ed-53d919e34da3.jpeg)
+![WhatsApp Image 2020-05-04 at 12 05 27 AM](https://user-images.githubusercontent.com/55248714/80922582-b8e9d180-8d9b-11ea-8a07-69b74cb95173.jpeg)
+
+
+
 ## Contributing
 Shop Finder app is a free and open-source project developed by under graduates. Any contributions are welcome. Here are a few ways you can help:
 - Report bugs and make suggestions.
