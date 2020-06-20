@@ -5,14 +5,6 @@ The buyer side is provided with google sign up to register into the app.
 After a successful login, the user can locate himself at the nearby shops. A click on the marker opens up the details of that particular shop which allows the user to chat locate and call the shopkeeper.
 Whereas the shopkeeper side gets the list of buyer who had requested some products and can connect to them via phone call or chat. 
 
-## Getting Started
-This sample uses the Gradle build system.
-* Download the samples by cloning this repository or downloading an archived snapshot. (See the options at the top of the page.)
-* In Android Studio, create a new project and choose the "Import non-Android Studio project" or "Import Project" option.
-* Select the CurrentPlaceDetailsOnMap directory that you downloaded with this repository.
-* If prompted for a Gradle configuration, accept the default settings. Alternatively use the "gradle build" command to build the project directly.
-* Add your API key to your app's gradle.properties file
-
 ## Features
 ### This android application app lets you:
 * Connects you to nearby shops as a buyer.
@@ -36,12 +28,19 @@ This sample uses the Gradle build system.
 
 ## Screenshots
 
-![WhatsApp Image 2020-05-04 at 12 05 29 AM](https://user-images.githubusercontent.com/55248714/80922566-a079b700-8d9b-11ea-86be-b553f5ca5cb0.jpeg)
-![WhatsApp Image 2020-05-04 at 12 05 28 AM (2)](https://user-images.githubusercontent.com/55248714/80922571-a53e6b00-8d9b-11ea-8250-0874e7ca2375.jpeg)
-![WhatsApp Image 2020-05-04 at 12 05 28 AM (1)](https://user-images.githubusercontent.com/55248714/80922575-ab344c00-8d9b-11ea-8a5e-ce634860e363.jpeg)
-![WhatsApp Image 2020-05-04 at 12 05 28 AM](https://user-images.githubusercontent.com/55248714/80922580-b5564a80-8d9b-11ea-99ed-53d919e34da3.jpeg)
-![WhatsApp Image 2020-05-04 at 12 12 24 AM](https://user-images.githubusercontent.com/55248714/80922639-1f6eef80-8d9c-11ea-8f4c-7058067875af.jpeg)
-![WhatsApp Image 2020-05-04 at 12 05 27 AM](https://user-images.githubusercontent.com/55248714/80922582-b8e9d180-8d9b-11ea-8a07-69b74cb95173.jpeg)
+<table>
+ 
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/55248714/80922566-a079b700-8d9b-11ea-86be-b553f5ca5cb0.jpeg" width=240 height=500/></td>
+    <td><img src="https://user-images.githubusercontent.com/55248714/80922571-a53e6b00-8d9b-11ea-8250-0874e7ca2375.jpeg" width=240 height=500/></td>
+    <td><img src="https://user-images.githubusercontent.com/55248714/80922575-ab344c00-8d9b-11ea-8a5e-ce634860e363.jpeg" width=240 height=500/></td>
+  </tr>
+  <tr>
+    <td><img src="https://user-images.githubusercontent.com/55248714/80922580-b5564a80-8d9b-11ea-99ed-53d919e34da3.jpeg" width=240 height=500/></td>
+    <td><img src="https://user-images.githubusercontent.com/55248714/80922639-1f6eef80-8d9c-11ea-8f4c-7058067875af.jpeg" width=240 height=500/></td>
+    <td><img src="https://user-images.githubusercontent.com/55248714/80922582-b8e9d180-8d9b-11ea-8a07-69b74cb95173.jpeg" width=240 height=500/></td>
+  </tr>
+ </table>
 
 
 
@@ -51,3 +50,10 @@ Shop Finder app is a free and open-source project developed by under graduates. 
 - Translate the app (you don't have to create an account).
 - Write some code. Please follow the code style used in the project -to make a review process faster.
 
+## Getting Started
+This sample uses the Gradle build system.
+* Download the samples by cloning this repository or downloading an archived snapshot. (See the options at the top of the page.)
+* In Android Studio, create a new project and choose the "Import non-Android Studio project" or "Import Project" option.
+* Select the CurrentPlaceDetailsOnMap directory that you downloaded with this repository.
+* If prompted for a Gradle configuration, accept the default settings. Alternatively use the "gradle build" command to build the project directly.
+* Add your API key to your app's gradle.properties file
